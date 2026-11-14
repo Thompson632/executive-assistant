@@ -61,3 +61,5 @@ and building a ZIP from a commit.
   and skill checks. Install [development dependencies](requirements-dev.txt)
   in a virtual environment if the skill validator needs PyYAML. If the
   standalone plugin validator is unavailable, use the disposable install above.
+- Use the [release checklist](docs/RELEASE-CHECKLIST.md) to verify the extracted
+  ZIP, a fresh install, an update, and host workflows.

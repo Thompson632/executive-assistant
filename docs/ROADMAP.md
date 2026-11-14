@@ -9,11 +9,8 @@ tracks the first-run guide, recovery fixes, and release verification.
 
 ## Live validation
 
-- Confirm a fresh Codex Desktop chat can load the installed proof skill and write a daily report to a test vault.
-- Validate guided setup with a new user.
-- Verify a standalone Codex automation writes to its intended local vault and capture any setup friction.
-- Verify a scheduled run on each platform.
-- Validate Work Intake against a live GitLab group and project with an authorized test request. Verify the Confluence preview against the intended page.
+Use the [release checklist](RELEASE-CHECKLIST.md) to record first-time Desktop
+setup, scheduler-fired results, and optional live integration checks.
 
 ## Next
 

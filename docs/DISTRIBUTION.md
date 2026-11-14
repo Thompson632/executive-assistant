@@ -16,6 +16,9 @@ bash tools/package-unix.sh executive-assistant.zip
 unzip -tq executive-assistant.zip
 ```
 
+Use the [release checklist](RELEASE-CHECKLIST.md) to verify the extracted ZIP
+and the installer before distributing it.
+
 ## Coworker Install Flow
 
 1. Share the ZIP or repository through an approved internal channel.

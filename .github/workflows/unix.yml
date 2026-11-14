@@ -27,10 +27,44 @@ jobs:
         if: runner.os == 'Linux'
         run: sudo apt-get update && sudo apt-get install -y zsh
       - name: Check shell syntax
-        run: git ls-files '*.sh' | while IFS= read -r path; do bash -n "$path" || exit; done
+        run: git ls-files '*.sh' | while IFS= read -r path; do bash -n "$path" && zsh -n "$path" || exit; done
       - name: Run the workflow tests
         run: python3 -m unittest discover -s tests/unix -v
       - name: Validate distribution archive
         run: |
           bash tools/package-unix.sh "$RUNNER_TEMP/executive-assistant.zip"
           unzip -tq "$RUNNER_TEMP/executive-assistant.zip"
+      - name: Run the packaged first-brief workflow
+        run: |
+          smoke_dir="$RUNNER_TEMP/Executive Assistant Smoke"
+          unzip -q "$RUNNER_TEMP/executive-assistant.zip" -d "$smoke_dir"
+          package="$smoke_dir/executive-assistant"
+          test -f "$package/LICENSE"
+          test -f "$package/docs/GETTING-STARTED.md"
+          test -f "$package/plugins/executive-assistant/.codex-plugin/plugin.json"
+          launcher="$package/plugins/executive-assistant/scripts/unix/ea.sh"
+          for shell in bash zsh; do
+            vault="$smoke_dir/$shell vault"
+            result="$smoke_dir/$shell report.json"
+            "$shell" -e -c '
+              launcher=$1
+              profile=$2
+              vault=$3
+              "$launcher" --profile "$profile" setup --vault "$vault" --copy-template >/dev/null
+              "$launcher" --profile "$profile" check >/dev/null
+              printf "\n%s\n" "- [ ] Review the meeting agenda" >> "$vault/Action-Items.md"
+              "$launcher" --profile "$profile" report daily --date 2026-11-14 --write
+            ' "$shell" "$launcher" "$smoke_dir/$shell profile.json" "$vault" > "$result"
+            python3 - "$vault" "$result" <<'PY'
+          import json
+          from pathlib import Path
+          import sys
+
+          vault, result = map(Path, sys.argv[1:])
+          payload = json.loads(result.read_text())
+          report = Path(payload["output_path"])
+          assert payload["status"] == "written", payload
+          assert report.resolve().is_relative_to(vault.resolve()), report
+          assert "Review the meeting agenda" in report.read_text(encoding="utf-8"), report
+          PY
+          done
