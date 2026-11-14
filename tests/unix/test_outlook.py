@@ -122,12 +122,38 @@ class LocalOutlookTest(unittest.TestCase):
         self.assertEqual(json.loads(self.command("check").stdout)["outlook_sources"],
                          {"calendar": "local"})
 
-    def test_unsupported_provider_explains_how_to_configure_file_sources(self):
+    def test_vault_management_survives_an_unsupported_provider(self):
         self.configure(provider="unsupported")
-        result = self.command("check", check=False)
-        self.assertEqual(result.returncode, 1)
-        self.assertIn("Set outlook.provider to local and configure outlook.maildir or outlook.calendarFile.",
-                      result.stderr)
+        diagnostic = "Set outlook.provider to local and configure outlook.maildir or outlook.calendarFile."
+        original = self.profile.read_bytes()
+        for command in ("check", "config"):
+            with self.subTest(command=command):
+                result = self.command(command, check=False)
+                self.assertEqual(result.returncode, 0, result.stderr)
+                status = json.loads(result.stdout)
+                self.assertEqual(status["profile_path"], str(self.profile))
+                self.assertEqual(status["vault_path"], str(self.vault))
+                self.assertTrue(status["ok"])
+                self.assertFalse(status["outlook_available"])
+                self.assertEqual(status["outlook_sources"], {})
+                self.assertEqual(status["outlook_error"], diagnostic)
+
+        moved = self.root / "Moved Vault"
+        moved.mkdir()
+        self.command("config", "--vault", str(moved))
+        self.assertEqual(self.profile.read_bytes(), original)
+        result = self.command("config", "--vault", str(moved), "--apply")
+        status = json.loads(result.stdout)
+        self.assertEqual(status["vault_path"], str(moved))
+        self.assertEqual(status["outlook_error"], diagnostic)
+        updated = json.loads(self.profile.read_bytes())
+        self.assertEqual(updated, {**json.loads(original), "vaultPath": str(moved)})
+        for args in (("outlook", "mail"), ("report", "daily", "--write")):
+            with self.subTest(args=args):
+                result = self.command(*args, check=False)
+                self.assertEqual(result.returncode, 1)
+                self.assertIn(diagnostic, result.stderr)
+        self.assertFalse((moved / "_briefings").exists())
 
     def test_old_profile_needs_an_explicit_local_source(self):
         self.assertEqual(outlook.sources({"outlook": {

@@ -35,6 +35,11 @@ When a copied profile references a path on another host, preview a vault-path
 change with `config --vault "/absolute/path/to/vault"`. Add `--apply` to write
 the reviewed change. The command preserves unrelated profile fields.
 
+If `config` or `check` reports `outlook_error`, you can still inspect or
+change a valid vault connection. Open the file reported as `profile_path`
+and set `outlook.enabled` to `false` for vault-only reports, or
+[configure a file source](local-outlook.md) before generating a new report.
+
 ## Routine Configuration
 
 From the installed plugin root:

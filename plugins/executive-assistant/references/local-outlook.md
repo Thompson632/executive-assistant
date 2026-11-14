@@ -9,6 +9,9 @@ source current and handles account authentication.
 Edit the `outlook` object in your local profile. The default profile is
 `${CODEX_HOME:-$HOME/.codex}/executive-assistant/profiles/default.json`.
 If you run commands with `--profile PATH`, edit that file.
+Run `check` or `config` to find the exact file in `profile_path`. If the
+notes folder is available and Outlook settings need attention, the result
+includes `outlook_error`.
 If your profile uses an older provider, replace its `outlook` object with the
 example below and set the paths for your sources. For vault-only use, set
 `outlook.enabled` to `false`.
@@ -47,6 +50,7 @@ From the installed plugin root, run the commands for the sources you enabled:
 ```
 
 `check` reports configured providers. The `outlook` reads verify actual access.
+Resolve any `outlook_error` before reading Outlook or generating a new report.
 Mail looks back from the focus date, includes unread or flagged messages,
 and sorts newest first. Calendar looks forward from the focus date and
 includes events overlapping that window. The window includes the focus date

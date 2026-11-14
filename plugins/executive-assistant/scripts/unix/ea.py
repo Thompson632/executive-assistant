@@ -129,16 +129,21 @@ def setup(args, path):
     show_status(path, vault, profile)
 
 
-def show_status(path, vault, profile):
-    sources = outlook.sources(profile)
-    print(json.dumps({
+def show_status(path: Path, vault: Path, profile: dict) -> None:
+    status = {
         "ok": True,
         "profile_path": str(path),
         "vault_path": str(vault),
         "obsidian_settings_present": (vault / ".obsidian").is_dir(),
-        "outlook_available": bool(sources),
-        "outlook_sources": dict.fromkeys(sources, outlook.FILE_PROVIDER),
-    }, indent=2))
+    }
+    try:
+        sources = outlook.sources(profile)
+    except ValueError as error:
+        sources = {}
+        status["outlook_error"] = str(error)
+    status["outlook_available"] = bool(sources)
+    status["outlook_sources"] = dict.fromkeys(sources, outlook.FILE_PROVIDER)
+    print(json.dumps(status, indent=2))
 
 
 def configure(args, path, profile):
@@ -149,7 +154,6 @@ def configure(args, path, profile):
         return
     vault = get_vault({"vaultPath": str(Path(args.vault).expanduser().resolve())})
     if args.apply:
-        outlook.sources(profile)
         profile["vaultPath"] = str(vault)
         if isinstance(profile.get("obsidian"), dict) and "vaultPath" in profile["obsidian"]:
             profile["obsidian"]["vaultPath"] = str(vault)
