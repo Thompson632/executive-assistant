@@ -71,7 +71,11 @@ launchctl kickstart "$ea_domain/local.executive-assistant.daily"
 ```
 
 Check the output path in the agent's `StandardOutPath` log and open the
-reported note. The agent uses the Mac's local time. To schedule a weekly
+reported note. If the command failed, check `StandardErrorPath`. The logs
+are separate files beside the profile. A status of `existing` means the
+job kept a previously saved report. After the manual kickstart, check
+the result of a run at the scheduled time. The agent uses the Mac's local
+time. To schedule a weekly
 report, use `schedule weekly --at 05:30 --weekday Monday` and use `weekly` in
 the filename and launchctl label. To unload an agent, run
 `launchctl bootout "$ea_domain" "$ea_agent"`.

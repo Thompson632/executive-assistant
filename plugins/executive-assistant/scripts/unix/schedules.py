@@ -53,23 +53,36 @@ def schedule(args, profile, script):
     sys.stdout.buffer.write(plistlib.dumps(agent))
 
 
-def schedule_prompts(profile, path):
-    preferences = profile.get("scheduledTasks")
-    if preferences is not None and not isinstance(preferences, dict):
+def schedule_prompts(profile: dict, path: Path) -> None:
+    preferences = profile.get("scheduledTasks", {})
+    if not isinstance(preferences, dict):
         raise ValueError("scheduledTasks must be a JSON object.")
+    enabled = preferences.get("enabled", True)
+    if not isinstance(enabled, bool):
+        raise ValueError("scheduledTasks.enabled must be true or false.")
+
+    default_enabled = "scheduledTasks" not in profile
     lines = ["# Executive Assistant Schedule Prompts", ""]
     for key, title, skill, purpose in PROMPTS:
-        setting = preferences.get(key, {}) if preferences else {}
+        setting = preferences.get(key, {})
+        field = f"scheduledTasks.{key}"
         if not isinstance(setting, dict):
-            raise ValueError(f"scheduledTasks.{key} must be a JSON object.")
-        if preferences and (preferences.get("enabled") is False or not setting.get("enabled")):
+            raise ValueError(f"{field} must be a JSON object.")
+        entry_enabled = setting.get("enabled", default_enabled)
+        if not isinstance(entry_enabled, bool):
+            raise ValueError(f"{field}.enabled must be true or false.")
+        if not enabled or not entry_enabled:
             continue
+
+        day = setting.get("day") if key == "weeklyReview" else None
+        if key == "weeklyReview" and "day" in setting and day not in WEEKDAYS:
+            raise ValueError(f"{field}.day must be a weekday name such as Monday.")
         lines.extend([f"## {title}", ""])
         if "time" in setting:
-            time_parts(setting["time"])
-            day = setting.get("day") if key == "weeklyReview" else None
-            if day is not None and day not in WEEKDAYS:
-                raise ValueError("Choose a valid weekly schedule day.")
+            try:
+                time_parts(setting["time"])
+            except ValueError as error:
+                raise ValueError(f"{field}.time: {error}") from None
             when = f"{day} at " if day else ""
             lines.extend([f"Preferred time {when}{setting['time']} (local).", ""])
         lines.extend([

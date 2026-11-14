@@ -51,7 +51,9 @@ With a running user cron service, preview a report job from a stable checkout:
 
 Run the report manually first. Add the reviewed line with `crontab -e`. To
 verify one actual scheduled run, use a temporary test profile and time, then
-verify the report and the log beside the profile. Remove the test line
+verify the report and the combined output and error log beside the profile.
+A status of `existing` means the job kept a previously saved report.
+Remove the test line
 afterward. To change or stop a regular report job, edit or remove its exact
 line with `crontab -e`. The schedule uses the host's local time.
 

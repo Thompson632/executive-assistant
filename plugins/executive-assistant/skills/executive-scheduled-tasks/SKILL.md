@@ -42,18 +42,17 @@ or scheduler tool-call failures.
 
 ## Recovery
 
-If a scheduled Executive Assistant workflow fails with a function-call result
-that is missing `call_id`, record it as a scheduled tool-call failure.
-This can affect either a heartbeat or a standalone task.
-
-1. Verify the daily-brief command manually in a fresh task.
+1. Open the failed run and find the first error. Try the brief manually in
+   a fresh chat with the same notes folder and profile.
 2. Pause the failed schedule after user approval.
-3. Preserve the reviewed prompt and schedule, then report the failure and the
-   missing `call_id` evidence.
+3. Preserve the reviewed prompt and schedule and report the observed error.
 4. For deterministic daily and weekly reports, use the local scheduler below.
 5. Verify one scheduler-run report and inspect its local log.
 6. Follow-up monitoring and action updates still require a working Codex
    provider path.
+
+A function-call result missing `call_id` is a scheduled tool-call failure.
+Record that detail if it appears in the failed run.
 
 ## Local Report Fallback
 
@@ -67,7 +66,10 @@ From the installed plugin root:
 ```
 
 After reviewing the output, load the plist with `launchctl` or add the cron
-line with `crontab -e`. Run one acceptance test and verify the artifact and log.
+line with `crontab -e`. Check the first scheduled result and log. Launchd
+uses separate output and error logs. Cron keeps both in the same log.
+In either case `written` indicates a new report and `existing` indicates
+that the command reused a saved file.
 Local schedules generate reports only. They preserve the no-autosend and
 no-external-writes boundaries.
 

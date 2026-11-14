@@ -15,10 +15,13 @@ Pass `--profile PATH` before the subcommand to select a different file.
 - `outlook` opts in to [local Outlook mail and calendar sources](local-outlook.md).
 - `atlassian` records optional Jira and Confluence preferences for Codex skills.
 - `scheduledTasks` controls which templates `schedule-prompts` prints.
-  Use `enabled` for the whole group and for each of `dailyBrief`,
-  `weeklyReview`, `followUpMonitor`, and `actionUpdate`. Each enabled
-  template can specify a 24-hour `time`. `weeklyReview` can also specify
-  a `day` such as `Monday`. A fresh profile prints all four templates.
+  When the key is absent, all four optional templates are shown. Use an
+  empty object or set the group's `enabled` to `false` to show none.
+  For selected templates, set `enabled` to `true` on each of `dailyBrief`,
+  `weeklyReview`, `followUpMonitor`, or `actionUpdate` that you want.
+  Use JSON Booleans without quotes. Each enabled template can specify a
+  24-hour `time`, and `weeklyReview` can also specify a `day` such as
+  `Monday`. The command reports the field name for invalid settings.
   Configure the actual Codex automation separately. LaunchAgent and cron
   output uses the arguments passed to `schedule`.
 
