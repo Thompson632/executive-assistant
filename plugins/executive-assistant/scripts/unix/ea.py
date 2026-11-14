@@ -32,7 +32,7 @@ CUES = (
 )
 CHECKBOX = re.compile(r"^\s*(?:[-+*]|\d+[.)])\s+\[(.)\]\s+")
 FENCE = re.compile(r"^\s*(`{3,}|~{3,})(.*)$")
-ATX_HEADING = re.compile(r"^(#{1,6})(?:[ \t]+(.*)|$)")
+ATX_HEADING = re.compile(r"^ {0,3}(#{1,6})(?:[ \t]+(.*)|$)")
 CAPTURE_DATE = re.compile(r"(\d{4}-\d{2}-\d{2})(?:[ \t]+#+)?")
 
 
@@ -227,7 +227,7 @@ def note_signals(vault, path, modified, capture_days, brain_dumps):
             if checkbox and checkbox[1] != " ":
                 continue
             if quick_notes and stripped.startswith("#"):
-                heading = ATX_HEADING.fullmatch(stripped)
+                heading = ATX_HEADING.fullmatch(line.rstrip())
                 if heading:
                     level = len(heading[1])
                     dated = CAPTURE_DATE.fullmatch(heading[2] or "")

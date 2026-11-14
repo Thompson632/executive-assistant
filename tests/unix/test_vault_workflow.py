@@ -311,7 +311,9 @@ class VaultWorkflowTest(unittest.TestCase):
             "# Quick Notes\n"
             "## 2026-11-14\n- Captured today\n"
             "### Context\n- Nested dated context\n"
-            "## Reference Material\n- Undated reference text\n"
+            "\n    ## Example heading in code\n\n"
+            "- Captured after the example\n"
+            "  ## Reference Material\n- Undated reference text\n"
             "## 2026-11-13\n- Captured yesterday\n"
             "# Appendix\n- Undated appendix text\n",
             encoding="utf-8",
@@ -320,6 +322,7 @@ class VaultWorkflowTest(unittest.TestCase):
         captures = report.split("## Brain Dumps", 1)[1]
         self.assertIn("Captured today", captures)
         self.assertIn("Nested dated context", captures)
+        self.assertIn("Captured after the example", captures)
         self.assertIn("Captured yesterday", captures)
         self.assertNotIn("Undated reference text", captures)
         self.assertNotIn("Undated appendix text", captures)
