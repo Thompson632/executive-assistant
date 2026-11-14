@@ -407,8 +407,8 @@ def apply_local_file(args, path, vault):
         else:
             if args.confirm_save != "SAVE ATTACHMENTS":
                 raise ValueError('Apply requires --confirm-save "SAVE ATTACHMENTS".')
-            destination = local_workflows.destination_path(vault, args.destination)
-            local_workflows.write_attachment(local_workflows.local_path(args.source), destination)
+            source, destination = local_workflows.attachment_paths(vault, args.source, args.destination)
+            local_workflows.write_attachment(source, destination)
     except (OSError, ValueError):
         try:
             local_workflows.append_audit(path, operation, "failed")
@@ -490,10 +490,7 @@ def main():
             return 0
         vault = get_vault(profile)
         if args.command == "attachment" and not args.apply:
-            source = local_workflows.local_path(args.source)
-            if not source.is_file():
-                raise ValueError("Choose an existing local attachment file.")
-            destination = local_workflows.destination_path(vault, args.destination)
+            source, destination = local_workflows.attachment_paths(vault, args.source, args.destination)
             print(json.dumps({"status": "preview", "source": str(source), "destination": str(destination)}))
         elif args.command in local_workflows.OPERATIONS:
             apply_local_file(args, path, vault)
