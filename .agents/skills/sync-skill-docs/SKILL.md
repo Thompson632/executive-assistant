@@ -23,3 +23,7 @@ with the [skill template](../../../docs/SKILL-TEMPLATE.md).
 5. Run `python3 -m unittest discover -s tests/unix -p test_package_contract.py -v`
    from the repository root. Read the edited examples against the skill to
    check that their behavior matches.
+
+After committing the changes, run `python3 tools/check-skill-docs.py origin/main HEAD`
+to check the pull-request diff. Substitute the intended base branch if it
+differs. The check lists any guide files that are missing from the change.

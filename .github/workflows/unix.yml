@@ -5,6 +5,20 @@ on:
   pull_request:
 
 jobs:
+  skill-docs:
+    if: github.event_name == 'pull_request'
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.13'
+      - name: Check skill documentation updates
+        env:
+          EA_BASE_SHA: ${{ github.event.pull_request.base.sha }}
+        run: python3 tools/check-skill-docs.py "$EA_BASE_SHA" HEAD
   test:
     strategy:
       fail-fast: false

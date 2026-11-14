@@ -33,3 +33,16 @@ inputs they can supply, and the expected output. See the
 The project uses the [MIT License](LICENSE). Preserve applicable third-party
 notices when adapting or copying material. See the
 [third-party notices](plugins/executive-assistant/THIRD_PARTY_NOTICES.md).
+
+## Check skill documentation locally
+
+After committing the skill and guide changes, run the same comparison as the
+pull-request check. Replace `origin/main` with the target branch when needed.
+
+```sh
+python3 tools/check-skill-docs.py origin/main HEAD
+```
+
+The check lists any required guide files missing from the change. Review
+each prompt and workflow against the skill to verify that the examples are
+accurate.
