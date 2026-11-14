@@ -1,0 +1,4 @@
+interface:
+  display_name: "Executive Mail Review"
+  short_description: "Review local mail metadata and draft text"
+  default_prompt: "Use $executive-outlook-com to review my local mail metadata or prepare a draft."

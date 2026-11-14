@@ -1,0 +1,33 @@
+{
+  "name": "executive-assistant",
+  "version": "0.8.0",
+  "description": "Vault-backed executive workflows for macOS and Linux with local metadata, optional Obsidian, and optional integrations through separately configured MCP servers or CLI tools.",
+  "author": {
+    "name": "Executive Assistant Project"
+  },
+  "keywords": [
+    "codex-desktop",
+    "executive-assistant",
+    "obsidian",
+    "atlassian",
+    "gitlab"
+  ],
+  "skills": "./skills/",
+  "interface": {
+    "displayName": "Executive Assistant",
+    "shortDescription": "Run executive workflows from Codex Desktop.",
+    "longDescription": "Run vault-backed briefs, weekly reviews, meeting prep, and action triage on macOS and Linux. Review synced local Outlook mail and calendar, use supplied metadata, or prepare local draft text. Obsidian can open the same local working folder.",
+    "developerName": "Executive Assistant Project",
+    "category": "Productivity",
+    "capabilities": [
+      "Interactive",
+      "Write",
+      "Local Integrations"
+    ],
+    "defaultPrompt": [
+      "Run guided Executive Assistant setup.",
+      "Prepare today's executive brief.",
+      "Review and prioritize my open vault actions."
+    ]
+  }
+}

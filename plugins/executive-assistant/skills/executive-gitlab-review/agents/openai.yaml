@@ -1,0 +1,4 @@
+interface:
+  display_name: "Executive GitLab Review"
+  short_description: "Review GitLab issues, merge requests, and pipelines"
+  default_prompt: "Use $executive-gitlab-review to summarize open work and recent pipelines for my GitLab project."

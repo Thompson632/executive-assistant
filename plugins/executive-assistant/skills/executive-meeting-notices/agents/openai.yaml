@@ -1,0 +1,4 @@
+interface:
+  display_name: "Executive Meeting Notices"
+  short_description: "Draft executive meeting invites and responses"
+  default_prompt: "Use $executive-meeting-notices to review supplied meeting notices and draft the right response."

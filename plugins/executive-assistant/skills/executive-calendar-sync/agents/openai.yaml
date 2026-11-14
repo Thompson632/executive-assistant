@@ -1,0 +1,4 @@
+interface:
+  display_name: "Business Rhythm Calendar Comparison"
+  short_description: "Compare two local calendar snapshots"
+  default_prompt: "Use $executive-calendar-sync to compare my supplied calendar snapshots."

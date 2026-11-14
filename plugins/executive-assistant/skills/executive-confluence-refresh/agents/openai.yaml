@@ -1,0 +1,4 @@
+interface:
+  display_name: "Executive Confluence Refresh"
+  short_description: "Prepare curated Confluence updates"
+  default_prompt: "Use $executive-confluence-refresh to draft a Confluence update."
