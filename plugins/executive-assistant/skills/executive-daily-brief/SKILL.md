@@ -1,9 +1,9 @@
 ---
 name: executive-daily-brief
-description: Daily executive briefing workflow for Codex Desktop. Use when the user asks for a daily report, daily brief, morning reset, today plan, Outlook-plus-vault summary, or Obsidian briefing generated from calendar, important email metadata, and vault action signals.
+description: Prepare a plan for today from Obsidian actions and available mail and calendar details. Save a daily report when the user asks.
 ---
 
-# Executive Daily Brief
+# Executive Prepare Today’s Brief
 
 Generate a concise Markdown report for the user's current day. Treat configured local Outlook sources, supplied metadata, and the vault as read-only inputs.
 
@@ -35,6 +35,7 @@ writes the standard sections listed in the [runtime reference](../../references/
 - `## Recommended Moves`
 - `## Waiting On`
 - `## Risks To Watch`
+- `## Brain Dumps` with today’s and yesterday’s dated entries from `notes/Quick Notes.md` and linked excerpts from other Markdown notes in `notes/` updated on either day
 - `## PTOs` only when PTO entries exist
 
 Do not include `Recent Decisions` or `People And Projects In Motion` unless the user explicitly asks.
@@ -42,6 +43,9 @@ Do not include `Recent Decisions` or `People And Projects In Motion` unless the 
 ## Link Handling
 
 Use links to source notes when available. Keep raw mail identifiers and email bodies out of the Markdown by default.
+
+Keep brain dumps as observations or ideas. If the user identifies another
+capture note, include its recent entries in a synthesized brief.
 
 ## Command
 

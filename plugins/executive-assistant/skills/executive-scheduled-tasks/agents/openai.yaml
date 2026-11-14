@@ -1,4 +1,4 @@
 interface:
-  display_name: "Executive Scheduled Tasks"
-  short_description: "Prepare Codex scheduled workflows"
-  default_prompt: "Use $executive-scheduled-tasks to create my Executive Assistant scheduled task prompts."
+  display_name: "Executive Schedule Briefs and Follow-Ups"
+  short_description: "Set up recurring briefs, reviews, and follow-ups"
+  default_prompt: "Use $executive-scheduled-tasks to prepare a weekday schedule for my daily brief."

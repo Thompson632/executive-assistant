@@ -1,4 +1,4 @@
 interface:
-  display_name: "Executive Assistant Config"
-  short_description: "Inspect and update the local assistant profile"
-  default_prompt: "Use $executive-assistant-config to show my current Executive Assistant settings."
+  display_name: "Executive Change Settings"
+  short_description: "See or change the Obsidian folder you use"
+  default_prompt: "Use $executive-assistant-config to show which Obsidian folder I’m using."

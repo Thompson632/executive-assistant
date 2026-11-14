@@ -1,4 +1,4 @@
 interface:
-  display_name: "Executive Action Triage"
-  short_description: "Extract and prioritize action items"
-  default_prompt: "Use $executive-action-triage to review my open action items."
+  display_name: "Executive Prioritize Actions"
+  short_description: "Decide what to do next and what is blocked"
+  default_prompt: "Use $executive-action-triage to show which open actions need my attention today."

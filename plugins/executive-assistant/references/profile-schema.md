@@ -11,6 +11,7 @@ Pass `--profile PATH` before the subcommand to select a different file.
   and `check` reports whether the folder contains Obsidian settings.
 - `obsidian` records optional preferences. If it already contains
   `vaultPath`, a vault move through `config` updates both paths.
+  Copying starter notes is controlled by `setup --copy-template`.
 - `outlook` opts in to [local Outlook mail and calendar sources](local-outlook.md).
 - `atlassian` records optional Jira and Confluence preferences for Codex skills.
 - `scheduledTasks` controls which templates `schedule-prompts` prints.
@@ -18,10 +19,12 @@ Pass `--profile PATH` before the subcommand to select a different file.
   `weeklyReview`, `followUpMonitor`, and `actionUpdate`. Each enabled
   template can specify a 24-hour `time`. `weeklyReview` can also specify
   a `day` such as `Monday`. A fresh profile prints all four templates.
-  LaunchAgent and cron output uses the arguments passed to `schedule`.
+  Configure the actual Codex automation separately. LaunchAgent and cron
+  output uses the arguments passed to `schedule`.
 
-See `config/executive-assistant.example.json` in the source repository for
-a full example.
+The source repository's `config/executive-assistant.example.json` is a
+reference. Add settings you want to use to your active profile. The runner
+reads the default profile above unless you use `--profile`.
 
 ## Migration
 

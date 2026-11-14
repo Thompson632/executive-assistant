@@ -1,9 +1,9 @@
 ---
 name: executive-sensitivity-review
-description: Shared-vault sensitivity review workflow. Use when the user asks to prepare a vault for sharing, separate private notes from team-safe notes, identify relationship or stakeholder intelligence, archive sensitive material, or review what should move to a private vault.
+description: Review Obsidian notes before sharing them. Flag sensitive details and suggest what to remove or keep private.
 ---
 
-# Executive Sensitivity Review
+# Executive Check Notes Before Sharing
 
 Help separate shareable operating notes from private historical or sensitive material.
 

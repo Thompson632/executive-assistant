@@ -1,4 +1,4 @@
 interface:
-  display_name: "Executive Jira Triage"
-  short_description: "Review Jira work without stale clutter"
-  default_prompt: "Use $executive-jira-triage to review active Jira work."
+  display_name: "Executive Review Jira Issues"
+  short_description: "Review open Jira issues and propose changes"
+  default_prompt: "Use $executive-jira-triage to show which Jira issues need attention or could be closed."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Executive Jot Down a Note"
+  short_description: "Save a short observation or idea in Obsidian"
+  default_prompt: "Use $executive-quick-note to jot this down in my Obsidian vault."

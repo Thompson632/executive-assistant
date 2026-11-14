@@ -1,4 +1,4 @@
 interface:
-  display_name: "Executive Sensitivity Review"
-  short_description: "Separate shared and private notes"
-  default_prompt: "Use $executive-sensitivity-review to review this vault for sensitive notes."
+  display_name: "Executive Check Notes Before Sharing"
+  short_description: "Flag private details before sharing vault notes"
+  default_prompt: "Use $executive-sensitivity-review to check these notes for details I should keep private."

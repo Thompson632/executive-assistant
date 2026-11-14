@@ -1,0 +1,4 @@
+interface:
+  display_name: "Executive Pause or Resume Work"
+  short_description: "Save where you stopped and what to do next"
+  default_prompt: "Use $executive-context-switch to save where I left off and what I should do next."

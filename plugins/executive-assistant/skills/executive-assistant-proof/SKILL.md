@@ -1,9 +1,9 @@
 ---
 name: executive-assistant-proof
-description: Proof and inspection skill for the Executive Assistant Codex Desktop package. Use when the user asks to verify the plugin is installed, confirm a Desktop project can see the package, inspect available package layers, or run a safe no-write package smoke test.
+description: Check that the Executive Assistant plugin and its configured Obsidian folder are available. Use after installing or changing the setup, or when a skill cannot find the vault.
 ---
 
-# Executive Assistant Proof
+# Executive Check Setup
 
 Use this as the smallest safe proof that the Executive Assistant package is visible.
 

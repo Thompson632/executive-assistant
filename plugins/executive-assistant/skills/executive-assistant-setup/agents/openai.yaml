@@ -1,4 +1,4 @@
 interface:
-  display_name: "Executive Assistant Setup"
-  short_description: "Configure the local assistant profile"
-  default_prompt: "Use $executive-assistant-setup to configure my local Executive Assistant profile."
+  display_name: "Executive First-Time Setup"
+  short_description: "Connect an Obsidian folder for first-time setup"
+  default_prompt: "Use $executive-assistant-setup to help me connect my Obsidian folder."

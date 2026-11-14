@@ -1,0 +1,4 @@
+interface:
+  display_name: "Executive One-on-One"
+  short_description: "Save 1:1 notes and prepare for the next meeting"
+  default_prompt: "Use $executive-one-on-one to summarize these notes and list what to follow up on before our next meeting."

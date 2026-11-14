@@ -1,4 +1,4 @@
 interface:
-  display_name: "Executive Calendar Management"
-  short_description: "Scrub and plan an executive calendar"
-  default_prompt: "Use $executive-calendar-management to review my supplied calendar entries, protect focus time, and plan my week."
+  display_name: "Executive Review My Calendar"
+  short_description: "Find conflicts and make time for focused work"
+  default_prompt: "Use $executive-calendar-management to find conflicts and suggest focus time this week."

@@ -42,8 +42,9 @@ local draft inside the vault. The user handles sending.
 ./scripts/unix/ea.sh review tasks --source "/path/to/tasks.json"
 ```
 
-Use vault checkboxes to maintain local tasks. Preview changes and confirm
-removal before editing a note.
+The shell command reads a supplied task file. Use
+[Executive Manage Tasks](../skills/executive-todo-management/SKILL.md) to
+preview and apply edits to vault checkboxes.
 
 ## Daily and Weekly Reports
 
@@ -58,7 +59,8 @@ The default focus date is today in the host time zone. Use
 `--date YYYY-MM-DD` for a different day or to select its Monday-to-Sunday week.
 The runner ranks open checkboxes and attention cues in Markdown notes and
 adds metadata from configured local Outlook sources. It skips generated
-briefings, setup notes, hidden paths, symbolic links, and saved drafts.
+briefings, setup notes, hidden paths, symbolic links, saved drafts, and
+notes marked `type: executive-assistant-one-on-one`.
 
 Previewing prints Markdown. With `--write`, the command returns JSON with the
 file path and whether it wrote a file or found an existing one. Add
@@ -70,8 +72,12 @@ different month. Daily filenames use the focus date and end in
 ` Daily Report.md`. Weekly filenames use Monday and end in ` Weekly Report.md`.
 
 The shell report includes Snapshot, Calendar, Important Unread Emails, Needs
-Attention, Waiting On, and Risks To Watch. The Codex skills can synthesize
-additional sections from supplied metadata and notes.
+Attention, Waiting On, and Risks To Watch. Daily reports also include Brain
+Dumps for the focus date and the day before. The runner includes dated
+entries from `notes/Quick Notes.md` and one excerpt per other Markdown note
+under `notes/` based on its last-modified date. Entries link back to their
+source notes. The Codex skills can synthesize additional sections from
+supplied metadata and notes.
 
 ## Local Report Fallback
 

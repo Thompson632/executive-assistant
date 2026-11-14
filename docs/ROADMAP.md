@@ -10,6 +10,7 @@ extensions.
 - Validate guided setup with a new user.
 - Verify a standalone Codex automation writes to its intended local vault and capture any setup friction.
 - Verify a scheduled run on each platform and test Apple Mail and Calendar with a synced test account.
+- Validate Work Intake against a live GitLab group and project with an authorized test request. Verify the Confluence preview against the intended page.
 
 ## Next
 

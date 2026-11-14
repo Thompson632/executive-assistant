@@ -1,0 +1,4 @@
+interface:
+  display_name: "Executive Work Intake"
+  short_description: "Capture a request and plan its delivery"
+  default_prompt: "Use $executive-work-intake to turn this request into an Obsidian action, an epic with linked issues, and a Scrum of Scrums preview."

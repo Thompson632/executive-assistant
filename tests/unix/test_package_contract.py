@@ -19,7 +19,7 @@ class PackageContractTest(unittest.TestCase):
         manifest = json.loads((PLUGIN / ".codex-plugin/plugin.json").read_text())
         self.assertLessEqual(len(manifest["interface"]["defaultPrompt"]), 3)
         skills = sorted((PLUGIN / manifest["skills"]).glob("*/SKILL.md"))
-        self.assertEqual(len(skills), 17)
+        self.assertEqual(len(skills), 21)
         self.assertTrue(LAUNCHER.is_file())
         for skill in skills:
             self.assertIn(f"name: {skill.parent.name}\n", skill.read_text())

@@ -1,4 +1,4 @@
 interface:
-  display_name: "Executive Confluence Refresh"
-  short_description: "Prepare curated Confluence updates"
-  default_prompt: "Use $executive-confluence-refresh to draft a Confluence update."
+  display_name: "Executive Draft a Confluence Update"
+  short_description: "Turn reviewed notes into a Confluence draft"
+  default_prompt: "Use $executive-confluence-refresh to draft a Confluence update from these notes."

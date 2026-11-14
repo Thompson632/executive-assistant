@@ -1,11 +1,13 @@
 ---
 name: executive-meeting-prep
-description: Meeting preparation and debrief workflow for executives. Use when the user asks to prepare for a meeting, summarize meeting context, build an agenda, identify decisions, extract follow-ups, or turn meeting notes into actions.
+description: Prepare for one meeting from its agenda and related notes, or pull decisions and follow-ups from notes after it ends.
 ---
 
-# Executive Meeting Prep
+# Executive Prepare for or Debrief a Meeting
 
 Support both pre-meeting preparation and post-meeting debrief.
+For one-on-one notes organized by person and next-meeting prep, use
+`$executive-one-on-one`.
 
 On macOS and Linux, if the vault is outside the current project, use `./scripts/unix/ea.sh config`
 from the installed plugin root to resolve its folder. Use that folder for the note workflow.
@@ -22,8 +24,14 @@ from the installed plugin root to resolve its folder. Use that folder for the no
 
 1. Read the user's meeting notes or transcript-derived notes.
 2. Extract decisions, actions, owners, due dates, blockers, and follow-up messages.
-3. Suggest where durable items should land: vault action list, project note, Jira, or Confluence.
-4. Do not create external tickets, pages, or emails until the user approves.
+   Use the people and dates stated in the source. Flag any that are unclear.
+3. When the user asks to save actions, use
+   [Executive Manage Tasks](../executive-todo-management/SKILL.md)
+   to preview adding them to the vault's existing action list. Link each
+   saved action to the meeting note when available. Ask about missing due
+   dates in the same preview and allow undated actions.
+4. Keep meeting context and decisions in the meeting or project note.
+   Do not create external tickets, pages, or emails until the user approves.
 
 ## Output
 

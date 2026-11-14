@@ -1,9 +1,9 @@
 ---
 name: executive-weekly-review
-description: Weekly executive planning workflow for Codex Desktop. Use when the user asks for a weekly report, Monday reset, upcoming week review, carryover review, or executive plan synthesized from Outlook, vault actions, Jira, and recent briefings.
+description: Plan the upcoming week using open actions, past briefs, and available calendar details. Use to review carryover, risks, and upcoming decisions.
 ---
 
-# Executive Weekly Review
+# Executive Plan the Week
 
 Prepare a forward-looking weekly report. Include meaningful carryover from the prior week, but avoid stale noise.
 

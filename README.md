@@ -30,7 +30,7 @@ to install the plugin, connect a local Markdown folder, and generate a vault rep
 Obsidian can open the same folder if you use it.
 
 1. Open the repository in a terminal.
-2. Install from the repo-local marketplace. The installer checks Bash and Python and uses the `codex` executable on your PATH.
+2. Install from the repo-local marketplace. The installer checks Bash and Python. It uses the Codex CLI on your PATH or the copy bundled with ChatGPT Desktop on macOS.
 
 ```sh
 bash install/unix/install-plugin.sh
@@ -83,13 +83,23 @@ Show the exact draft before saving local text. The user sends it in their chosen
 
 ## Task Management
 
+Start with [Find the right skill](docs/WORKFLOW-DIAGRAMS.md#find-the-right-skill)
+for examples of when to save a note, pause work, edit a task, or check priorities.
+
+Use `$executive-context-switch` when you need to stop or pick up an action.
+The skill saves a short stopping point on the existing Obsidian action and
+uses it to give you one next step when you return.
+[See example prompts](docs/CODEX-WORKFLOWS.md#switching-context).
+
 Use `$executive-todo-management` to review, prioritize, create, update, complete,
 or remove vault tasks. Preview and confirm changes to vault notes. See the
 [local input format](plugins/executive-assistant/references/local-inputs.md) for supplied task metadata.
 
 ## Documentation
 
+- [Sample prompts for every skill](docs/SAMPLE-PROMPTS.md) gives you requests to copy into Codex.
 - [Codex workflows](docs/CODEX-WORKFLOWS.md) lists the skills and their commands.
+- [Workflow diagrams](docs/WORKFLOW-DIAGRAMS.md) show how actions, quick notes, briefs, and schedules fit together.
 - [Architecture](docs/ARCHITECTURE.md) describes the runtime, integrations, and data boundaries.
 - [Profile schema](plugins/executive-assistant/references/profile-schema.md) describes profile fields and local overrides.
 - [Distribution](docs/DISTRIBUTION.md) covers packaging, installation, and updates.

@@ -32,6 +32,7 @@ CUES = (
 )
 CHECKBOX = re.compile(r"^\s*(?:[-+*]|\d+[.)])\s+\[(.)\]\s+")
 FENCE = re.compile(r"^\s*(`{3,}|~{3,})(.*)$")
+CAPTURE_DATE = re.compile(r"^#{1,6}\s+(\d{4}-\d{2}-\d{2})\s*$")
 
 
 class Signal(NamedTuple):
@@ -162,8 +163,14 @@ def configure(args, path, profile):
         }, indent=2))
 
 
-def note_signals(vault, path, modified):
+def note_signals(vault, path, modified, capture_days, brain_dumps):
     relative = path.relative_to(vault).as_posix()
+    capture_note = capture_days and path.relative_to(vault).parts[0].casefold() == "notes"
+    quick_notes = capture_note and relative.casefold() == "notes/quick notes.md"
+    capture_day = datetime.fromtimestamp(modified).date().isoformat() if capture_note else ""
+    if quick_notes:
+        capture_day = ""
+    captured_excerpt = False
     fence = None
     in_frontmatter = False
     with path.open(encoding="utf-8-sig", errors="replace") as note:
@@ -174,7 +181,10 @@ def note_signals(vault, path, modified):
                 continue
             if in_frontmatter:
                 key, _, value = stripped.partition(":")
-                if key == "type" and value.strip().strip("'\"") == "executive-assistant-draft":
+                if key == "type" and value.strip().strip("'\"") in {
+                    "executive-assistant-draft",
+                    "executive-assistant-one-on-one",
+                }:
                     return
                 in_frontmatter = stripped not in ("---", "...")
                 continue
@@ -189,8 +199,17 @@ def note_signals(vault, path, modified):
             checkbox = CHECKBOX.match(line)
             if checkbox and checkbox[1] != " ":
                 continue
+            if quick_notes and stripped.startswith("#"):
+                heading = CAPTURE_DATE.fullmatch(stripped)
+                if heading:
+                    capture_day = heading[1]
             if not stripped or stripped.startswith("#"):
                 continue
+            excerpt = " ".join(stripped.split())[:220]
+            if (capture_note and capture_day in capture_days and not checkbox
+                    and (quick_notes or not captured_excerpt)):
+                brain_dumps.append(Signal(0, modified, relative, number, capture_day, excerpt))
+                captured_excerpt = True
             for kind, pattern, score in CUES:
                 if re.search(pattern, stripped, re.IGNORECASE):
                     break
@@ -198,11 +217,10 @@ def note_signals(vault, path, modified):
                 if not checkbox:
                     continue
                 kind, score = "open checkbox", 4
-            excerpt = " ".join(stripped.split())[:220]
             yield Signal(score, modified, relative, number, kind, excerpt)
 
 
-def vault_signals(vault):
+def vault_signals(vault, capture_days, brain_dumps):
     def candidates():
         def fail(error):
             raise error
@@ -221,7 +239,8 @@ def vault_signals(vault):
                 if filename.startswith(".") or path.suffix.casefold() != ".md" or path.is_symlink():
                     continue
                 if path.is_file():
-                    yield from note_signals(vault, path, path.stat().st_mtime)
+                    yield from note_signals(vault, path, path.stat().st_mtime,
+                                            capture_days, brain_dumps)
 
     now = datetime.now().timestamp()
 
@@ -274,7 +293,7 @@ def outlook_lines(sources, kind, start, end):
     return "\n".join(lines) or "- No events returned by the configured calendar in this window."
 
 
-def render_report(report_type, focus, monday, signals, report_folder, sources):
+def render_report(report_type, focus, monday, signals, report_folder, sources, brain_dumps):
     weekly = report_type == "weekly"
     start = monday if weekly else focus
     end = start + timedelta(days=7 if weekly else 1)
@@ -283,7 +302,7 @@ def render_report(report_type, focus, monday, signals, report_folder, sources):
     waiting = [signal for signal in signals if signal.kind == "waiting"]
     risks = [signal for signal in signals if signal.kind in {"risk", "blocked", "deadline", "due"}]
     attention = [signal for signal in signals if signal.kind != "waiting"]
-    sections = (
+    sections = [
         f"## Snapshot\n\n- {len(signals)} vault attention signals surfaced.",
         f"## Calendar {period}\n\n" + outlook_lines(sources, "calendar", start, end),
         "## Important Unread Emails\n\n" + outlook_lines(
@@ -294,7 +313,12 @@ def render_report(report_type, focus, monday, signals, report_folder, sources):
         ),
         "## Waiting On\n\n" + "\n".join(signal_lines(waiting[:10], "No waiting items surfaced.", report_folder)),
         "## Risks To Watch\n\n" + "\n".join(signal_lines(risks[:10], "No risk or due items surfaced.", report_folder)),
-    )
+    ]
+    if not weekly:
+        captures = sorted(brain_dumps, key=lambda item: (item.kind, item.modified), reverse=True)
+        sections.append("## Brain Dumps\n\n" + "\n".join(
+            signal_lines(captures, "No brain dumps captured today or yesterday.", report_folder)
+        ))
     generated = datetime.now(timezone.utc).isoformat(timespec="seconds")
     metadata = (
         "---\n"
@@ -319,16 +343,24 @@ def report(args, vault, profile):
         f"{file_date} {args.type.title()} Report.md"
     )
     report_folder = path.parent.relative_to(vault)
+    capture_days = ()
+    if args.type == "daily":
+        capture_days = (focus.isoformat(), (focus - timedelta(days=1)).isoformat())
+
+    def render():
+        brain_dumps = []
+        signals = vault_signals(vault, capture_days, brain_dumps)
+        return render_report(args.type, focus, monday, signals, report_folder,
+                             outlook.sources(profile), brain_dumps)
+
     if not args.write:
-        print(render_report(args.type, focus, monday, vault_signals(vault), report_folder,
-                            outlook.sources(profile)), end="")
+        print(render(), end="")
         return
     if path.resolve() != path:
         raise ValueError(f"Report destination uses a symlink: {path}")
     status = "existing"
     if args.replace or not path.exists():
-        content = render_report(args.type, focus, monday, vault_signals(vault), report_folder,
-                                outlook.sources(profile))
+        content = render()
         try:
             write_file(path, content.encode("utf-8"), replace=args.replace)
             status = "written"

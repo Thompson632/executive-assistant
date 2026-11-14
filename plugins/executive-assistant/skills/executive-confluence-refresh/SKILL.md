@@ -1,9 +1,9 @@
 ---
 name: executive-confluence-refresh
-description: Confluence refresh workflow for curated executive content. Use when the user asks to draft or update Confluence pages from vault notes, publish initiative summaries, prepare team reference material, or reconcile shared docs with working notes.
+description: Draft a Confluence page or update from reviewed notes. Use when preparing material for a team space and show the draft before publishing.
 ---
 
-# Executive Confluence Refresh
+# Executive Draft a Confluence Update
 
 Treat Confluence as the curated shared layer, not the working notebook.
 

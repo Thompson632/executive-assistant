@@ -1,9 +1,9 @@
 ---
 name: executive-assistant-setup
-description: Setup and configuration workflow for the Executive Assistant Codex Desktop plugin. Use when the user asks to install the real plugin, configure a local executive profile, create or bootstrap an Obsidian vault template, or validate local runtime readiness.
+description: Connect a local folder when setting up Executive Assistant for the first time. Create a profile and add Obsidian starter notes if requested.
 ---
 
-# Executive Assistant Setup
+# Executive First-Time Setup
 
 Configure the local runtime without committing user data.
 
