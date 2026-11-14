@@ -7,6 +7,9 @@ paste the notes or attach the files in the same chat.
 
 ## Start here
 
+For your first installation and report, follow
+[Get your first daily brief](GETTING-STARTED.md).
+
 | If you want to… | Go to |
 | --- | --- |
 | Capture something before you forget | [Quick note](#executive-jot-down-a-note) or [save a stopping point](#executive-pause-or-resume-work) |

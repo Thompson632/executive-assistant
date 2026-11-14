@@ -2,11 +2,11 @@
 
 ## Inbox
 
-- [ ] Capture new actions here before promoting them to Jira, projects, or meeting notes.
+Add new actions here.
 
 ## Waiting On
 
-- [ ] Track delegated or external follow-ups here.
+List items delegated to others.
 
 ## Done
 

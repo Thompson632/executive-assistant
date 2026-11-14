@@ -20,7 +20,8 @@ unzip -tq executive-assistant.zip
 
 1. Share the ZIP or repository through an approved internal channel.
 2. Extract the ZIP or open the checkout in a stable local folder.
-3. Follow the [macOS](INSTALL-MACOS.md) or [Linux](INSTALL-LINUX.md) guide to configure a profile, install the plugin, and verify a daily brief.
+3. Follow [Get your first daily brief](GETTING-STARTED.md) to install the plugin,
+   connect a notes folder, and verify the report.
 
 ## Update or move an installation
 

@@ -5,45 +5,28 @@ a vault. Obsidian can open the same folder. Use the Codex CLI to install the plu
 For the desktop interface, see the
 [ChatGPT desktop preview for Linux](https://learn.chatgpt.com/docs/linux/linux-app).
 
-## 1. Connect a vault
+## Prerequisites
 
-From the repository root:
+Install the [Codex CLI](https://developers.openai.com/codex/cli) and put
+`codex` on PATH. From the package folder, check the runtime:
 
 ```sh
 bash install/unix/check-prereqs.sh
-./plugins/executive-assistant/scripts/unix/ea.sh setup \
-  --vault "$HOME/Executive Assistant Vault" --copy-template
 ```
 
-Use any absolute vault path outside the repository. Omit `--copy-template`
-to use an existing vault without copying starter notes. For an existing
-profile, use `config` to inspect it, then preview a new path with
-`config --vault "/absolute/path/to/vault"`. Add `--apply` to save the change.
+The [getting-started guide](GETTING-STARTED.md) walks through installation,
+connecting a notes folder, and saving a report. If the executable is outside
+PATH, pass `--codex /absolute/path/to/codex` to `install-plugin.sh`.
 
-## 2. Open the same folder in Obsidian (optional)
-
-In Obsidian, choose **Manage Vaults → Open folder as vault**, then select the
-`vault_path` reported by setup or `config`.
-
-## 3. Install and verify the Codex plugin
-
-```sh
-bash install/unix/install-plugin.sh
-./plugins/executive-assistant/scripts/unix/ea.sh check
-./plugins/executive-assistant/scripts/unix/ea.sh report daily --write
-```
-
-Open a new Codex session in the vault folder and invoke
-`$executive-assistant-proof`. The report command returns the path under
-`_briefings`. If you use the starter notes, follow the report's link to
-`Action-Items.md` in Obsidian or another Markdown viewer.
+To view the notes in Obsidian, select **Open folder as vault** and choose
+the notes folder reported by setup or `config`.
 
 For updates or a moved checkout, follow the
 [marketplace update steps](DISTRIBUTION.md#update-or-move-an-installation).
 If installation stops because `personal` already points to another source, see
 [marketplace name conflicts](DISTRIBUTION.md#marketplace-name-conflicts).
 
-## 4. Connect local Outlook mail and calendar (optional)
+## Connect local Outlook mail and calendar (optional)
 
 If an existing client or sync job keeps your Outlook mailbox in Maildir, or
 produces a refreshed calendar metadata JSON file, enable the file-backed
@@ -56,7 +39,7 @@ Then run the commands for the feeds you configured:
 ./plugins/executive-assistant/scripts/unix/ea.sh report daily
 ```
 
-Use `report daily --write --replace` to refresh the test report from step 3.
+Use `report daily --write --replace` to regenerate a saved report.
 
 ## Optional local schedule
 

@@ -3,11 +3,13 @@ import json
 import os
 from pathlib import Path
 import plistlib
+import re
 import shutil
 import subprocess
 import sys
 import tempfile
 import unittest
+from urllib.parse import unquote
 
 
 SCRIPT = (
@@ -96,6 +98,24 @@ class VaultWorkflowTest(unittest.TestCase):
         self.assertEqual(self.profile.read_bytes(), original)
         self.command("config", "--vault", str(other), "--apply")
         self.assertEqual(json.loads(self.profile.read_bytes())["vaultPath"], str(other))
+
+    def test_starter_vault_reports_only_real_actions(self):
+        self.command("setup", "--vault", str(self.vault), "--copy-template")
+        args = ("report", "daily", "--date", "2026-11-14")
+        preview = self.command(*args).stdout.decode()
+        self.assertIn("0 vault attention signals surfaced.", preview)
+
+        actions = self.vault / "Action-Items.md"
+        with actions.open("a", encoding="utf-8") as note:
+            note.write("\n- [ ] Review the meeting agenda\n")
+        payload = json.loads(self.command(*args, "--write").stdout)
+        report = Path(payload["output_path"])
+        self.assertTrue(report.is_file())
+        content = report.read_text(encoding="utf-8")
+        self.assertIn("Review the meeting agenda", content)
+        link = re.search(r"\[Action-Items\]\(([^)]+)\)", content)
+        self.assertIsNotNone(link)
+        self.assertEqual((report.parent / unquote(link.group(1))).resolve(), actions)
 
     def test_reports_read_vault_notes_and_preserve_existing_report(self):
         self.command("setup", "--vault", str(self.vault))

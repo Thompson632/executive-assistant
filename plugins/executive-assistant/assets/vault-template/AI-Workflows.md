@@ -22,15 +22,15 @@ Generate a reviewed daily report from vault signals. Include relevant metadata f
 
 ## Weekly Review
 
-Prepare the upcoming week, carry forward unresolved important items, and identify decisions or blocked work.
+Prepare the upcoming week, carry forward unresolved important items, and identify decisions or work that needs help.
 
 ## Meeting Prep
 
 Review the agenda, related notes, and open actions before the meeting.
 Duplicate [[templates/Meeting Notes|Meeting Notes]] to record the discussion,
-decisions, and follow-ups.
+decisions, and next steps.
 Afterward, ask Codex to extract your actions and preview adding them to
-[[Action-Items]]. Include due dates when known.
+[[Action-Items]]. Include dates when known.
 
 ## One-on-Ones
 
