@@ -1,0 +1,4 @@
+interface:
+  display_name: "Executive Assistant Setup"
+  short_description: "Configure the local assistant profile"
+  default_prompt: "Use $executive-assistant-setup to configure my local Executive Assistant profile."

@@ -1,0 +1,51 @@
+{
+  "schemaVersion": 2,
+  "profileName": "example-executive",
+  "userName": "Executive Name",
+  "userEmail": "executive@example.com",
+  "vaultPath": "/absolute/path/to/vault",
+  "timeZoneId": "Local",
+  "obsidian": {
+    "enabled": true,
+    "vaultPath": "/absolute/path/to/vault",
+    "copyVaultTemplate": true
+  },
+  "outlook": {
+    "enabled": false
+  },
+  "atlassian": {
+    "enabled": false,
+    "jiraEnabled": false,
+    "confluenceEnabled": false,
+    "jiraCli": "jira-cli",
+    "confluenceCli": "confluence-cli",
+    "jiraProject": "",
+    "jiraLeadershipLabel": "",
+    "confluenceSpace": "",
+    "confluenceRootPageId": ""
+  },
+  "mcp": {
+    "outlookServerName": ""
+  },
+  "scheduledTasks": {
+    "enabled": true,
+    "timeZoneId": "Local",
+    "dailyBrief": {
+      "enabled": true,
+      "time": "06:00"
+    },
+    "weeklyReview": {
+      "enabled": true,
+      "day": "Monday",
+      "time": "05:30"
+    },
+    "followUpMonitor": {
+      "enabled": false,
+      "time": "15:30"
+    },
+    "actionUpdate": {
+      "enabled": false,
+      "time": "16:30"
+    }
+  }
+}

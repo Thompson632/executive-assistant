@@ -1,0 +1,4 @@
+interface:
+  display_name: "Executive Scheduled Tasks"
+  short_description: "Prepare Codex scheduled workflows"
+  default_prompt: "Use $executive-scheduled-tasks to create my Executive Assistant scheduled task prompts."

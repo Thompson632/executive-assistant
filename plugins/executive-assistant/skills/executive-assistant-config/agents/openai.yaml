@@ -1,0 +1,4 @@
+interface:
+  display_name: "Executive Assistant Config"
+  short_description: "Inspect and update the local assistant profile"
+  default_prompt: "Use $executive-assistant-config to show my current Executive Assistant settings."

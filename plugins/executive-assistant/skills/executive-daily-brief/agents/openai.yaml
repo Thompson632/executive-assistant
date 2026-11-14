@@ -1,0 +1,4 @@
+interface:
+  display_name: "Executive Daily Brief"
+  short_description: "Generate a reviewed daily briefing"
+  default_prompt: "Use $executive-daily-brief to prepare today's executive briefing."

@@ -1,0 +1,4 @@
+interface:
+  display_name: "Executive Meeting Prep"
+  short_description: "Prep and debrief executive meetings"
+  default_prompt: "Use $executive-meeting-prep to prepare for an upcoming meeting."

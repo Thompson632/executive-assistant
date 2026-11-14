@@ -1,0 +1,42 @@
+# Local configuration and secrets
+.env
+.env.*
+*.local.json
+*.secret.*
+
+# User data and generated reports
+vault/
+vaults/
+private-vault/
+reports/
+_briefings/
+outlook-digest-*.md
+*.ost
+*.pst
+
+# Local Outlook link stores
+.codex/
+outlook-links/
+*-outlook-links/
+
+# Read-only local reference repositories
+misc/
+
+# Build/runtime noise
+node_modules/
+__pycache__/
+*.pyc
+.pytest_cache/
+.ruff_cache/
+dist/
+build/
+*.zip
+tmp/
+temp/
+*.log
+
+# OS/editor noise
+.DS_Store
+Thumbs.db
+.vscode/
+.idea/

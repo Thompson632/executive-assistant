@@ -1,0 +1,4 @@
+interface:
+  display_name: "Executive Assistant Proof"
+  short_description: "Verify the Desktop package is visible"
+  default_prompt: "Use $executive-assistant-proof to verify the Executive Assistant package."

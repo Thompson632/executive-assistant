@@ -1,0 +1,4 @@
+interface:
+  display_name: "Executive Weekly Review"
+  short_description: "Plan the upcoming executive week"
+  default_prompt: "Use $executive-weekly-review to prepare my weekly executive review."

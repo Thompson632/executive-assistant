@@ -1,0 +1,29 @@
+name: Shell workflows
+
+on:
+  push:
+  pull_request:
+
+jobs:
+  test:
+    strategy:
+      matrix:
+        os: [macos-latest, ubuntu-latest]
+        python: ['3.9', '3.13']
+    runs-on: ${{ matrix.os }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: ${{ matrix.python }}
+      - name: Install Zsh on Linux
+        if: runner.os == 'Linux'
+        run: sudo apt-get update && sudo apt-get install -y zsh
+      - name: Check shell syntax
+        run: git ls-files '*.sh' | while IFS= read -r path; do bash -n "$path" || exit; done
+      - name: Run the workflow tests
+        run: python3 -m unittest discover -s tests/unix -v
+      - name: Validate distribution archive
+        run: |
+          bash tools/package-unix.sh "$RUNNER_TEMP/executive-assistant.zip"
+          unzip -tq "$RUNNER_TEMP/executive-assistant.zip"
