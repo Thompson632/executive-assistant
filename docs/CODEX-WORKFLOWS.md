@@ -69,6 +69,10 @@ If the vault has no action list, the first saved action goes in
 
 Ask “Use `$executive-quick-note` to jot down that the room layout worked
 well.” By default, the skill adds a dated bullet to `notes/Quick Notes.md`.
+The Daily Brief's **Brain Dumps** section includes that day's and the
+previous day's entries, plus linked excerpts from other notes under
+`notes/` updated on either day. If you keep a capture note elsewhere,
+name it when asking Codex to synthesize a brief.
 For a commitment you want to track, ask to capture it as an action.
 
 ## Which Commands the Skills Use

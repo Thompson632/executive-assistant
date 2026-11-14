@@ -35,6 +35,7 @@ writes the standard sections listed in the [runtime reference](../../references/
 - `## Recommended Moves`
 - `## Waiting On`
 - `## Risks To Watch`
+- `## Brain Dumps` with today’s and yesterday’s dated entries from `notes/Quick Notes.md` and linked excerpts from other Markdown notes in `notes/` updated on either day
 - `## PTOs` only when PTO entries exist
 
 Do not include `Recent Decisions` or `People And Projects In Motion` unless the user explicitly asks.
@@ -42,6 +43,9 @@ Do not include `Recent Decisions` or `People And Projects In Motion` unless the 
 ## Link Handling
 
 Use links to source notes when available. Keep raw mail identifiers and email bodies out of the Markdown by default.
+
+Keep brain dumps as observations or ideas. If the user identifies another
+capture note, include its recent entries in a synthesized brief.
 
 ## Command
 

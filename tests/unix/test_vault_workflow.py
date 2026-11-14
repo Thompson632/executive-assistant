@@ -1,4 +1,6 @@
+from datetime import datetime
 import json
+import os
 from pathlib import Path
 import plistlib
 import shutil
@@ -143,6 +145,41 @@ class VaultWorkflowTest(unittest.TestCase):
         weekly = Path(result["output_path"])
         self.assertEqual(weekly.name, "2026-10-26 Weekly Report.md")
         self.assertNotIn("Keep this existing report", weekly.read_text())
+
+    def test_daily_brief_includes_recent_brain_dumps_with_source_links(self):
+        self.command("setup", "--vault", str(self.vault))
+        notes = self.vault / "notes"
+        notes.mkdir()
+        (notes / "Quick Notes.md").write_text(
+            "# Quick Notes\n\n"
+            "## 2026-11-14\n- Try a shorter agenda\n- Bring printed examples\n"
+            "## 2026-11-13\n- Sketch a simpler handoff\n"
+            "## 2026-11-12\n- Old capture\n",
+            encoding="utf-8",
+        )
+        idea = notes / "Review idea.md"
+        idea.write_text("# Review idea\n\nOpen with one discussion question.\n", encoding="utf-8")
+        modified = datetime(2026, 11, 13, 12).timestamp()
+        os.utime(idea, (modified, modified))
+        (notes / "Private.md").write_text(
+            "---\ntype: executive-assistant-one-on-one\n---\n"
+            "Private observation\n",
+            encoding="utf-8",
+        )
+        os.utime(notes / "Private.md", (modified, modified))
+
+        daily = self.command("report", "daily", "--date", "2026-11-14").stdout.decode()
+        actions, captures = daily.split("## Brain Dumps", 1)
+        for phrase in ("Try a shorter agenda", "Bring printed examples",
+                       "Sketch a simpler handoff", "Open with one discussion question"):
+            self.assertIn(phrase, captures)
+            self.assertNotIn(phrase, actions)
+        self.assertIn("../../../notes/Quick%20Notes.md", captures)
+        self.assertIn("../../../notes/Review%20idea.md", captures)
+        self.assertNotIn("Old capture", captures)
+        self.assertNotIn("Private observation", captures)
+        weekly = self.command("report", "weekly", "--date", "2026-11-14").stdout.decode()
+        self.assertNotIn("## Brain Dumps", weekly)
 
     def test_schedule_runs_the_same_command_with_absolute_paths(self):
         self.command("setup", "--vault", str(self.vault))

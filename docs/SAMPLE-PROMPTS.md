@@ -60,6 +60,8 @@ in the same chat with one of these replies:
 
 > Use $executive-quick-note to add this idea to my quick notes: Try sending decision questions a day before the meeting. Link it to [project note] if you find a match.
 
+> Use $executive-daily-brief to preview today's brief. Include today's and yesterday's ideas under Brain Dumps and link to the notes they came from.
+
 ### Executive Pause or Resume Work
 
 > Use $executive-context-switch to save where I left off on “Prepare the launch decision.” I compared both options. Next, add the support estimate. Preview the update to my existing action.

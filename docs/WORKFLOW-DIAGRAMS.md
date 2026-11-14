@@ -27,12 +27,13 @@ flowchart TD
     interrupt["An interruption comes up"] --> choice{"What do you need to capture?"}
     choice -->|Observation or idea| quick["Jot Down a Note"]
     quick --> notes["Obsidian · dated bullet in Quick Notes"]
+    notes --> daily["Scheduled daily brief · open actions and brain dumps"]
     choice -->|Commitment or stopping point| context["Pause or Resume Work"]
     context --> preview["Review the action edit"]
     preview -->|Confirm| actions["Obsidian · Action Items or existing task note"]
     actions --> links["Optional links to project, task detail, and source notes"]
     actions --> resume["On demand · ask Codex to pick up the action"]
-    actions --> daily["Scheduled daily brief · surface open actions"]
+    actions --> daily
     actions --> follow["Optional scheduled follow-up · flag waiting and overdue items"]
     daily --> check["Open the brief and follow the action or source link"]
     follow --> check

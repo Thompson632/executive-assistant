@@ -72,8 +72,12 @@ different month. Daily filenames use the focus date and end in
 ` Daily Report.md`. Weekly filenames use Monday and end in ` Weekly Report.md`.
 
 The shell report includes Snapshot, Calendar, Important Unread Emails, Needs
-Attention, Waiting On, and Risks To Watch. The Codex skills can synthesize
-additional sections from supplied metadata and notes.
+Attention, Waiting On, and Risks To Watch. Daily reports also include Brain
+Dumps for the focus date and the day before. The runner includes dated
+entries from `notes/Quick Notes.md` and one excerpt per other Markdown note
+under `notes/` based on its last-modified date. Entries link back to their
+source notes. The Codex skills can synthesize additional sections from
+supplied metadata and notes.
 
 ## Local Report Fallback
 
