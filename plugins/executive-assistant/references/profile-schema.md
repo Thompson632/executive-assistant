@@ -20,8 +20,9 @@ Pass `--profile PATH` before the subcommand to select a different file.
   For selected templates, set `enabled` to `true` on each of `dailyBrief`,
   `weeklyReview`, `followUpMonitor`, or `actionUpdate` that you want.
   Use JSON Booleans without quotes. Each enabled template can specify a
-  24-hour `time`, and `weeklyReview` can also specify a `day` such as
-  `Monday`. The command reports the field name for invalid settings.
+  24-hour `time`. To show a weekday in the weekly prompt, set
+  `weeklyReview.day` (for example, `Monday`) together with its `time`.
+  The command reports the field name for invalid settings.
   Configure the actual Codex automation separately. LaunchAgent and cron
   output uses the arguments passed to `schedule`.
 

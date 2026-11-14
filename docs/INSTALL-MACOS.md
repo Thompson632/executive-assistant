@@ -7,7 +7,9 @@ You can also open the same folder in Obsidian.
 ## Prerequisites
 
 You need Bash 3.2 or later, Python 3.9 or later, and the Codex CLI or the
-CLI bundled with ChatGPT Desktop. From the package folder, check the runtime:
+CLI bundled with ChatGPT Desktop. If you need the standalone executable,
+follow the [Codex CLI installation instructions](https://developers.openai.com/codex/cli).
+From the package folder, check the runtime:
 
 ```sh
 bash install/unix/check-prereqs.sh

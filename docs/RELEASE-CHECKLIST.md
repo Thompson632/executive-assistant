@@ -46,8 +46,10 @@ log excerpt or output path. Keep local paths and account details private.
 - [ ] On each supported host, use the
   [macOS](INSTALL-MACOS.md#optional-local-schedule) or
   [Linux](INSTALL-LINUX.md#optional-local-schedule) guide to verify a run
-  fired by the scheduler. Use a separate test job, check its log and report,
-  and remove the test job after verification.
+  fired by the scheduler. Pass `--profile PATH` before `schedule` to use the
+  disposable profile. On macOS, use a separate test login or give the plist
+  a distinct label and filename. Use that label in the `launchctl` commands.
+  Check the test job's log and report, then remove only the test job.
 - [ ] Test a generated Codex prompt in a fresh chat in the test notes project.
   If you enable a standalone Codex test automation, confirm a scheduler-fired
   run wrote to that project. Remove the temporary automation afterward.
