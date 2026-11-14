@@ -32,7 +32,8 @@ CUES = (
 )
 CHECKBOX = re.compile(r"^\s*(?:[-+*]|\d+[.)])\s+\[(.)\]\s+")
 FENCE = re.compile(r"^\s*(`{3,}|~{3,})(.*)$")
-CAPTURE_DATE = re.compile(r"^#{1,6}\s+(\d{4}-\d{2}-\d{2})\s*$")
+ATX_HEADING = re.compile(r"^(#{1,6})(?:[ \t]+(.*)|$)")
+CAPTURE_DATE = re.compile(r"(\d{4}-\d{2}-\d{2})(?:[ \t]+#+)?")
 
 
 class Signal(NamedTuple):
@@ -195,6 +196,7 @@ def note_signals(vault, path, modified, capture_days, brain_dumps):
     capture_day = datetime.fromtimestamp(modified).date().isoformat() if capture_note else ""
     if quick_notes:
         capture_day = ""
+    capture_level = 0
     captured_excerpt = False
     fence = None
     in_frontmatter = False
@@ -225,9 +227,14 @@ def note_signals(vault, path, modified, capture_days, brain_dumps):
             if checkbox and checkbox[1] != " ":
                 continue
             if quick_notes and stripped.startswith("#"):
-                heading = CAPTURE_DATE.fullmatch(stripped)
+                heading = ATX_HEADING.fullmatch(stripped)
                 if heading:
-                    capture_day = heading[1]
+                    level = len(heading[1])
+                    dated = CAPTURE_DATE.fullmatch(heading[2] or "")
+                    if dated:
+                        capture_day, capture_level = dated[1], level
+                    elif level <= capture_level:
+                        capture_day, capture_level = "", 0
             if not stripped or stripped.startswith("#"):
                 continue
             excerpt = " ".join(stripped.split())[:220]

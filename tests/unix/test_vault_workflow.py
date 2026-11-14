@@ -303,6 +303,27 @@ class VaultWorkflowTest(unittest.TestCase):
         self.assertEqual(weekly.name, "2026-10-26 Weekly Report.md")
         self.assertNotIn("Keep this existing report", weekly.read_text())
 
+    def test_quick_notes_stop_at_an_undated_sibling_heading(self):
+        self.command("setup", "--vault", str(self.vault))
+        notes = self.vault / "notes"
+        notes.mkdir()
+        (notes / "Quick Notes.md").write_text(
+            "# Quick Notes\n"
+            "## 2026-11-14\n- Captured today\n"
+            "### Context\n- Nested dated context\n"
+            "## Reference Material\n- Undated reference text\n"
+            "## 2026-11-13\n- Captured yesterday\n"
+            "# Appendix\n- Undated appendix text\n",
+            encoding="utf-8",
+        )
+        report = self.command("report", "daily", "--date", "2026-11-14").stdout.decode()
+        captures = report.split("## Brain Dumps", 1)[1]
+        self.assertIn("Captured today", captures)
+        self.assertIn("Nested dated context", captures)
+        self.assertIn("Captured yesterday", captures)
+        self.assertNotIn("Undated reference text", captures)
+        self.assertNotIn("Undated appendix text", captures)
+
     def test_daily_brief_includes_recent_brain_dumps_with_source_links(self):
         self.command("setup", "--vault", str(self.vault))
         notes = self.vault / "notes"
