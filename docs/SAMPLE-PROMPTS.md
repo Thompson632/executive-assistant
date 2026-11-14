@@ -10,6 +10,7 @@ paste the notes or attach the files in the same chat.
 | If you want to… | Go to |
 | --- | --- |
 | Capture something before you forget | [Quick note](#executive-jot-down-a-note) or [save a stopping point](#executive-pause-or-resume-work) |
+| Check that a captured idea appears in the Daily Brief | [Test Brain Dumps in Desktop](#test-brain-dumps-in-desktop) |
 | Add, reschedule, or finish a task | [Manage tasks](#executive-manage-tasks) |
 | Turn meeting notes into actions | [Meeting debrief](#executive-prepare-for-or-debrief-a-meeting) or [one-on-one](#executive-one-on-one) |
 | Take a new request from intake through delivery planning | [New work request to Scrum of Scrums](#new-work-request-to-scrum-of-scrums) |
@@ -60,7 +61,20 @@ in the same chat with one of these replies:
 
 > Use $executive-quick-note to add this idea to my quick notes: Try sending decision questions a day before the meeting. Link it to [project note] if you find a match.
 
-> Use $executive-daily-brief to preview today's brief. Include today's and yesterday's ideas under Brain Dumps and link to the notes they came from.
+#### Test Brain Dumps in Desktop
+
+Open a fresh Codex chat in your vault project and send these prompts in order.
+
+1. **Capture a sample idea.**
+
+   > Use $executive-quick-note with my configured Obsidian vault. Save “[TEST] Try opening the weekly review with one question everyone can answer.” as a dated bullet in notes/Quick Notes.md. Show me the link to the saved entry.
+
+2. **Find it in a fresh preview.**
+
+   > Use $executive-daily-brief with my configured Obsidian vault. Run a fresh preview of today’s Daily Brief and show me whether the [TEST] weekly review idea appears under Brain Dumps. Include the link back to Quick Notes.
+
+Expect the sample to appear in **Brain Dumps** with its capture date and
+source link. Open that link in Obsidian to check the entry.
 
 ### Executive Pause or Resume Work
 
@@ -101,6 +115,8 @@ At the end of the workday, ask:
 ## Review your day, week, and calendar
 
 ### Executive Prepare Today’s Brief
+
+> Use $executive-daily-brief to preview today’s brief in chat. Show me Brain Dumps from today and yesterday, including links back to my Quick Notes and any other recently updated notes in the notes folder.
 
 > Use $executive-daily-brief to show today’s meetings if calendar data is available, important mail if configured, and the open actions that need attention. Save today’s Markdown report in my configured vault and give me the link.
 

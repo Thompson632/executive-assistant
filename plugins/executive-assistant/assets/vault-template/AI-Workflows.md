@@ -12,6 +12,10 @@ Ask Codex to use `$executive-quick-note` when you want to jot something
 down. It uses your existing capture note or adds a dated bullet to
 `notes/Quick Notes.md`.
 
+Ask Codex to use `$executive-daily-brief` for a fresh preview. In
+**Brain Dumps**, look for today’s and yesterday’s Quick Notes entries and
+linked excerpts from other notes updated in `notes/` on either day.
+
 ## Daily Brief
 
 Generate a reviewed daily report from vault signals. Include relevant metadata from configured local Outlook sources or explicitly supplied calendar or mail files.

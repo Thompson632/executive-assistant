@@ -9,6 +9,7 @@ type `$` to find a skill by name or copy a prompt from the
 | What you want to do | Choose this skill |
 | --- | --- |
 | “Jot down that the room layout worked well.” | **Executive Jot Down a Note** · saves a short entry in Obsidian |
+| “Show me the ideas I captured.” | [Review Brain Dumps](#capture-a-brain-dump-and-find-it-in-the-daily-brief) in **Executive Prepare Today’s Brief** |
 | “Save where I left off on the agenda” or “Pick up the agenda.” | **Executive Pause or Resume Work** · records or retrieves the next step on that action |
 | “Mark the room check complete.” | **Executive Manage Tasks** · previews the change to a specific checkbox |
 | “Add these follow-ups to my task list.” | **Executive Manage Tasks** · previews adding tasks to your existing list |
@@ -57,6 +58,27 @@ doesn't schedule a reminder. Schedule a Codex brief or follow-up review
 if you want it to surface the saved work. Open the scheduled result and
 verify its links on the first run. Delivery depends on the schedule and
 your notification settings.
+
+## Capture a brain dump and find it in the Daily Brief
+
+```mermaid
+flowchart LR
+    idea["An idea or observation comes up"] --> capture["Jot Down a Note"]
+    capture --> quick["Obsidian · dated entry in Quick Notes"]
+    quick --> brief["Fresh Daily Brief preview or scheduled brief"]
+    notes["Other Markdown notes updated under notes/"] --> brief
+    brief --> dumps["Brain Dumps · today and yesterday"]
+    dumps --> source["Open the source note from its link"]
+```
+
+1. Use the [Desktop test prompts](SAMPLE-PROMPTS.md#test-brain-dumps-in-desktop)
+   to save a dated sample in `notes/Quick Notes.md` and preview a fresh brief.
+2. Open **Brain Dumps** and follow the entry’s source link. The brief
+   includes every dated Quick Notes entry from today and yesterday and
+   one linked excerpt per other Markdown note updated under `notes/`
+   during that window.
+3. If an idea becomes a commitment, use [Manage Tasks](SAMPLE-PROMPTS.md#executive-manage-tasks)
+   to add a linked action and capture its due date.
 
 ## Add a meeting action and track it to completion
 
