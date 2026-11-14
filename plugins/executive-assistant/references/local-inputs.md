@@ -17,6 +17,71 @@ offset or `Z` for mail and calendar timestamps. A calendar event must end
 after it starts. The output for records marked private contains the start
 and end times and a generic title.
 
+## Try the metadata format
+
+Save each JSON example in a separate file. These are snapshots, so the
+commands review the file you supply. The [configured Outlook feed](local-outlook.md)
+reads a local source that another client or sync job keeps current. The
+configured calendar excludes canceled events.
+
+### Mail
+
+Save as `mail.json`.
+
+```json
+[
+  {
+    "subject": "Review the meeting agenda",
+    "sender": "Taylor <taylor@example.invalid>",
+    "received": "2026-11-14T14:00:00Z",
+    "folder": "Inbox",
+    "unread": true
+  }
+]
+```
+
+```sh
+./scripts/unix/ea.sh review mail --source "/path/to/mail.json"
+```
+
+### Calendar
+
+Save as `calendar.json`.
+
+```json
+[
+  {
+    "title": "Agenda review",
+    "start": "2026-11-14T16:00:00Z",
+    "end": "2026-11-14T16:30:00Z"
+  }
+]
+```
+
+```sh
+./scripts/unix/ea.sh review calendar --source "/path/to/calendar.json"
+```
+
+### Tasks
+
+Save as `tasks.json`.
+
+```json
+[
+  {
+    "title": "Review the meeting agenda",
+    "status": "open",
+    "due": "2026-11-14"
+  }
+]
+```
+
+```sh
+./scripts/unix/ea.sh review tasks --source "/path/to/tasks.json"
+```
+
+## Review and draft commands
+
 ```sh
 ./scripts/unix/ea.sh review mail --source "/path/to/mail.json" --folder Inbox --limit 5 --offset 0
 ./scripts/unix/ea.sh review calendar --source "/path/to/calendar.json"

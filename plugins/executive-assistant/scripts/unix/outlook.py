@@ -99,12 +99,11 @@ def read(kind, path, first_day, last_day, limit=5):
     start, end = midnight(first_day), midnight(last_day)
     if kind == "mail":
         return read_maildir(path, start, end, limit)
-    records = local_workflows.read_records(str(path), "calendar")
+    records = local_workflows.read_records(str(path), "calendar", exclude_canceled=True)
     return sorted(
         (row for row in records
          if local_workflows.timestamp(row["start"]) < end
-         and local_workflows.timestamp(row["end"]) > start
-         and row.get("status", "").casefold() not in {"canceled", "cancelled"}),
+         and local_workflows.timestamp(row["end"]) > start),
         key=lambda row: local_workflows.timestamp(row["start"]),
     )
 

@@ -43,7 +43,8 @@ class LocalWorkflowTest(unittest.TestCase):
 
     def test_calendar_batches_and_rejects_bad_dates(self):
         private = {"title": "Secret", "start": "2026-11-14T10:00:00Z",
-                   "end": "2026-11-14T11:00:00Z", "private": True, "location": "Secret room"}
+                   "end": "2026-11-14T11:00:00Z", "private": True,
+                   "status": "Canceled", "location": "Secret room"}
         empty = self.fixture("empty.json", [])
         source = self.fixture("calendar.json", [private])
         comparison = json.loads(self.command("review", "calendar", "--source", source,

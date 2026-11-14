@@ -109,6 +109,31 @@ class LocalOutlookTest(unittest.TestCase):
         weekly = self.command("report", "weekly", "--date", str(self.day)).stdout
         self.assertIn("Starts at window end", weekly)
 
+    def test_configured_calendar_excludes_canceled_private_events(self):
+        self.configure(calendarFile=str(self.calendar))
+        start = outlook.midnight(self.day)
+        rows = []
+        for hour, title, fields in (
+            (9, "Canceled private title", {"private": True, "status": "Canceled"}),
+            (10, "Canceled public title", {"status": "CANCELLED"}),
+            (11, "Current private title", {"private": True}),
+        ):
+            rows.append({"title": title, "start": (start + timedelta(hours=hour)).isoformat(),
+                         "end": (start + timedelta(hours=hour + 1)).isoformat(), **fields})
+        self.calendar.write_text(json.dumps(rows))
+
+        date = str(self.day)
+        result = self.command("outlook", "calendar", "--date", date, "--days", "1")
+        kept = rows[-1]
+        self.assertEqual(json.loads(result.stdout)["records"], [
+            {"title": "Private event", "start": kept["start"], "end": kept["end"]},
+        ])
+        report = self.command("report", "daily", "--date", date).stdout
+        self.assertEqual(report.count("· Private event"), 1)
+        for row in rows:
+            self.assertNotIn(row["title"], result.stdout)
+            self.assertNotIn(row["title"], report)
+
     def test_missing_source_is_a_failure_not_an_empty_report(self):
         self.assertNotEqual(self.command("outlook", "mail", check=False).returncode, 0)
         self.configure(calendarFile=str(self.calendar))
