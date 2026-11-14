@@ -129,6 +129,36 @@ class VaultWorkflowTest(unittest.TestCase):
         self.assertEqual(json.loads(moved.stdout)["vault_path"], str(sibling))
         self.assertEqual(run("report", "daily").returncode, 0)
 
+    def test_vault_separation_uses_directory_identity(self):
+        containing = self.root / "Containing Folder"
+        plugin = containing / "executive-assistant"
+        shutil.copytree(LAUNCHER.parents[2], plugin)
+        launcher = plugin / LAUNCHER.relative_to(LAUNCHER.parents[2])
+        alias = self.root / "containing folder"
+
+        def setup(vault, profile):
+            return subprocess.run(
+                [str(launcher), "--profile", str(profile), "setup", "--vault", str(vault)],
+                capture_output=True, timeout=5,
+            )
+
+        if not alias.exists():
+            result = setup(alias, self.profile)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertEqual(json.loads(result.stdout)["vault_path"], str(alias))
+            return
+
+        for name, path, diagnostic in (
+            ("ancestor", alias, b"Choose a notes folder separate from the Executive Assistant package."),
+            ("descendant", alias / plugin.name / "New Notes", b"Choose a vault folder outside the plugin package."),
+        ):
+            with self.subTest(path=path):
+                profile = self.root / f"{name}.json"
+                result = setup(path, profile)
+                self.assertEqual(result.returncode, 1, result.stderr)
+                self.assertIn(diagnostic, result.stderr)
+                self.assertFalse(profile.exists())
+
     def test_unknown_home_in_profile_or_vault_has_a_path_error(self):
         missing = "~ea-no-such-user-8731/Notes"
         self.profile.parent.mkdir()

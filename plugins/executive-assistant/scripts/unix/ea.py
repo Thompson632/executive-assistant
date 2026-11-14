@@ -66,14 +66,21 @@ def read_profile(path: Path) -> dict:
     return profile
 
 
+def same_filesystem_entry(first: Path, second: Path) -> bool:
+    try:
+        return first.samefile(second)
+    except (FileNotFoundError, NotADirectoryError):
+        return False
+
+
 def get_vault(profile: dict, create: bool = False) -> Path:
     vault = local_workflows.local_path(profile["vaultPath"])
     if not vault.is_absolute():
         raise ValueError(f"Set vaultPath to an absolute folder: {vault}")
     vault = vault.resolve()
-    if vault in PLUGIN_ROOT.parents:
+    if any(same_filesystem_entry(vault, parent) for parent in PLUGIN_ROOT.parents):
         raise ValueError("Choose a notes folder separate from the Executive Assistant package.")
-    if vault == PLUGIN_ROOT or PLUGIN_ROOT in vault.parents:
+    if any(same_filesystem_entry(folder, PLUGIN_ROOT) for folder in (vault, *vault.parents)):
         raise ValueError("Choose a vault folder outside the plugin package.")
     if any(
         (folder / "plugins" / "executive-assistant" / ".codex-plugin" / "plugin.json").is_file()

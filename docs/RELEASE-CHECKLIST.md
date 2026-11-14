@@ -15,9 +15,9 @@ log excerpt or output path. Keep local paths and account details private.
   [repo validation commands](../AGENTS.md#validation). If the plugin
   validator is unavailable, use a disposable installation.
 - [ ] Record the location of the ZIP supplied to the first-time reader.
-  Extract that copy into a path with spaces. Verify that the MIT license
-  contains its grant, notice, and warranty paragraphs and matches
-  `git show HEAD:LICENSE` for the release commit. Check that the ZIP
+  Extract that copy into a path with spaces. The package tests verify the
+  complete approved MIT text and attribution. Verify that the archived
+  license matches `git show HEAD:LICENSE` for the release commit. Check that the ZIP
   contains the plugin manifest and the
   [getting-started guide](GETTING-STARTED.md). Follow the terminal route.
   Verify that the report is in the selected notes folder, contains the
