@@ -46,6 +46,14 @@ def heading_anchors(text):
 
 
 class PackageContractTest(unittest.TestCase):
+    def test_release_license_contains_the_approved_mit_notice(self):
+        license_text = " ".join((ROOT / "LICENSE").read_text(encoding="utf-8").split())
+        self.assertTrue(license_text.startswith("MIT License Copyright (c) 2026 Robert Thompson"))
+        self.assertIn("Permission is hereby granted", license_text)
+        self.assertIn("The above copyright notice and this permission notice shall be included", license_text)
+        self.assertIn('THE SOFTWARE IS PROVIDED "AS IS", WITHOUT WARRANTY OF ANY KIND', license_text)
+        self.assertTrue(license_text.endswith("OR THE USE OR OTHER DEALINGS IN THE SOFTWARE."))
+
     def test_heading_anchors_support_apostrophes_and_duplicates(self):
         source = "# Today’s Brief\n## Today's Brief\n```text\n## Ignore this\n```\n"
         self.assertEqual(heading_anchors(source), {"todays-brief", "todays-brief-1"})

@@ -7,14 +7,18 @@ log excerpt or output path. Keep local paths and account details private.
 
 ## Checkout and ZIP
 
-- [ ] Run the macOS and Linux workflow matrix for the release commit. It
-  checks Bash and Zsh syntax, unit tests, guide links and skill names, and
-  a first brief from the extracted ZIP under both shells.
+- [ ] Record the macOS workflow matrix result for the release commit.
+- [ ] Record the Linux workflow matrix result for the same commit. Both
+  platforms check Bash and Zsh syntax, unit tests, guide links and skill
+  names, and a first brief from the extracted ZIP under both shells.
 - [ ] Verify plugin and skill metadata using the
   [repo validation commands](../AGENTS.md#validation). If the plugin
   validator is unavailable, use a disposable installation.
-- [ ] Extract the ZIP into a path with spaces. Check that it contains
-  `LICENSE`, the plugin manifest, and the
+- [ ] Record the location of the ZIP supplied to the first-time reader.
+  Extract that copy into a path with spaces. Verify that the MIT license
+  contains its grant, notice, and warranty paragraphs and matches
+  `git show HEAD:LICENSE` for the release commit. Check that the ZIP
+  contains the plugin manifest and the
   [getting-started guide](GETTING-STARTED.md). Follow the terminal route.
   Verify that the report is in the selected notes folder, contains the
   test task, and links back to its note.
