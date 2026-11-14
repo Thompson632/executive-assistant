@@ -12,6 +12,7 @@ type `$` to find a skill by name or copy a prompt from the
 | “Save where I left off on the agenda” or “Pick up the agenda.” | **Executive Pause or Resume Work** · records or retrieves the next step on that action |
 | “Mark the room check complete.” | **Executive Manage Tasks** · previews the change to a specific checkbox |
 | “Add these follow-ups to my task list.” | **Executive Manage Tasks** · previews adding tasks to your existing list |
+| “We received a new request for work.” | [Intake to Scrum of Scrums](#take-a-new-work-request-from-intake-to-scrum-of-scrums) · capture it, plan delivery in GitLab, and prepare the Confluence update |
 | “What should I work on next?” | **Executive Prioritize Actions** · ranks open work and flags blockers |
 | “What needs my attention today?” | **Executive Prepare Today’s Brief** · brings actions, calendar, and available mail together |
 | “Where are the conflicts on my calendar?” | **Executive Review My Calendar** · finds overlaps and suggests focus time |
@@ -195,6 +196,31 @@ Meeting notes go under `meetings/One-on-Ones/Person Name/YYYY-MM-DD.md`.
 If you ask to save prep for a known date, it goes in a separate dated note.
 Private meeting and prep notes are excluded from routine shell briefs.
 
+## Take a new work request from intake to Scrum of Scrums
+
+```mermaid
+flowchart TD
+    request["New work request arrives"] --> intake["Obsidian · capture the request in Actions"]
+    intake --> epic["GitLab · create the epic with the agreed scope"]
+    epic --> issues["Break down the epic description into issues and link them to the epic"]
+    issues --> held{"Has the initial meeting happened?"}
+    held -->|Yes| comment["Comment on the epic · STATUS: Initial meeting held"]
+    held -->|No| wait["Keep the meeting status pending"]
+    wait -->|After the meeting is confirmed| comment
+    comment --> draft["Draft the Scrum of Scrums update using the epic and issue links"]
+    wait --> draft
+    draft --> page["Review the Confluence preview"]
+```
+
+Use the Obsidian action to track intake and link it to the created epic.
+Use GitLab for the epic scope, delivery issues, and status comment. Use
+Confluence to share the team's update with links back to GitLab.
+
+[Copy the step-by-step prompts](SAMPLE-PROMPTS.md#new-work-request-to-scrum-of-scrums).
+`$executive-work-intake` coordinates the workflow. In a local rehearsal,
+the epic and issues are linked notes in `GitLab/` and the update is a
+preview note in `Confluence/` inside the selected Obsidian vault.
+
 ## Review project and shared material
 
 ```mermaid
@@ -232,6 +258,7 @@ for Jira, GitLab, Confluence drafts, and sensitivity reviews.
 | [Executive Review Mail or Draft a Reply](../plugins/executive-assistant/skills/executive-outlook-com/SKILL.md) · `$executive-outlook-com` | Triage my local Inbox metadata. | On demand or use the brief for a digest |
 | [Executive Review Jira Issues](../plugins/executive-assistant/skills/executive-jira-triage/SKILL.md) · `$executive-jira-triage` | Review active and stale issues in this project. | On demand |
 | [Executive Review a GitLab Project](../plugins/executive-assistant/skills/executive-gitlab-review/SKILL.md) · `$executive-gitlab-review` | Summarize current blockers and failed pipelines. | On demand |
+| [Executive Work Intake](../plugins/executive-assistant/skills/executive-work-intake/SKILL.md) · `$executive-work-intake` | Capture a request, create its epic and issues, and preview the Scrum of Scrums update. | When a new request arrives or its initial meeting is confirmed |
 | [Executive Draft a Confluence Update](../plugins/executive-assistant/skills/executive-confluence-refresh/SKILL.md) · `$executive-confluence-refresh` | Draft an update from these reviewed notes. | On demand |
 | [Executive Check Notes Before Sharing](../plugins/executive-assistant/skills/executive-sensitivity-review/SKILL.md) · `$executive-sensitivity-review` | Check these notes before sharing the vault. | Before sharing |
 | [Executive Schedule Briefs and Follow-Ups](../plugins/executive-assistant/skills/executive-scheduled-tasks/SKILL.md) · `$executive-scheduled-tasks` | Generate and test standalone schedule prompts. | When adding or changing a schedule |

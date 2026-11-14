@@ -94,6 +94,7 @@ installed plugin root. From a checkout, use the longer path shown above.
 | Jira triage | `$executive-jira-triage` | Configured Jira CLI |
 | Confluence refresh | `$executive-confluence-refresh` | Drafts from reviewed notes and uses the configured Confluence CLI for approved updates |
 | GitLab project review | `$executive-gitlab-review` | `glab issue list`, `glab mr list`, `glab ci list` |
+| Work intake | `$executive-work-intake` | Captures the request, coordinates approved epic and issue creation, and drafts the Scrum of Scrums update |
 | Shared-vault sensitivity review | `$executive-sensitivity-review` | Reviews notes for sharing and proposes edits or moves |
 
 For example, ask “Use `$executive-calendar-management` to find conflicts in
@@ -109,6 +110,9 @@ See the [Atlassian CLI guide](../integrations/atlassian-cli/README.md)
 and the [GitLab CLI guide](../plugins/executive-assistant/references/gitlab-cli.md).
 
 For a recurring 1:1, see the [one-on-one workflow](WORKFLOW-DIAGRAMS.md#save-a-one-on-one-and-prepare-for-the-next-meeting).
+For a new work request, see the [intake to Scrum of Scrums workflow](WORKFLOW-DIAGRAMS.md#take-a-new-work-request-from-intake-to-scrum-of-scrums).
+Use `$executive-work-intake` to coordinate it, or request a local rehearsal
+to save simulated GitLab and Confluence records in the vault.
 
 ## Scheduled Tasks
 

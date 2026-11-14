@@ -12,6 +12,7 @@ paste the notes or attach the files in the same chat.
 | Capture something before you forget | [Quick note](#executive-jot-down-a-note) or [save a stopping point](#executive-pause-or-resume-work) |
 | Add, reschedule, or finish a task | [Manage tasks](#executive-manage-tasks) |
 | Turn meeting notes into actions | [Meeting debrief](#executive-prepare-for-or-debrief-a-meeting) or [one-on-one](#executive-one-on-one) |
+| Take a new request from intake through delivery planning | [New work request to Scrum of Scrums](#new-work-request-to-scrum-of-scrums) |
 | Decide what to do now or tomorrow | [Prioritize actions](#executive-prioritize-actions) or [prepare today’s brief](#executive-prepare-todays-brief) |
 | Check or change a recurring brief | [Scheduled briefs](#set-up-scheduled-briefs) |
 
@@ -192,6 +193,59 @@ Use configured local Outlook metadata or attach a mail metadata file.
 > Use $executive-sensitivity-review to check [note or folder] before I share it with [audience]. Flag sections that should be redacted or kept private and explain each recommendation.
 
 > Use $executive-sensitivity-review to review this draft for [audience]. Show the passages to remove and suggest replacement wording in chat.
+
+### New work request to Scrum of Scrums
+
+Follow the [intake workflow diagram](WORKFLOW-DIAGRAMS.md#take-a-new-work-request-from-intake-to-scrum-of-scrums)
+as the request moves from Obsidian to GitLab to Confluence.
+
+### Executive Work Intake
+
+> Use $executive-work-intake in local rehearsal mode. We received a request to pilot a shorter review agenda. The pilot needs a draft agenda and a feedback checklist. Preview the Obsidian action and the epic and issues under GitLab/. Save the Scrum of Scrums preview under Confluence/ once I approve the plan. The initial meeting is still pending.
+
+After confirming the plan and holding the initial meeting, ask:
+
+> Use $executive-work-intake to resume the shorter-agenda rehearsal. I confirm the initial meeting was held. Add the exact status comment once to the local epic and refresh the local Scrum of Scrums preview.
+
+For live work, provide the GitLab group, issue project, and Confluence page.
+Review the proposed scope before approving any GitLab writes. The sequence
+below also works when you prefer to carry out the steps individually.
+
+1. **Capture the request in Obsidian.**
+
+   > Use $executive-todo-management to preview an Inbox action for this work request: [request]. Include the requester, the outcome they need, the source link, and any stated due date. Show what needs clarification. Wait for me to approve the task.
+
+2. **Create the GitLab epic after reviewing its scope.**
+
+   > Draft a GitLab epic for the approved request in [GitLab group]. Use the request and any confirmed meeting notes. Include the outcome, scope, acceptance criteria, and open questions. Show me the title and description to review.
+
+   Create the reviewed epic in GitLab. Then ask Executive Manage Tasks to
+   preview adding its URL to the existing Obsidian action.
+
+3. **Break the epic into issues.**
+
+   > From this epic description, draft the issues needed to deliver it. Give each issue a title, one outcome, acceptance criteria, and dependencies. Flag unclear scope and show the proposed list before any issues are created.
+
+   Create the approved issues in [GitLab project] and link them to the epic.
+   Compare with existing issues first so the same work is tracked once.
+
+4. **Record the initial meeting on the epic after it happens.**
+
+   Post this exact comment on the epic:
+
+   ```text
+   STATUS: Initial meeting held
+   ```
+
+5. **Update Scrum of Scrums.**
+
+   > Use $executive-confluence-refresh to draft the entry for [Confluence Scrum of Scrums page or URL]. Include what was agreed in the initial meeting, the GitLab epic link, links to the delivery issues, the next milestone if known, and any blockers. Show me the exact page change before publishing.
+
+   After reviewing the entry, reply **Publish that exact update to the reviewed page.**
+
+The GitLab review skill can check existing issues. Executive Work Intake
+handles the reviewed creation, linking, and comment steps when live access
+is available.
 
 ## Set up scheduled briefs
 
