@@ -94,6 +94,7 @@ with `--write` if you want to regenerate it.
 | The installer asks for Python | Install Python 3.9 or later, then open a new terminal and check `python3 --version`. |
 | The installer cannot find Codex | Use the CLI setup for [macOS](INSTALL-MACOS.md#prerequisites) or [Linux](INSTALL-LINUX.md#prerequisites). |
 | Setup says a profile already exists | Use `$executive-assistant-config` to check which notes folder is connected or preview switching it. |
+| The notes folder contains the package | Choose a separate folder. If you've already set up a profile, ask `$executive-assistant-config` to preview switching to the new folder. |
 | The proof skill is missing | Check the installer output, restart Codex, and open a fresh chat in the notes folder. See the [update instructions](DISTRIBUTION.md#update-or-move-an-installation). |
 | `personal` already points to another folder | Follow [marketplace name conflicts](DISTRIBUTION.md#marketplace-name-conflicts). |
 | The notes folder is available and Outlook reports an error | Open the reported settings file. [Disable Outlook for vault-only use or configure a file source](../plugins/executive-assistant/references/local-outlook.md#configure-a-source). |

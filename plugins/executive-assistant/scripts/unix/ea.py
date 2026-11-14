@@ -66,11 +66,13 @@ def read_profile(path: Path) -> dict:
     return profile
 
 
-def get_vault(profile, create=False):
+def get_vault(profile: dict, create: bool = False) -> Path:
     vault = local_workflows.local_path(profile["vaultPath"])
     if not vault.is_absolute():
         raise ValueError(f"Set vaultPath to an absolute folder: {vault}")
     vault = vault.resolve()
+    if vault in PLUGIN_ROOT.parents:
+        raise ValueError("Choose a notes folder separate from the Executive Assistant package.")
     if vault == PLUGIN_ROOT or PLUGIN_ROOT in vault.parents:
         raise ValueError("Choose a vault folder outside the plugin package.")
     if any(

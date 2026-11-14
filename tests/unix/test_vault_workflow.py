@@ -92,6 +92,43 @@ class VaultWorkflowTest(unittest.TestCase):
         self.profile.symlink_to(target)
         self.assertEqual(json.loads(self.command("check").stdout)["vault_path"], str(self.vault))
 
+    def test_vault_cannot_contain_the_executing_package(self):
+        containing = self.root / "Containing Folder"
+        plugin = containing / "executive-assistant"
+        shutil.copytree(LAUNCHER.parents[2], plugin)
+        launcher = plugin / LAUNCHER.relative_to(LAUNCHER.parents[2])
+
+        def run(*args):
+            return subprocess.run(
+                [str(launcher), "--profile", str(self.profile), *args],
+                capture_output=True, timeout=5,
+            )
+
+        diagnostic = b"Choose a notes folder separate from the Executive Assistant package."
+        result = run("setup", "--vault", str(containing), "--copy-template")
+        self.assertEqual(result.returncode, 1)
+        self.assertIn(diagnostic, result.stderr)
+        self.assertFalse(self.profile.exists())
+        self.assertFalse((containing / "Action-Items.md").exists())
+
+        self.profile.parent.mkdir()
+        self.profile.write_text(json.dumps({"vaultPath": str(containing)}))
+        original = self.profile.read_bytes()
+        for args in (("check",), ("report", "daily", "--write")):
+            with self.subTest(args=args):
+                result = run(*args)
+                self.assertEqual(result.returncode, 1)
+                self.assertIn(diagnostic, result.stderr)
+        self.assertFalse((containing / "_briefings").exists())
+        sibling = self.root / "Sibling Notes"
+        sibling.mkdir()
+        self.assertEqual(run("config", "--vault", str(sibling)).returncode, 0)
+        self.assertEqual(self.profile.read_bytes(), original)
+        moved = run("config", "--vault", str(sibling), "--apply")
+        self.assertEqual(moved.returncode, 0, moved.stderr)
+        self.assertEqual(json.loads(moved.stdout)["vault_path"], str(sibling))
+        self.assertEqual(run("report", "daily").returncode, 0)
+
     def test_unknown_home_in_profile_or_vault_has_a_path_error(self):
         missing = "~ea-no-such-user-8731/Notes"
         self.profile.parent.mkdir()
