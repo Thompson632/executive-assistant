@@ -19,6 +19,7 @@ PUBLIC_GUIDES = (
     "docs/INSTALL-LINUX.md", "docs/CODEX-WORKFLOWS.md",
     "docs/SAMPLE-PROMPTS.md", "docs/WORKFLOW-DIAGRAMS.md",
 )
+LOCAL_PLANNING_DIRS = ("docs/superpowers/plans", "docs/superpowers/specs")
 
 
 def heading_anchors(text):
@@ -47,6 +48,19 @@ def heading_anchors(text):
 
 
 class PackageContractTest(unittest.TestCase):
+    def test_planning_artifacts_are_local_only(self):
+        tracked = subprocess.check_output(
+            ["git", "ls-files", "--", *LOCAL_PLANNING_DIRS], cwd=ROOT, text=True,
+        ).splitlines()
+        self.assertEqual(tracked, [], "Remove planning files from the index and keep local copies.")
+        for directory in LOCAL_PLANNING_DIRS:
+            with self.subTest(directory=directory):
+                result = subprocess.run(
+                    ["git", "check-ignore", "--quiet", "--", f"{directory}/fixture.md"],
+                    cwd=ROOT,
+                )
+                self.assertEqual(result.returncode, 0, "Git must ignore new planning files.")
+
     def test_release_license_contains_the_approved_mit_notice(self):
         license_text = " ".join((ROOT / "LICENSE").read_text(encoding="utf-8").split())
         self.assertEqual(
@@ -112,7 +126,7 @@ class PackageContractTest(unittest.TestCase):
         for name in sorted(set(filter(None, names))):
             relative = Path(name)
             path = ROOT / relative
-            if not path.is_file() or relative.parts[:3] == ("docs", "superpowers", "plans"):
+            if not path.is_file():
                 continue
             text = path.read_text(encoding="utf-8-sig")
             if LEGACY.search(text):

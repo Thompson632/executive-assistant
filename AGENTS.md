@@ -8,6 +8,7 @@ This repo packages the reusable Codex Desktop executive-assistant workflow. It i
 
 - Do not commit personal vault content, email bodies, Outlook EntryIDs, StoreIDs, link-index files, tokens, or credentials.
 - Keep user-specific values in local config, environment variables, or a private vault.
+- Save implementation plans in `docs/superpowers/plans/` and companion specs in `docs/superpowers/specs/`. Keep both directories local and leave their files out of commits.
 - Validate on macOS and Linux with Bash and Zsh where available.
 - Keep calendar, mailbox, and task inputs local. Prepare drafts only on request. Never autosend.
 - Use deterministic shell entry points and skills for repeatable reasoning workflows.

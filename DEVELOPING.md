@@ -25,6 +25,13 @@ configuring Outlook, Jira, Confluence, or GitLab.
 
 See the [architecture guide](docs/ARCHITECTURE.md) for integration boundaries.
 
+## Local implementation plans
+
+Save working plans in `docs/superpowers/plans/` and companion specs in
+`docs/superpowers/specs/`. Create the folders when you first need them. Git
+ignores both folders, and release ZIPs exclude them. Keep any lasting
+workflow guidance in the shared docs so it is available in a fresh checkout.
+
 ## Try a workflow with temporary data
 
 From Bash or Zsh, create a separate profile and vault to exercise the
