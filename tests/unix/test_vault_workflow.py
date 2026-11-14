@@ -92,6 +92,38 @@ class VaultWorkflowTest(unittest.TestCase):
         self.profile.symlink_to(target)
         self.assertEqual(json.loads(self.command("check").stdout)["vault_path"], str(self.vault))
 
+    def test_config_apply_preserves_linked_profile(self):
+        self.vault.mkdir()
+        self.profile.parent.mkdir()
+        target = self.root / "target profile.json"
+        target.write_text(
+            json.dumps({"vaultPath": str(self.vault), "customValue": "keep-me"}),
+            encoding="utf-8-sig",
+        )
+        self.profile.symlink_to(target)
+        new_vault = self.root / "New Vault"
+        new_vault.mkdir()
+        original = target.read_bytes()
+        args = ("config", "--vault", str(new_vault))
+
+        preview = json.loads(self.command(*args).stdout)
+        self.assertEqual(preview["profile_path"], str(self.profile))
+        self.assertEqual(preview["profile_write_path"], str(target))
+        self.assertEqual(target.read_bytes(), original)
+
+        applied = json.loads(self.command(*args, "--apply").stdout)
+        self.assertEqual(applied["profile_path"], str(self.profile))
+        self.assertTrue(self.profile.is_symlink())
+        self.assertEqual(json.loads(target.read_text()), {
+            "vaultPath": str(new_vault), "customValue": "keep-me",
+        })
+        self.assertEqual(json.loads(self.command("check").stdout)["vault_path"], str(new_vault))
+        direct = subprocess.run(
+            [sys.executable, str(SCRIPT), "--profile", str(target), "check"],
+            capture_output=True, check=True,
+        )
+        self.assertEqual(json.loads(direct.stdout)["vault_path"], str(new_vault))
+
     def test_vault_cannot_contain_the_executing_package(self):
         containing = self.root / "Containing Folder"
         plugin = containing / "executive-assistant"

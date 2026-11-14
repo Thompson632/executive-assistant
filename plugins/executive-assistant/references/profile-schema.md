@@ -39,7 +39,11 @@ Older profiles may contain fields such as `timeZoneId` or
 
 When a copied profile references a path on another host, preview a vault-path
 change with `config --vault "/absolute/path/to/vault"`. Add `--apply` to write
-the reviewed change. The command preserves unrelated profile fields.
+the reviewed change. Create the destination folder before using `config`.
+The command changes the connection and preserves unrelated profile fields.
+Move or copy any notes separately. For a symbolic link, the preview reports
+the underlying file as `profile_write_path`. Applying the change updates
+that file and preserves the link.
 
 If `config` or `check` reports `outlook_error`, you can still inspect or
 change a valid vault connection. Open the file reported as `profile_path`
