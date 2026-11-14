@@ -10,7 +10,7 @@ Use this skill for two explicitly supplied calendar snapshots. Compare them by t
 ## First Use
 
 1. Confirm both snapshot files represent the calendars the user intends to compare.
-2. Use a narrow date range for the first review.
+2. Use snapshots exported for the same narrow date range. The launcher reads the supplied files in full.
 3. Review both snapshots with the local command.
 4. Inspect event counts, unsupported entries, differences, and conflicts. Keep credentials, bodies, attendees, and join links private.
 
@@ -27,10 +27,9 @@ Use this skill for two explicitly supplied calendar snapshots. Compare them by t
 
 ## Boundaries
 
-- Recurring, private, and attendee-bearing meetings are reported but
-  never synchronized automatically.
-- Recurring events and deletion propagation are reported for
-  review, not applied automatically.
+- Flag recurring and attendee-bearing meetings when those fields are available.
+  Private records may contain only times and a generic title, so report
+  ambiguous matches for manual review.
 - When both ends of a linked event changed differently, report a conflict and
   ask the user which calendar is authoritative. Do not choose silently.
 - Use exact calendar matching. Stop if the requested calendar is missing or

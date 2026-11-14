@@ -2,13 +2,13 @@
 
 ## Package Layers
 
-The executive assistant package should stay split across four layers:
+The Executive Assistant package has five parts.
 
-- Plugin: installable Codex Desktop package, workflow entry points, and user-facing metadata.
-- Skills: reusable executive workflows that Codex can invoke from chat.
-- Plugin-local scripts: platform-specific profile and report commands, using the shared shell launcher on macOS and Linux.
-- Integrations: MCP servers or CLI tools, alongside local files and optional Obsidian. Configure any external MCP servers separately in Codex.
-- Vault template: clean Obsidian structure stored inside the plugin under `assets/vault-template/`.
+- The plugin manifest and marketplace register the package and expose its metadata to Codex.
+- The [skills](CODEX-WORKFLOWS.md#which-commands-the-skills-use) guide workflows that Codex can invoke from chat.
+- The Bash launcher delegates profile management, metadata review, report generation, and schedule output to a shared Python runtime on macOS and Linux.
+- Optional integrations use local files, Apple Mail and Calendar, or separately configured CLIs or MCP servers.
+- The vault template under `assets/vault-template/` adds starter Markdown notes and folders during opt-in setup.
 
 ## Integration Direction
 
@@ -16,12 +16,14 @@ Calendar and mail can read explicitly configured local clients or sync files.
 Supplied metadata remains available for calendar, mail, and tasks. Keep the
 inputs metadata-first. Drafts stay local for user review.
 
-Atlassian starts through `jira-cli` and `confluence-cli`. A dedicated MCP only makes sense if CLI invocation becomes too brittle or if richer typed operations are needed.
+Atlassian skills invoke separately installed and authenticated
+[`jira-cli` and `confluence-cli`](../integrations/atlassian-cli/README.md).
 
 GitLab project review uses an existing authenticated `glab` installation. The
 skill scopes reads to the selected project and uses GitLab links for follow-up.
 
-Obsidian is primarily filesystem-backed. Add an Obsidian MCP only if direct app/plugin APIs become necessary.
+Obsidian opens the vault as a local folder. The runtime reads and writes
+Markdown through the filesystem.
 
 ## Data Boundary
 
@@ -39,11 +41,10 @@ the same folder in Obsidian and Codex.
 ## Scheduled Tasks
 
 The plugin prints schedule prompts with `./scripts/unix/ea.sh schedule-prompts`.
-Use standalone Codex schedules so recurring workflows do not depend on a prior
-conversation. Verify a scheduler-run result before relying on a schedule. If
-a provider reports a missing `call_id`, preserve the prompt and error details
-and verify a manual run before relying on another scheduled result.
+The [Codex workflow guide](CODEX-WORKFLOWS.md#scheduled-tasks) covers
+registration and verification of standalone schedules.
 
 The macOS LaunchAgent and Linux user cron paths run the same deterministic
-report command. They write a local run log and preserve the no-autosend boundary.
-Follow-up monitoring and synthesis still use Codex.
+report command with absolute paths to Python, the script, and the profile.
+They write a run log beside the profile. Follow-up monitoring and synthesis
+use Codex.

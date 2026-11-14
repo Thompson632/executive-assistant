@@ -40,8 +40,9 @@ not identify private events, and recurring occurrences depend on what the
 app returns through its scripting interface.
 
 Confirm the account already syncs in Apple Mail or Calendar before enabling
-this provider. Exchange access depends on your account, tenant policy, and
-macOS version. [Apple's Exchange sync guidance](https://support.apple.com/en-us/149092)
+this provider. If Apple Mail or Calendar can no longer sign in to Exchange
+Online or sync, ask your Exchange administrator to check the tenant's
+settings. [Apple's Exchange sync guidance](https://support.apple.com/en-us/149092)
 
 ### Local sync files on Linux or macOS
 
@@ -81,8 +82,10 @@ From the installed plugin root, run the commands for the sources you enabled:
 `check` reports configured providers. The `outlook` reads verify actual access.
 Mail looks back from the focus date, includes unread or flagged messages,
 and sorts newest first. Calendar looks forward from the focus date and
-includes events overlapping that window. Use `--date YYYY-MM-DD` on either
-command to set the focus date. Dates follow the local time zone.
+includes events overlapping that window. The window includes the focus date
+and uses the local time zone. Both commands default to seven days and accept
+`--days` from 1 to 31 and `--date YYYY-MM-DD`. Mail defaults to five records
+and accepts `--limit` from 1 to 50.
 
 Daily and weekly reports include their calendar window and up to ten unread
 or flagged items from the seven days ending on the focus date. A source read

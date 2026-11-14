@@ -19,10 +19,13 @@ The preview includes configured local Outlook sources. Review explicitly supplie
 2. Review upcoming calendar load, critical meetings, travel/PTO indicators, and high-signal unread or flagged Outlook items.
 3. Review latest `_briefings/` files for continuity, then scan vault action areas for unresolved commitments and risks.
 4. Optionally review active Jira work when the user has configured a project and asks for Jira context.
-5. Produce a concise Markdown plan under `_briefings/YYYY-MM/Week of YYYY-MM-DD/YYYY-MM-DD Weekly Report.md` when file output is requested. Use `./scripts/unix/ea.sh report weekly --write` from the plugin root.
+5. Produce a concise Markdown plan. When file output is requested, use the vault's weekly report path under `_briefings/YYYY-MM/Week of YYYY-MM-DD/YYYY-MM-DD Weekly Report.md`. Use `./scripts/unix/ea.sh report weekly --write` for the shell-generated report.
 6. Do not close Jira issues, publish Confluence, or send email without explicit approval.
 
-## Recommended Sections
+## Synthesized Report Shape
+
+Use these sections when synthesizing a review in Codex. The shell command
+writes the standard sections listed in the [runtime reference](../../references/unix-runtime.md#daily-and-weekly-reports).
 
 - `# Weekly Report - Week of YYYY-MM-DD`
 - `## Snapshot`

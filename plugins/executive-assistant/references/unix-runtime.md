@@ -1,6 +1,8 @@
 # Shell Runtime
 
-Use the launcher from the installed plugin root in Bash or Zsh.
+Use the launcher from the installed plugin root in Bash or Zsh. It runs
+under Bash and uses Python 3.9 or newer. From the repository root, use
+`./plugins/executive-assistant/scripts/unix/ea.sh`.
 
 ## Profile Setup
 
@@ -43,12 +45,33 @@ local draft inside the vault. The user handles sending.
 Use vault checkboxes to maintain local tasks. Preview changes and confirm
 removal before editing a note.
 
-## Daily Report and Proof
+## Daily and Weekly Reports
 
 ```sh
 ./scripts/unix/ea.sh check
+./scripts/unix/ea.sh report daily
 ./scripts/unix/ea.sh report daily --write
+./scripts/unix/ea.sh report weekly --write
 ```
+
+The default focus date is today in the host time zone. Use
+`--date YYYY-MM-DD` for a different day or to select its Monday-to-Sunday week.
+The runner ranks open checkboxes and attention cues in Markdown notes and
+adds metadata from configured local Outlook sources. It skips generated
+briefings, setup notes, hidden paths, symbolic links, and saved drafts.
+
+Previewing prints Markdown. With `--write`, the command returns JSON with the
+file path and whether it wrote a file or found an existing one. Add
+`--replace` with `--write` to regenerate the existing report.
+
+Reports go under `_briefings/YYYY-MM/Week of YYYY-MM-DD/`. Both folder
+components use the week's Monday, including when the focus date is in a
+different month. Daily filenames use the focus date and end in
+` Daily Report.md`. Weekly filenames use Monday and end in ` Weekly Report.md`.
+
+The shell report includes Snapshot, Calendar, Important Unread Emails, Needs
+Attention, Waiting On, and Risks To Watch. The Codex skills can synthesize
+additional sections from supplied metadata and notes.
 
 ## Local Report Fallback
 
@@ -57,8 +80,9 @@ removal before editing a note.
 ./scripts/unix/ea.sh schedule weekly --at 05:30 --weekday Monday --format cron
 ```
 
-Review the output before registering a LaunchAgent or cron job. Verify one
-scheduled report and its local log.
+The generated job calls `report daily --write` or `report weekly --write`
+using the selected profile. Pick a stable installation path and verify one
+scheduled result and its log. The log lives beside the profile.
 
 ## Codex Schedule Prompts
 

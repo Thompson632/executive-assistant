@@ -2,6 +2,8 @@
 
 The shell runner uses Bash 3.2+, Python 3.9+, and a local Markdown folder.
 Obsidian can open the same folder. Use the Codex CLI to install the plugin.
+For the desktop interface, see the
+[ChatGPT desktop preview for Linux](https://learn.chatgpt.com/docs/linux/linux-app).
 
 ## 1. Connect a vault
 
@@ -10,7 +12,7 @@ From the repository root:
 ```sh
 bash install/unix/check-prereqs.sh
 ./plugins/executive-assistant/scripts/unix/ea.sh setup \
-  --vault "$HOME/obsidian/Rob-Local-Laptop" --copy-template
+  --vault "$HOME/Executive Assistant Vault" --copy-template
 ```
 
 Use any absolute vault path outside the repository. Omit `--copy-template`
@@ -18,7 +20,7 @@ to use an existing vault without copying starter notes. For an existing
 profile, use `config` to inspect it, then preview a new path with
 `config --vault "/absolute/path/to/vault"`. Add `--apply` to save the change.
 
-## 2. Open the same folder in Obsidian
+## 2. Open the same folder in Obsidian (optional)
 
 In Obsidian, choose **Manage Vaults → Open folder as vault**, then select the
 `vault_path` reported by setup or `config`.
@@ -32,13 +34,12 @@ bash install/unix/install-plugin.sh
 ```
 
 Open a new Codex session in the vault folder and invoke
-`$executive-assistant-proof`. Look for the report under `_briefings` in
-Obsidian and follow a link to its source note.
+`$executive-assistant-proof`. The report command returns the path under
+`_briefings`. If you use the starter notes, follow the report's link to
+`Action-Items.md` in Obsidian or another Markdown viewer.
 
-To upgrade an existing installation, use the same checkout path registered for
-the `personal` marketplace and rerun the installer. To move to a new checkout,
-first inspect `codex plugin marketplace list`. Remove the previous marketplace
-registration only if it belongs to this checkout and you intend to replace it.
+For updates or a moved checkout, follow the
+[marketplace update steps](DISTRIBUTION.md#update-or-move-an-installation).
 
 ## 4. Connect local Outlook mail and calendar (optional)
 

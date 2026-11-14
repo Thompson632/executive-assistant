@@ -1,11 +1,16 @@
 # Atlassian CLI Integration
 
-The first Atlassian path uses installed command-line tools:
+Install and authenticate the CLI your organization uses before invoking the
+corresponding skill.
 
-- `jira-cli`
-- `confluence-cli`
+- Use `$executive-jira-triage` with `jira-cli` to review active issues, identify stale work, and propose issue changes.
+- Use `$executive-confluence-refresh` with `confluence-cli` to draft updates from reviewed notes for a specified space and page.
 
-Use CLI integration for active work review, issue creation after explicit approval, and curated Confluence draft/update flows. Do not store tokens in this repo or in vault notes.
+The local [example profile](../../config/executive-assistant.example.json)
+shows optional command names and target settings under `atlassian`. The
+shell launcher does not configure or run these tools. Give the skill the
+project or space when the profile does not specify it. Store tokens with your
+CLI or credential manager.
 
-Promote this to an MCP server only when the CLI path proves too brittle or when typed tool contracts become necessary for Codex Desktop.
+Review the exact issue changes or page draft before approving any write.
 

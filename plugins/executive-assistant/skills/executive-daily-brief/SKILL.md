@@ -17,14 +17,15 @@ The preview includes configured local Outlook sources. Review explicitly supplie
 
 1. Resolve the local profile from `${CODEX_HOME:-$HOME/.codex}/executive-assistant/profiles/default.json` or a user-provided profile path.
 2. Use `./scripts/unix/ea.sh report daily` from the plugin root.
-3. Scan the vault for recent actionable signals: open checkboxes, follow-up, waiting, risk, open question, due, deadline, review requested, blocked, or decision needed.
+3. Scan the vault for recent open checkboxes and actionable signals such as follow-ups, waiting items, risks, due dates, and decisions needed.
 4. Prioritize recent, actionable, blocked, time-sensitive, strategically important, or supplied priority-folder mail items.
 5. Write or draft the report under `_briefings/YYYY-MM/Week of YYYY-MM-DD/YYYY-MM-DD Daily Report.md` when the user wants a file.
 6. Do not autosend email. Create a draft only when explicitly requested.
 
-## Report Shape
+## Synthesized Report Shape
 
-Use these sections unless the user asks otherwise:
+Use these sections when synthesizing a brief in Codex. The shell command
+writes the standard sections listed in the [runtime reference](../../references/unix-runtime.md#daily-and-weekly-reports).
 
 - `# Daily Report - YYYY-MM-DD`
 - `## Snapshot`
@@ -52,7 +53,5 @@ Use links to source notes when available. Keep raw mail identifiers and email bo
 
 Create a recurring daily brief as a standalone scheduled task in the configured
 local project. Do not attach it to an existing conversation as a heartbeat.
-Before leaving the schedule active, verify one scheduled run produces its local
-report. If either a heartbeat or a standalone task reports a missing function
-`call_id`, pause it after user approval and treat the problem as a Codex
-provider or gateway failure. For local report recovery, use the scheduler command in `$executive-scheduled-tasks`.
+Verify that one scheduled run produces its local report. For a failed
+scheduled run, follow the recovery steps in `$executive-scheduled-tasks`.

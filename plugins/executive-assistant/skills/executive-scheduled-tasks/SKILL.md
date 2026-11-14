@@ -10,7 +10,9 @@ reports when the Codex scheduler/provider path is unavailable.
 
 ## Local schedules
 
-For Codex schedules, use the requested vault as the local project and reference the daily brief or weekly review skill with the configured macOS profile and an explicit instruction to write the Markdown report. Verify one scheduled run produces the expected note.
+For Codex schedules, use the requested vault as the local project. Reference
+the configured profile path and the daily brief or weekly review skill.
+Include an explicit instruction to write the Markdown report.
 
 For a local daily or weekly report, print a LaunchAgent plist on macOS or
 a cron entry on Linux. Use a stable path for the project. For follow-up
@@ -18,7 +20,8 @@ monitoring and action synthesis, use a Codex schedule.
 
 ## Boundary
 
-Codex Scheduled Tasks are created and managed in ChatGPT Desktop or web. Generate durable prompts, test them manually, and use the available Codex scheduling surface to confirm them.
+Generate standalone prompts with the local runner and test them in Codex.
+Use Codex automations to register schedules in the vault's local project.
 
 Create every recurring Executive Assistant workflow as a standalone scheduled
 task. Do not attach daily briefs, weekly reviews, follow-up monitors, or action
@@ -40,8 +43,8 @@ or scheduler tool-call failures.
 ## Recovery
 
 If a scheduled Executive Assistant workflow fails with a function-call result
-that is missing `call_id`, the failure is in the Codex scheduling or provider
-conversation state. This can affect either a heartbeat or a standalone task.
+that is missing `call_id`, record it as a scheduled tool-call failure.
+This can affect either a heartbeat or a standalone task.
 
 1. Verify the daily-brief command manually in a fresh task.
 2. Pause the failed schedule after user approval.
@@ -81,4 +84,6 @@ no-external-writes boundaries.
 - Follow-up monitor: use `$executive-action-triage`, daily or workday afternoon.
 - Action update: use `$executive-action-triage`, end of day.
 
-Each prompt must mention the Executive Assistant profile name and must say not to send email or modify Jira/Confluence without explicit approval.
+Each prompt must include the Executive Assistant profile path. Instruct
+scheduled runs to leave sending to the user and obtain explicit approval
+before modifying Jira or Confluence.

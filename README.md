@@ -7,7 +7,7 @@ This repository is for the package and integration code only. It must not contai
 ## Current Shape
 
 - `plugins/executive-assistant/` is the Codex plugin package.
-- `plugins/executive-assistant/skills/` contains workflow skills for briefings, calendar and task management, meeting notices, meeting prep, actions, Jira, Confluence, and sensitivity review.
+- `plugins/executive-assistant/skills/` contains the Codex entry points listed in the [workflow guide](docs/CODEX-WORKFLOWS.md#which-commands-the-skills-use).
 - `plugins/executive-assistant/scripts/unix/` contains shell setup, reports, local input workflows, and scheduler configuration.
 - `plugins/executive-assistant/assets/vault-template/` contains the clean Obsidian starter vault.
 - `integrations/atlassian-cli/` documents the Jira/Confluence CLI integration boundary.
@@ -26,17 +26,17 @@ This repository is for the package and integration code only. It must not contai
 ## Quick Start
 
 Follow the [macOS setup guide](docs/INSTALL-MACOS.md) or [Linux setup guide](docs/INSTALL-LINUX.md)
-to install the plugin, connect the same folder in Obsidian and Codex, and generate a daily or weekly vault report.
+to install the plugin, connect a local Markdown folder, and generate a vault report.
+Obsidian can open the same folder if you use it.
 
 1. Open the repository in a terminal.
-2. Check prerequisites and install from the repo-local marketplace:
+2. Install from the repo-local marketplace. The installer checks Bash and Python and uses the `codex` executable on your PATH.
 
 ```sh
-bash install/unix/check-prereqs.sh
 bash install/unix/install-plugin.sh
 ```
 
-3. Use `$executive-assistant-setup` to configure your profile. For an existing profile, use `$executive-assistant-config`.
+3. In a fresh Codex chat, use `$executive-assistant-setup` to connect a local folder, or use `$executive-assistant-config` for an existing profile. Open the resulting vault folder as a local Codex project.
 4. Verify the configured vault:
 
 ```sh
@@ -87,9 +87,17 @@ Use `$executive-todo-management` to review, prioritize, create, update, complete
 or remove vault tasks. Preview and confirm changes to vault notes. See the
 [local input format](plugins/executive-assistant/references/local-inputs.md) for supplied task metadata.
 
+## Documentation
+
+- [Codex workflows](docs/CODEX-WORKFLOWS.md) lists the skills and their commands.
+- [Architecture](docs/ARCHITECTURE.md) describes the runtime, integrations, and data boundaries.
+- [Profile schema](plugins/executive-assistant/references/profile-schema.md) describes profile fields and local overrides.
+- [Distribution](docs/DISTRIBUTION.md) covers packaging, installation, and updates.
+- [Roadmap](docs/ROADMAP.md) tracks pending validation and potential work.
+
 ## Distribution
 
-For a coworker install, build a ZIP from committed files and follow
+For a coworker install, build a ZIP from the current Git commit and follow
 [the distribution guide](docs/DISTRIBUTION.md).
 
 ```sh

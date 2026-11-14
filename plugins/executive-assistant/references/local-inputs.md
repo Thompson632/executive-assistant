@@ -11,8 +11,11 @@ an array of objects.
 | Calendar | `title`, `start`, `end` | `location`, `status`, `recurring`, `private`, `has_attendees`, `all_day` |
 | Tasks | `title` | `due`, `status`, `priority`, `source` |
 
-Use strings for text and dates, Booleans for flags, and an integer for
-`attachment_count`. Include an ISO 8601 time zone offset in timestamps.
+Use strings for text and dates, Booleans for flags, and a nonnegative integer
+for `attachment_count`. Required strings must be nonempty. Use an ISO 8601
+offset or `Z` for mail and calendar timestamps. A calendar event must end
+after it starts. The output for records marked private contains the start
+and end times and a generic title.
 
 ```sh
 ./scripts/unix/ea.sh review mail --source "/path/to/mail.json" --folder Inbox --limit 5 --offset 0
@@ -23,10 +26,11 @@ Use strings for text and dates, Booleans for flags, and an integer for
 ./scripts/unix/ea.sh audit
 ```
 
-Use `--since "2026-11-14T00:00:00-05:00"` for a mail timestamp filter.
-Prepare both snapshots for the same time range before comparing calendars.
-The review command prints allowlisted metadata for analysis. It does not
-export data or update a calendar, mailbox, or task service.
+Mail review preserves file order and returns five records by default.
+Use `--folder` for an exact folder match and `--since` for an inclusive
+received-time filter. Paging applies after these filters.
+For calendar comparison, supply both snapshots for the same time range.
+The runner returns both sets of records for the Codex skill to compare.
 
 ## Attachment Filing and Local Paths
 
@@ -38,7 +42,11 @@ Preview a supplied file and its destination before saving:
 ```
 
 After reviewing the preview, add `--apply --confirm-save "SAVE ATTACHMENTS"`
-to save it. For an email or meeting draft, add `--output PATH --apply` to
-the draft command after confirmation. Use a new destination inside the vault. Reports skip drafts saved by the
-draft command. Keep private attachments in a dot-prefixed folder to exclude
-them from report scans.
+to copy the attachment. For a draft, put the body and any intended recipient
+or meeting details in the source file. Add `--output PATH --apply` to save the
+reviewed text. For both operations, use a new absolute destination inside the
+vault without symlinks or parent traversal.
+
+Reports skip drafts saved by the draft command and skip dot-prefixed folders.
+Use `audit` for aggregate success and failure counts from the local audit
+file beside the profile. It records operation and status only.

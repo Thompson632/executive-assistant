@@ -12,7 +12,7 @@ You need Python 3.9 or newer for the local runner. From the repository folder:
 ```bash
 python3 --version
 ./plugins/executive-assistant/scripts/unix/ea.sh setup \
-  --vault "$HOME/obsidian/Rob-Local-Laptop" --copy-template
+  --vault "$HOME/Executive Assistant Vault" --copy-template
 ```
 
 To use an existing vault, replace the example folder with its full path and
@@ -34,7 +34,7 @@ The profile defaults to
 Use `--profile "/absolute/path/to/profile.json"` before a subcommand to use a
 different profile. Keep the vault and profile outside this repository.
 
-## 2. Open the same folder in Obsidian
+## 2. Open the same folder in Obsidian (optional)
 
 1. Open Obsidian and select **Manage Vaults** in the vault switcher.
 2. Select **Open folder as vault** and choose the `vault_path` printed by
@@ -46,9 +46,8 @@ different profile. Keep the vault and profile outside this repository.
 
 ## 3. Install and verify the Codex plugin
 
-Open this repository in Codex Desktop and use its local **Personal**
-marketplace to install **Executive Assistant**. You can also register and
-install it from the repository folder with the Codex CLI:
+From the repository folder, register the local **Personal** marketplace
+and install **Executive Assistant** with the Codex CLI:
 
 ```bash
 bash install/unix/check-prereqs.sh
@@ -57,14 +56,15 @@ bash install/unix/install-plugin.sh
 
 If you use the CLI bundled with ChatGPT Desktop on macOS, pass
 `--codex /Applications/ChatGPT.app/Contents/Resources/codex-cli/bin/codex` to
-`install-plugin.sh`. Open the vault folder as a local Codex project, start a fresh chat,
-and ask:
+`install-plugin.sh`. Open the vault folder as a local Codex project and
+start a fresh chat with this prompt. Use a vault with a test checkbox or
+another actionable note to verify the report's source links.
 
 > Use $executive-assistant-proof to check the configured vault. Then use
 > $executive-daily-brief and save today's report to the vault.
 
-Find the report in Obsidian under `_briefings`. Open its link to the source
-note to confirm that both apps are using the same vault.
+Find the report under `_briefings`. If you use the starter notes, follow the
+report's link to `Action-Items.md`.
 
 You can also test the file connection directly from the repository folder:
 
@@ -76,10 +76,8 @@ You can also test the file connection directly from the repository folder:
 Omit `--write` to preview. Report reruns preserve existing notes. Add
 `--replace` to `--write` when you want to regenerate a report.
 
-To upgrade an existing installation, use the same checkout path registered for
-the `personal` marketplace and rerun the installer. To move to a new checkout,
-first inspect `codex plugin marketplace list`. Remove the previous marketplace
-registration only if it belongs to this checkout and you intend to replace it.
+For updates or a moved checkout, follow the
+[marketplace update steps](DISTRIBUTION.md#update-or-move-an-installation).
 
 ## 4. Connect local Outlook mail and calendar (optional)
 

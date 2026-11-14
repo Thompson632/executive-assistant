@@ -1,32 +1,40 @@
 # Distribution
 
-The package is a repository checkout or ZIP for macOS and Linux containing:
-
-- `.agents/plugins/marketplace.json`
-- `plugins/executive-assistant/`
-- `install/unix/install-plugin.sh`
-- `install/unix/check-prereqs.sh`
-- `docs/INSTALL-MACOS.md` and `docs/INSTALL-LINUX.md`
-- `README.md`
+Distribute a repository checkout or ZIP for macOS and Linux. Both include
+the local marketplace manifest, plugin, installer, and documentation.
 
 Keep vault data, profiles, tokens, credentials, and private notes outside the package.
 
-## Build A Zip
+## Build a ZIP
 
-From the repository root, commit the files you intend to distribute and run:
+From the repository root, commit the files you intend to distribute.
+The packaging script archives all tracked files from `HEAD` into an
+`executive-assistant/` directory. Choose a ZIP path that does not exist.
 
 ```sh
 bash tools/package-unix.sh executive-assistant.zip
+unzip -tq executive-assistant.zip
 ```
 
 ## Coworker Install Flow
 
 1. Share the ZIP or repository through an approved internal channel.
-2. Extract it locally and open the repository root in a terminal.
-3. Run `bash install/unix/check-prereqs.sh`.
-4. Run `bash install/unix/install-plugin.sh`.
-5. Configure a profile using the [macOS](INSTALL-MACOS.md) or [Linux](INSTALL-LINUX.md) guide.
-6. Start a new Codex session and run the proof skill and a daily brief.
+2. Extract the ZIP or open the checkout in a stable local folder.
+3. Follow the [macOS](INSTALL-MACOS.md) or [Linux](INSTALL-LINUX.md) guide to configure a profile, install the plugin, and verify a daily brief.
+
+## Update or move an installation
+
+The installer registers the checkout or extracted folder as the `personal`
+marketplace and installs `executive-assistant@personal`. To refresh the
+installed copy, update the source in place and rerun the installer. Open a
+fresh Codex chat to load the updated skills.
+
+To move the source, run `codex plugin marketplace list` and inspect the
+`personal` entry. If it points to the old Executive Assistant source and
+you intend to replace that registration, run
+`codex plugin marketplace remove personal`, then rerun the installer from
+the new source. If the entry belongs to another marketplace, keep that
+registration and resolve the name collision before installing.
 
 ## Dependency Policy
 
@@ -34,7 +42,8 @@ The local workflow requires Bash 3.2+, Python 3.9+, and filesystem access to the
 Install Codex to use the plugin. Obsidian is optional. Additional workflows
 can use separately configured MCP servers or CLI tools such as the
 Atlassian CLIs and GitLab's `glab`.
-The plugin must degrade gracefully when optional dependencies are missing.
+See the [workflow guide](CODEX-WORKFLOWS.md) for the dependencies used by
+each integration.
 
 ## Scheduled Tasks Boundary
 

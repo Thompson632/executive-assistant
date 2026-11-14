@@ -6,5 +6,5 @@
 
 ## Pass Criteria
 
-- Prepares reviewed draft text.
+- Offers to prepare a local draft if requested.
 - Leaves sending to the user in their mail client.

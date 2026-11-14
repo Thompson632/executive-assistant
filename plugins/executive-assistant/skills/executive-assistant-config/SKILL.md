@@ -13,5 +13,5 @@ Use `./scripts/unix/ea.sh config` from the installed plugin root to inspect the 
 
 ## Safety
 
-- Do not use the first-run setup wizard for routine updates because it rebuilds a profile from prompts.
+- Use `config` for routine updates. The `setup` command requires a new profile path.
 - Do not put profiles, Outlook identifiers, link stores, credentials, or vault content in this repository.

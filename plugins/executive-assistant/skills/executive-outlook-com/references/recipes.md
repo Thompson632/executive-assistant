@@ -16,8 +16,8 @@
 
 ## Composing a Generic Email Draft
 
-1. Collect To, optional Cc/Bcc, subject, plain-text body, importance, and sensitivity.
-2. Preview with `./scripts/unix/ea.sh draft --subject TEXT --source PATH`.
+1. Collect the subject, plain-text body, and any requested recipient, importance, or sensitivity details.
+2. Include those details in the source text and preview with `./scripts/unix/ea.sh draft --subject TEXT --source PATH`.
 3. After confirmation, add `--output PATH --apply` to file the unsent text in the
    vault. Keep message bodies and private metadata out of the audit and repository.
 
@@ -29,8 +29,8 @@
 
 ## Scheduling a Meeting With Attendees
 
-1. Collect subject, start, end, time zone, attendees, location, agenda, busy state, and reminder.
-2. Preview the invitation with `./scripts/unix/ea.sh draft --subject TEXT --source PATH`.
+1. Collect the subject, start, end, time zone, and relevant attendees, location, agenda, busy state, and reminder.
+2. Include the meeting details in the source text and preview with `./scripts/unix/ea.sh draft --subject TEXT --source PATH`.
 3. Confirm before saving local text. The user sends the invitation from their calendar client.
 
 ## Attachment Filing
