@@ -31,7 +31,10 @@ def sources(profile):
         value = settings[key]
         if not isinstance(value, str) or not value.strip() or "\x00" in value:
             raise ValueError(f"Set outlook.{key} to a nonempty string.")
-        path = local_workflows.local_path(value)
+        try:
+            path = local_workflows.local_path(value)
+        except RuntimeError:
+            raise ValueError(f"Set outlook.{key} to an absolute local path.") from None
         if not path.is_absolute():
             raise ValueError(f"Set outlook.{key} to an absolute local path.")
         result[kind] = path

@@ -184,3 +184,15 @@ class LocalOutlookTest(unittest.TestCase):
         self.assertEqual(outlook.sources({"outlook": {
             "enabled": True, "mailboxName": "old", "protocolName": "ea-outlook",
         }}), {})
+
+    def test_unknown_home_in_source_path_reports_the_setting(self):
+        self.configure(maildir="~ea-fixture-unknown-user-8731/Inbox")
+        diagnostic = "Set outlook.maildir to an absolute local path."
+        config = self.command("config", check=False)
+        self.assertEqual(config.returncode, 0, config.stderr)
+        self.assertEqual(json.loads(config.stdout)["outlook_error"], diagnostic)
+        for args in (("outlook", "mail"), ("report", "daily")):
+            with self.subTest(args=args):
+                result = self.command(*args, check=False)
+                self.assertEqual(result.returncode, 1)
+                self.assertEqual(result.stderr.strip(), f"Executive Assistant: {diagnostic}")
