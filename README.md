@@ -104,6 +104,8 @@ or remove vault tasks. Preview and confirm changes to vault notes. See the
 - [Profile schema](plugins/executive-assistant/references/profile-schema.md) describes profile fields and local overrides.
 - [Distribution](docs/DISTRIBUTION.md) covers packaging, installation, and updates.
 - [Roadmap](docs/ROADMAP.md) tracks pending validation and potential work.
+- [Developing](DEVELOPING.md) covers local setup and validation.
+- [Contributing](CONTRIBUTING.md) covers bug reports and pull requests.
 
 ## Distribution
 
@@ -113,3 +115,7 @@ For a coworker install, build a ZIP from the current Git commit and follow
 ```sh
 bash tools/package-unix.sh executive-assistant.zip
 ```
+
+## License
+
+[License](LICENSE).
