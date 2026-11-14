@@ -2,14 +2,22 @@
 
 Executive Assistant turns the notes and open tasks in a folder into a daily
 brief. The folder is called a vault. You can view it in Codex, a Markdown
-editor, or Obsidian.
+editor, or Obsidian. If you only want to run the local report from the
+terminal, open the package as described below and then follow the
+[terminal instructions](#terminal-alternative).
 
 ## 1. Open the package
 
 Extract the Executive Assistant ZIP, or use your existing checkout. Keep
 the extracted `executive-assistant` folder somewhere you plan to leave it.
-Open a terminal in that folder. You should see `README.md` and the `install`
-folder there.
+Open Terminal and run the command below. Replace the example path inside
+the quotes with the full path to the folder you extracted. The `ls` command
+should show `README.md` and the `install` folder.
+
+```sh
+cd "/path/to/executive-assistant"
+ls
+```
 
 ## 2. Install the plugin
 
@@ -27,7 +35,8 @@ Codex in a fresh chat after installing. If the skill does not appear, see
 ## 3. Connect your notes folder and save a brief
 
 1. Create an empty folder named **Executive Assistant Vault** or choose an
-   existing notes folder. Keep it outside the extracted package. Open that
+   existing notes folder. Keep your notes and the extracted package in
+   separate folders, such as two folders side by side. Open the notes
    folder as a local project in Codex and start a fresh chat.
 2. Paste the setup prompt below. For an existing folder of notes, ask to use
    the existing notes without copying the starter notes.
@@ -56,7 +65,8 @@ If you used another note, look for its title instead.
 
 ## Terminal alternative
 
-From the package folder, set `ea_vault` to the folder you want to connect.
+This route needs Bash and Python 3.9 or later. From the package folder,
+set `ea_vault` to the folder you want to connect.
 Run setup once for a new profile. If you already have a profile, use
 [profile configuration](../plugins/executive-assistant/references/profile-schema.md#routine-configuration).
 

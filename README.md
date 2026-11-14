@@ -105,4 +105,4 @@ bash tools/package-unix.sh executive-assistant.zip
 
 ## License
 
-[License](LICENSE).
+[MIT License](LICENSE).

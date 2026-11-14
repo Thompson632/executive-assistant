@@ -43,7 +43,10 @@ and rerun the installer from the new folder.
 
 If `personal` belongs to another project, keep the existing registration.
 Use the [isolated CLI install](../DEVELOPING.md#try-a-workflow-with-temporary-data)
-to try this package with a separate Codex configuration.
+to try this package with a separate Codex configuration. Verify the install
+with the same `CODEX_HOME` in the terminal. For daily or weekly reports from
+the package folder, you can also use the
+[terminal workflow](GETTING-STARTED.md#terminal-alternative).
 
 ## Dependency Policy
 

@@ -42,9 +42,9 @@ in the same chat with one of these replies:
 
 ### Executive First-Time Setup
 
-> Use $executive-assistant-setup to connect my Obsidian vault at [absolute vault path]. Use my existing notes and show me which folder the profile points to.
+> Use $executive-assistant-setup to connect my notes folder at [full folder path]. Use my existing notes and show me which folder is connected.
 
-> Use $executive-assistant-setup to create a vault at [absolute vault path] with the starter notes. Show me the folder to open in Obsidian.
+> Use $executive-assistant-setup to create a notes folder at [full folder path] with the starter notes. Show me the folder to open in Codex.
 
 ### Executive Change Settings
 

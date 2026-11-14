@@ -49,7 +49,10 @@ From the installed plugin root, run the commands for the sources you enabled:
 ./scripts/unix/ea.sh report weekly
 ```
 
-`check` reports configured providers. The `outlook` reads verify actual access.
+`check` reports configured providers and validates their settings.
+A listed source may still be missing, unreadable, or out of date.
+Use the `outlook` commands above to verify that the configured source can
+be read, then check that the returned dates match the data you expect.
 Resolve any `outlook_error` before reading Outlook or generating a new report.
 Mail looks back from the focus date, includes unread or flagged messages,
 and sorts newest first. Calendar looks forward from the focus date and
