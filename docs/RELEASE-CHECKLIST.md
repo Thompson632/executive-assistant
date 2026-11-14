@@ -10,18 +10,21 @@ log excerpt or output path. Keep local paths and account details private.
 - [ ] Record the macOS workflow matrix result for the release commit.
 - [ ] Record the Linux workflow matrix result for the same commit. Both
   platforms check Bash and Zsh syntax, unit tests, guide links and skill
-  names, and a first brief from the extracted ZIP under both shells.
+  names, and the default-profile workflow from the extracted ZIP under
+  both shells. The smoke runs a read-only preview, checks the saved
+  brief's source link, and verifies that a rerun preserves a manual edit.
 - [ ] Verify plugin and skill metadata using the
   [repo validation commands](../AGENTS.md#validation). If the plugin
   validator is unavailable, use a disposable installation.
 - [ ] Record the location of the ZIP supplied to the first-time reader.
   Extract that copy into a path with spaces. The package tests verify the
   complete approved MIT text and attribution. Verify that the archived
-  license matches `git show HEAD:LICENSE` for the release commit. Check that the ZIP
-  contains the plugin manifest and the
+  license matches `git show HEAD:LICENSE` for the release commit. Check that
+  the ZIP contains the plugin manifest and the
   [getting-started guide](GETTING-STARTED.md). Follow the terminal route.
   Verify that the report is in the selected notes folder, contains the
-  test task, and links back to its note.
+  test task, and links back to its note. Check that the ZIP omits both
+  local planning folders under `docs/superpowers/`.
 
 ## Install and update
 
@@ -41,6 +44,9 @@ log excerpt or output path. Keep local paths and account details private.
   reader should be able to follow the guide, find `$executive-assistant-proof`,
   preview and save a daily brief, and open its source link. Record any step
   where the reader needed help.
+- [ ] For an existing setup, follow
+  [Use an existing setup](GETTING-STARTED.md#use-an-existing-setup) and verify
+  that a folder-change preview leaves the current profile and notes intact.
 
 ## Scheduled runs
 
