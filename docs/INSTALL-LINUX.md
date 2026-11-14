@@ -1,7 +1,7 @@
 # Executive Assistant on Linux
 
-The shell runner uses Bash 3.2+, Python 3.9+, and a local Markdown folder.
-Obsidian can open the same folder. Use the Codex CLI to install the plugin.
+The shell runner uses Bash 3.2+, Python 3.9+, and a local Markdown folder called
+a vault. Obsidian can open the same folder. Use the Codex CLI to install the plugin.
 For the desktop interface, see the
 [ChatGPT desktop preview for Linux](https://learn.chatgpt.com/docs/linux/linux-app).
 
@@ -40,6 +40,8 @@ Open a new Codex session in the vault folder and invoke
 
 For updates or a moved checkout, follow the
 [marketplace update steps](DISTRIBUTION.md#update-or-move-an-installation).
+If installation stops because `personal` already points to another source, see
+[marketplace name conflicts](DISTRIBUTION.md#marketplace-name-conflicts).
 
 ## 4. Connect local Outlook mail and calendar (optional)
 

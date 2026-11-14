@@ -1,7 +1,7 @@
 # Executive Assistant Sample Prompts
 
-Copy a prompt into Codex Desktop. For vault workflows, open your Obsidian
-vault as a local Codex project. Replace bracketed examples with your own
+Copy a prompt into Codex Desktop. For vault workflows, open your
+notes folder as a local Codex project. Replace bracketed examples with your own
 names, dates, or paths. When a prompt refers to supplied notes or files,
 paste the notes or attach the files in the same chat.
 
@@ -136,11 +136,12 @@ At the end of the workday, ask:
 
 ### Executive Compare Two Calendars
 
-Supply two calendar exports covering the same dates.
+Supply two [calendar metadata JSON files](../plugins/executive-assistant/references/local-inputs.md)
+covering the same dates.
 
-> Use $executive-calendar-sync to compare [first calendar export] with [second calendar export]. Show missing or changed events and flag ambiguous matches so I can review them.
+> Use $executive-calendar-sync to compare [first calendar JSON file] with [second calendar JSON file]. Show missing or changed events and flag ambiguous matches so I can review them.
 
-> Use $executive-calendar-sync to compare my original export with the revised export for [date range]. Show each moved meeting with its old and new time and give me a list of changes to review.
+> Use $executive-calendar-sync to compare my original snapshot with the revised snapshot for [date range]. Show each moved meeting with its old and new time and give me a list of changes to review.
 
 ## Work with meetings and email
 

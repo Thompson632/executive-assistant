@@ -25,6 +25,9 @@ Pass `--profile PATH` before the subcommand to select a different file.
 The source repository's `config/executive-assistant.example.json` is a
 reference. Add settings you want to use to your active profile. The runner
 reads the default profile above unless you use `--profile`.
+Older profiles may contain fields such as `timeZoneId` or
+`obsidian.copyVaultTemplate`. Report dates use the host's time zone and
+`setup --copy-template` controls whether starter notes are copied.
 
 ## Migration
 

@@ -1,9 +1,8 @@
 # Executive Assistant on macOS
 
-Codex and Obsidian share a folder of Markdown notes. The Mac workflow supports
-vault setup, daily and weekly briefs, action triage, and meeting prep from notes.
-Mail and calendar can also read from configured local sync files. Drafts remain
-text for manual review.
+Executive Assistant uses a local folder of Markdown notes, called a vault.
+Open it in Codex for daily and weekly briefs, action triage, and meeting prep.
+You can also open the same folder in Obsidian.
 
 ## 1. Connect a vault
 
@@ -16,9 +15,9 @@ python3 --version
 ```
 
 To use an existing vault, replace the example folder with its full path and
-omit `--copy-template`. Use the folder that contains its notes and
-`.obsidian` settings. The template is optional and adds missing starter files
-without replacing your notes.
+omit `--copy-template`. Use the folder that contains your notes. If you use
+Obsidian, choose the existing vault folder. The template is optional and adds
+missing starter files without replacing your notes.
 
 If you already have a profile, run the following to inspect it and preview a
 vault change. Rerun the second command with `--apply` to save the change.
@@ -79,6 +78,8 @@ Omit `--write` to preview. Report reruns preserve existing notes. Add
 
 For updates or a moved checkout, follow the
 [marketplace update steps](DISTRIBUTION.md#update-or-move-an-installation).
+If installation stops because `personal` already points to another source, see
+[marketplace name conflicts](DISTRIBUTION.md#marketplace-name-conflicts).
 
 ## 4. Connect local Outlook mail and calendar (optional)
 

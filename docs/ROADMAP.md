@@ -4,6 +4,9 @@ The [workflow guide](CODEX-WORKFLOWS.md) describes currently available
 features. The remaining work below covers live validation and possible
 extensions.
 
+The [repository usability plan](superpowers/plans/2026-11-14-repository-usability.md)
+tracks the first-run guide, recovery fixes, and release verification.
+
 ## Live validation
 
 - Confirm a fresh Codex Desktop chat can load the installed proof skill and write a daily report to a test vault.

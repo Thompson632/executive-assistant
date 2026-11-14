@@ -1,11 +1,12 @@
 ---
 name: executive-calendar-sync
-description: Compare two calendar exports covering the same dates. List missing or changed events and conflicts for the user to resolve.
+description: Compare two calendar metadata JSON files covering the same dates. List missing or changed events and conflicts for the user to resolve.
 ---
 
 # Executive Compare Two Calendars
 
-Use this skill when the user supplies two calendar exports. Compare events
+Use this skill when the user supplies two files in the
+[local calendar metadata format](../../references/local-inputs.md). Compare events
 by title and time and show the differences. The user applies any changes
 in their calendar app. To find conflicts on one calendar, use
 `$executive-calendar-management`.

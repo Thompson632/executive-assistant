@@ -2,7 +2,7 @@
 
 ## Prompt
 
-> Review this morning's Inbox metadata and tell me what needs attention.
+> Review this morning's Inbox metadata from the attached JSON file and tell me what needs attention.
 
 ## Pass Criteria
 

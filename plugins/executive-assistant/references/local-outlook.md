@@ -8,8 +8,10 @@ source current and handles account authentication.
 
 Edit the `outlook` object in your local profile. The default profile is
 `${CODEX_HOME:-$HOME/.codex}/executive-assistant/profiles/default.json`.
+If you run commands with `--profile PATH`, edit that file.
 If your profile uses an older provider, replace its `outlook` object with the
-example below and set the paths for your sources.
+example below and set the paths for your sources. For vault-only use, set
+`outlook.enabled` to `false`.
 
 Use a Maildir already maintained by your mail client or sync job. For the
 calendar, point to a metadata JSON file kept current by your existing local

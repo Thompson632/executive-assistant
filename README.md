@@ -2,6 +2,9 @@
 
 Reusable Codex Desktop package for an executive-assistant workflow built around a local working folder on macOS and Linux. Optional integrations can use separately configured MCP servers or CLI tools such as the Atlassian CLIs and GitLab's `glab`.
 
+- **Set up your assistant.** Follow the [macOS setup guide](docs/INSTALL-MACOS.md) or [Linux setup guide](docs/INSTALL-LINUX.md), then try a [sample prompt](docs/SAMPLE-PROMPTS.md).
+- **Work on the package.** Start with the [development guide](DEVELOPING.md) and [contribution guide](CONTRIBUTING.md).
+
 This repository is for the package and integration code only. It must not contain a user's vault, email content, Outlook link index, Jira tokens, Confluence tokens, or private operating notes.
 
 ## Current Shape
@@ -104,8 +107,6 @@ or remove vault tasks. Preview and confirm changes to vault notes. See the
 - [Profile schema](plugins/executive-assistant/references/profile-schema.md) describes profile fields and local overrides.
 - [Distribution](docs/DISTRIBUTION.md) covers packaging, installation, and updates.
 - [Roadmap](docs/ROADMAP.md) tracks pending validation and potential work.
-- [Developing](DEVELOPING.md) covers local setup and validation.
-- [Contributing](CONTRIBUTING.md) covers bug reports and pull requests.
 
 ## Distribution
 

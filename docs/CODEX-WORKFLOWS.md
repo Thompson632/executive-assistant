@@ -28,7 +28,8 @@ root, verify the configured vault:
 
 Use `$executive-assistant-setup` for a new profile and
 `$executive-assistant-config` to preview or apply updates. Follow the
-[macOS](INSTALL-MACOS.md) or [Linux](INSTALL-LINUX.md) guide to connect Obsidian.
+[macOS](INSTALL-MACOS.md) or [Linux](INSTALL-LINUX.md) guide to connect a
+notes folder and optionally open it in Obsidian.
 
 ## Daily Reports, Calendar, and Tasks
 

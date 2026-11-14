@@ -29,12 +29,17 @@ marketplace and installs `executive-assistant@personal`. To refresh the
 installed copy, update the source in place and rerun the installer. Open a
 fresh Codex chat to load the updated skills.
 
-To move the source, run `codex plugin marketplace list` and inspect the
-`personal` entry. If it points to the old Executive Assistant source and
-you intend to replace that registration, run
-`codex plugin marketplace remove personal`, then rerun the installer from
-the new source. If the entry belongs to another marketplace, keep that
-registration and resolve the name collision before installing.
+### Marketplace name conflicts
+
+If the installer says `personal` is already added from a different source,
+run `codex plugin marketplace list` and check the recorded folder. If it
+points to your existing Executive Assistant folder, update that copy in place.
+If you deliberately moved that checkout, run `codex plugin marketplace remove personal`
+and rerun the installer from the new folder.
+
+If `personal` belongs to another project, keep the existing registration.
+Use the [isolated CLI install](../DEVELOPING.md#try-a-workflow-with-temporary-data)
+to try this package with a separate Codex configuration.
 
 ## Dependency Policy
 
