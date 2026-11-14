@@ -1,6 +1,6 @@
 ---
 name: executive-assistant-proof
-description: Check that the Executive Assistant plugin and its configured Obsidian folder are available. Use after installing or changing the setup, or when a skill cannot find the vault.
+description: Check that the Executive Assistant plugin and its configured notes folder are available. Use after installing or changing the setup, or when a skill cannot find the vault.
 ---
 
 # Executive Check Setup
@@ -10,6 +10,11 @@ Use this as the smallest safe proof that the Executive Assistant package is visi
 ## macOS and Linux checks
 
 Check for `scripts/unix/ea.sh` and run `./scripts/unix/ea.sh check` from the plugin root to inspect the profile without writing to the vault. A present `.obsidian` directory indicates the folder has Obsidian settings. The check lists configured Outlook sources. Use `outlook mail` or `outlook calendar` when asked to verify actual source access. A `report daily` preview reads configured sources along with the vault.
+
+If the result includes `outlook_error`, report that the notes folder is
+available and give the `profile_path` with the Outlook diagnostic. Explain
+how to disable Outlook for vault-only use or
+[configure a file source](../../references/local-outlook.md).
 
 ## Behavior
 

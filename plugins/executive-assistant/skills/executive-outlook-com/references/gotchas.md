@@ -23,10 +23,8 @@ changes.
 
 ## Private Items
 
-Calendar file records marked private expose times and a generic title. The
-Apple provider uses generic titles by default because its interface does not
-identify private events. Keep private locations, attendees, and bodies out of
-shared results.
+Calendar file records marked private expose times and a generic title. Keep
+private locations, attendees, and bodies out of shared results.
 
 ## Attachment Paths
 

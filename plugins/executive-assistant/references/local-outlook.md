@@ -1,50 +1,20 @@
 # Local Outlook Mail and Calendar
 
-The shell launcher can read Outlook or Exchange metadata from a local client
-or sync folder. It reads the configured source each time you run a command.
-The client or sync job controls how current that source is and handles account
-authentication. Executive Assistant makes its reads through macOS Automation
-or the local filesystem.
+The shell launcher reads local Outlook or Exchange metadata on demand from a
+Maildir folder or calendar metadata file. Your client or sync job keeps the
+source current and handles account authentication.
 
 ## Configure a source
 
-Edit the `outlook` object in your local profile. Run `./scripts/unix/ea.sh config`
-to find its path. The default profile is
+Edit the `outlook` object in your local profile. The default profile is
 `${CODEX_HOME:-$HOME/.codex}/executive-assistant/profiles/default.json`.
-If you migrated a profile from the former Outlook integration, replace its
-`outlook` object with one of the examples below.
-
-### Apple Mail and Calendar on macOS
-
-Use an Outlook or Exchange account already syncing to Apple Mail or Calendar.
-Use exact names as shown in the apps. Choose a top-level folder in the
-specified Mail account and a uniquely named calendar.
-
-```json
-"outlook": {
-  "enabled": true,
-  "provider": "apple",
-  "mailAccount": "Work Exchange",
-  "mailFolder": "Inbox",
-  "calendarName": "Work Calendar"
-}
-```
-
-Omit both mail fields for calendar only, or omit `calendarName` for mail only.
-Open the configured apps in your signed-in macOS session. The first read may
-ask you to allow Automation for the terminal or Codex session making the
-request. Apple Calendar supplies event times and generic titles by default.
-For a calendar whose titles are safe to copy to your private reports, you can
-set `"includeCalendarTitles": true`. The Calendar scripting interface does
-not identify private events, and recurring occurrences depend on what the
-app returns through its scripting interface.
-
-Confirm the account already syncs in Apple Mail or Calendar before enabling
-this provider. If Apple Mail or Calendar can no longer sign in to Exchange
-Online or sync, ask your Exchange administrator to check the tenant's
-settings. [Apple's Exchange sync guidance](https://support.apple.com/en-us/149092)
-
-### Local sync files on Linux or macOS
+If you run commands with `--profile PATH`, edit that file.
+Run `check` or `config` to find the exact file in `profile_path`. If the
+notes folder is available and Outlook settings need attention, the result
+includes `outlook_error`.
+If your profile uses an older provider, replace its `outlook` object with the
+example below and set the paths for your sources. For vault-only use, set
+`outlook.enabled` to `false`.
 
 Use a Maildir already maintained by your mail client or sync job. For the
 calendar, point to a metadata JSON file kept current by your existing local
@@ -79,7 +49,11 @@ From the installed plugin root, run the commands for the sources you enabled:
 ./scripts/unix/ea.sh report weekly
 ```
 
-`check` reports configured providers. The `outlook` reads verify actual access.
+`check` reports configured providers and validates their settings.
+A listed source may still be missing, unreadable, or out of date.
+Use the `outlook` commands above to verify that the configured source can
+be read, then check that the returned dates match the data you expect.
+Resolve any `outlook_error` before reading Outlook or generating a new report.
 Mail looks back from the focus date, includes unread or flagged messages,
 and sorts newest first. Calendar looks forward from the focus date and
 includes events overlapping that window. The window includes the focus date
@@ -94,8 +68,5 @@ or free calendar. Add `--write` to save a report, and use `--write --replace`
 to refresh an existing report. Keep a vault receiving mail subjects and
 calendar metadata private.
 
-The Apple provider requires a signed-in session with the apps open and
-Automation available to the process running the command. Verify a scheduled
-read independently if you plan to use it. File-backed sources can be used by
-scheduled jobs with local read access. To return to vault-only reports, set
-`outlook.enabled` to `false`.
+Scheduled jobs need local read access to the configured sources. To return to
+vault-only reports, set `outlook.enabled` to `false`.

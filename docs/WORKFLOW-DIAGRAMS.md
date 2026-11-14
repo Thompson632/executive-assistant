@@ -2,7 +2,7 @@
 
 ## Find the right skill
 
-Start with what you want to do. In a Codex chat open to your Obsidian folder,
+Start with what you want to do. In a Codex chat open to your notes folder,
 type `$` to find a skill by name or copy a prompt from the
 [sample prompt guide](SAMPLE-PROMPTS.md).
 
@@ -17,7 +17,7 @@ type `$` to find a skill by name or copy a prompt from the
 | “What should I work on next?” | **Executive Prioritize Actions** · ranks open work and flags blockers |
 | “What needs my attention today?” | **Executive Prepare Today’s Brief** · brings actions, calendar, and available mail together |
 | “Where are the conflicts on my calendar?” | **Executive Review My Calendar** · finds overlaps and suggests focus time |
-| “What changed between these two exports?” | **Executive Compare Two Calendars** · lists differences for review |
+| “What changed between these two calendar snapshots?” | **Executive Compare Two Calendars** · lists differences for review |
 | “What should I ask in this meeting?” | **Executive Prepare for or Debrief a Meeting** · pulls questions or follow-ups from notes |
 | “Help me respond to this invitation.” | **Executive Draft a Meeting Invite or Reply** · prepares text you can send |
 

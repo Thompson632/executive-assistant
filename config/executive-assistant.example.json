@@ -1,14 +1,9 @@
 {
   "schemaVersion": 2,
   "profileName": "example-executive",
-  "userName": "Executive Name",
-  "userEmail": "executive@example.com",
   "vaultPath": "/absolute/path/to/vault",
-  "timeZoneId": "Local",
   "obsidian": {
-    "enabled": true,
-    "vaultPath": "/absolute/path/to/vault",
-    "copyVaultTemplate": true
+    "enabled": true
   },
   "outlook": {
     "enabled": false
@@ -24,12 +19,8 @@
     "confluenceSpace": "",
     "confluenceRootPageId": ""
   },
-  "mcp": {
-    "outlookServerName": ""
-  },
   "scheduledTasks": {
     "enabled": true,
-    "timeZoneId": "Local",
     "dailyBrief": {
       "enabled": true,
       "time": "06:00"

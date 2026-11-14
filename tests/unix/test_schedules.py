@@ -50,6 +50,31 @@ class SchedulesTest(unittest.TestCase):
         for heading in ("Daily Brief", "Weekly Review", "Follow-Up Monitor", "Action Update"):
             self.assertIn("## " + heading, prompts)
 
+    def test_explicitly_empty_or_disabled_schedule_preferences(self):
+        profile = json.loads(self.profile.read_text())
+        for preferences in ({}, {"enabled": False, "dailyBrief": {"enabled": True}}):
+            with self.subTest(preferences=preferences):
+                self.profile.write_text(json.dumps({**profile, "scheduledTasks": preferences}))
+                result = self.command("schedule-prompts")
+                self.assertNotIn(b"## ", result.stdout)
+
+    def test_invalid_schedule_preferences_name_the_field(self):
+        profile = json.loads(self.profile.read_text())
+        examples = {
+            "scheduledTasks": None,
+            "scheduledTasks.enabled": {"enabled": "false"},
+            "scheduledTasks.dailyBrief.enabled": {"dailyBrief": {"enabled": "false"}},
+            "scheduledTasks.dailyBrief.time": {"dailyBrief": {"enabled": True, "time": "24:00"}},
+            "scheduledTasks.weeklyReview.day": {"weeklyReview": {"enabled": True, "day": "Funday"}},
+        }
+        for field, preferences in examples.items():
+            with self.subTest(field=field):
+                self.profile.write_text(json.dumps({**profile, "scheduledTasks": preferences}))
+                result = self.command("schedule-prompts", check=False)
+                self.assertEqual(result.returncode, 1)
+                self.assertEqual(result.stdout, b"")
+                self.assertIn(field.encode(), result.stderr)
+
     def test_standalone_codex_prompt_uses_profile(self):
         payload = json.loads(self.profile.read_text())
         payload["scheduledTasks"] = {"enabled": True,

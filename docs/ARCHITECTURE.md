@@ -7,12 +7,12 @@ The Executive Assistant package has five parts.
 - The plugin manifest and marketplace register the package and expose its metadata to Codex.
 - The [skills](CODEX-WORKFLOWS.md#which-commands-the-skills-use) guide workflows that Codex can invoke from chat.
 - The Bash launcher delegates profile management, metadata review, report generation, and schedule output to a shared Python runtime on macOS and Linux.
-- Optional integrations use local files, Apple Mail and Calendar, or separately configured CLIs or MCP servers.
+- Optional integrations use local files or separately configured CLIs or MCP servers.
 - The vault template under `assets/vault-template/` adds starter Markdown notes and folders during opt-in setup.
 
 ## Integration Direction
 
-Calendar and mail can read explicitly configured local clients or sync files.
+Calendar and mail can read explicitly configured local sync files.
 Supplied metadata remains available for calendar, mail, and tasks. Keep the
 inputs metadata-first. Drafts stay local for user review.
 

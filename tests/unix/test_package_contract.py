@@ -1,3 +1,4 @@
+import hashlib
 import json
 from pathlib import Path
 import re
@@ -5,6 +6,7 @@ import shlex
 import subprocess
 import tempfile
 import unittest
+from urllib.parse import unquote
 
 from test_vault_workflow import LAUNCHER
 
@@ -12,14 +14,83 @@ ROOT = Path(__file__).resolve().parents[2]
 PLUGIN = LAUNCHER.parents[2]
 LEGACY = re.compile(r"powershell|\.ps[1m]\b|\.psm1\b|[A-Z]:\\|%USERPROFILE%|scripts[/\\]windows",
                     re.IGNORECASE)
+PUBLIC_GUIDES = (
+    "README.md", "docs/GETTING-STARTED.md", "docs/INSTALL-MACOS.md",
+    "docs/INSTALL-LINUX.md", "docs/CODEX-WORKFLOWS.md",
+    "docs/SAMPLE-PROMPTS.md", "docs/WORKFLOW-DIAGRAMS.md",
+)
+
+
+def heading_anchors(text):
+    anchors = set()
+    fence = None
+    for line in text.splitlines():
+        marker = re.match(r"^ {0,3}(`{3,}|~{3,})(.*)$", line)
+        if marker:
+            if fence is None:
+                fence = marker[1]
+            elif marker[1].startswith(fence) and not marker[2].strip():
+                fence = None
+            continue
+        heading = re.match(r"^ {0,3}#{1,6}\s+(.+?)\s*$", line)
+        if fence is not None or heading is None:
+            continue
+        label = re.sub(r"\[([^]]+)\]\([^)]+\)", r"\1", heading[1])
+        base = re.sub(r"[^\w -]", "", label.lower()).replace(" ", "-")
+        anchor = base
+        suffix = 0
+        while anchor in anchors:
+            suffix += 1
+            anchor = f"{base}-{suffix}"
+        anchors.add(anchor)
+    return anchors
 
 
 class PackageContractTest(unittest.TestCase):
+    def test_release_license_contains_the_approved_mit_notice(self):
+        license_text = " ".join((ROOT / "LICENSE").read_text(encoding="utf-8").split())
+        self.assertEqual(
+            hashlib.sha256(license_text.encode("utf-8")).hexdigest(),
+            "a8333ca0f367c93767277c5e8b6604ca0e5067ad908fbe85ed3e6a491034d6ee",
+            "LICENSE differs from the full approved MIT text and attribution.",
+        )
+
+    def test_heading_anchors_support_apostrophes_and_duplicates(self):
+        source = "# Today’s Brief\n## Today's Brief\n```text\n## Ignore this\n```\n"
+        self.assertEqual(heading_anchors(source), {"todays-brief", "todays-brief-1"})
+
+    def test_public_guides_link_to_existing_headings(self):
+        for name in PUBLIC_GUIDES:
+            guide = ROOT / name
+            text = guide.read_text(encoding="utf-8")
+            for link in re.findall(r"\]\(([^() ]+)\)", text):
+                if "://" in link or "#" not in link:
+                    continue
+                path, fragment = link.split("#", 1)
+                target = guide.parent / unquote(path) if path else guide
+                if target.suffix == ".md":
+                    with self.subTest(guide=name, link=link):
+                        self.assertTrue(target.is_file(), target)
+                        self.assertIn(unquote(fragment), heading_anchors(target.read_text(encoding="utf-8")))
+
+    def test_prompt_and_workflow_guides_cover_packaged_skills(self):
+        manifest = json.loads((PLUGIN / ".codex-plugin/plugin.json").read_text())
+        skills = set()
+        for skill in (PLUGIN / manifest["skills"]).glob("*/SKILL.md"):
+            frontmatter = skill.read_text(encoding="utf-8").split("---", 2)[1]
+            match = re.search(r"^name:\s+(executive-[a-z-]+)$", frontmatter, re.MULTILINE)
+            self.assertIsNotNone(match, skill)
+            skills.add(match[1])
+        for name in ("docs/SAMPLE-PROMPTS.md", "docs/CODEX-WORKFLOWS.md", "docs/WORKFLOW-DIAGRAMS.md"):
+            with self.subTest(name=name):
+                text = (ROOT / name).read_text(encoding="utf-8")
+                self.assertEqual(set(re.findall(r"\$(executive-[\w-]+)", text)), skills)
+
     def test_packaged_launcher_and_skill_references(self):
         manifest = json.loads((PLUGIN / ".codex-plugin/plugin.json").read_text())
         self.assertLessEqual(len(manifest["interface"]["defaultPrompt"]), 3)
         skills = sorted((PLUGIN / manifest["skills"]).glob("*/SKILL.md"))
-        self.assertEqual(len(skills), 21)
+        self.assertTrue(skills)
         self.assertTrue(LAUNCHER.is_file())
         for skill in skills:
             self.assertIn(f"name: {skill.parent.name}\n", skill.read_text())

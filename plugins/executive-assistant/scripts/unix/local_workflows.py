@@ -24,10 +24,13 @@ OPERATIONS = ("draft", "attachment")
 STATUSES = ("written", "failed")
 
 
-def local_path(value):
+def local_path(value: str) -> Path:
     if re.match(r"^[A-Za-z][A-Za-z0-9+.-]*://", value):
         raise ValueError("Use a local filesystem path.")
-    return Path(value).expanduser()
+    try:
+        return Path(value).expanduser()
+    except RuntimeError:
+        raise ValueError("Use an absolute local path or ~ for your home folder.") from None
 
 
 @contextmanager
@@ -59,11 +62,13 @@ def timestamp(value):
     return parsed
 
 
-def read_records(source, kind):
-    return validate_records(json.loads(read_input(local_path(source))), kind)
+def read_records(source: str, kind: str, *, exclude_canceled: bool = False) -> list[dict]:
+    return validate_records(
+        json.loads(read_input(local_path(source))), kind, exclude_canceled=exclude_canceled,
+    )
 
 
-def validate_records(payload, kind):
+def validate_records(payload: object, kind: str, *, exclude_canceled: bool = False) -> list[dict]:
     if not isinstance(payload, list):
         raise ValueError("Expected a JSON array of metadata objects.")
     records = []
@@ -80,6 +85,8 @@ def validate_records(payload, kind):
         if kind == "calendar":
             if timestamp(safe["end"]) <= timestamp(safe["start"]):
                 raise ValueError(f"Record {index} needs an end time after its start time.")
+            if exclude_canceled and safe.get("status", "").casefold() in {"canceled", "cancelled"}:
+                continue
             if safe.get("private"):
                 safe = {"title": "Private event", "start": safe["start"], "end": safe["end"]}
         if kind == "mail" and "received" in safe:

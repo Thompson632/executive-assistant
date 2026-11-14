@@ -3,11 +3,13 @@ import json
 import os
 from pathlib import Path
 import plistlib
+import re
 import shutil
 import subprocess
 import sys
 import tempfile
 import unittest
+from urllib.parse import unquote
 
 
 SCRIPT = (
@@ -71,6 +73,111 @@ class VaultWorkflowTest(unittest.TestCase):
         self.assertEqual(self.profile.read_bytes(), before)
         self.assertEqual(list(self.vault.iterdir()), [])
 
+    def test_profile_fifo_returns_a_regular_file_error(self):
+        self.profile.parent.mkdir()
+        os.mkfifo(self.profile)
+        result = subprocess.run(
+            [str(LAUNCHER), "--profile", str(self.profile), "check"],
+            capture_output=True, timeout=3,
+        )
+        self.assertEqual(result.returncode, 1)
+        self.assertEqual(result.stdout, b"")
+        self.assertIn(b"Choose a regular JSON profile file", result.stderr)
+
+    def test_check_accepts_a_symlink_to_a_regular_profile(self):
+        self.vault.mkdir()
+        self.profile.parent.mkdir()
+        target = self.root / "target.json"
+        target.write_text(json.dumps({"vaultPath": str(self.vault)}), encoding="utf-8-sig")
+        self.profile.symlink_to(target)
+        self.assertEqual(json.loads(self.command("check").stdout)["vault_path"], str(self.vault))
+
+    def test_vault_cannot_contain_the_executing_package(self):
+        containing = self.root / "Containing Folder"
+        plugin = containing / "executive-assistant"
+        shutil.copytree(LAUNCHER.parents[2], plugin)
+        launcher = plugin / LAUNCHER.relative_to(LAUNCHER.parents[2])
+
+        def run(*args):
+            return subprocess.run(
+                [str(launcher), "--profile", str(self.profile), *args],
+                capture_output=True, timeout=5,
+            )
+
+        diagnostic = b"Choose a notes folder separate from the Executive Assistant package."
+        result = run("setup", "--vault", str(containing), "--copy-template")
+        self.assertEqual(result.returncode, 1)
+        self.assertIn(diagnostic, result.stderr)
+        self.assertFalse(self.profile.exists())
+        self.assertFalse((containing / "Action-Items.md").exists())
+
+        self.profile.parent.mkdir()
+        self.profile.write_text(json.dumps({"vaultPath": str(containing)}))
+        original = self.profile.read_bytes()
+        for args in (("check",), ("report", "daily", "--write")):
+            with self.subTest(args=args):
+                result = run(*args)
+                self.assertEqual(result.returncode, 1)
+                self.assertIn(diagnostic, result.stderr)
+        self.assertFalse((containing / "_briefings").exists())
+        sibling = self.root / "Sibling Notes"
+        sibling.mkdir()
+        self.assertEqual(run("config", "--vault", str(sibling)).returncode, 0)
+        self.assertEqual(self.profile.read_bytes(), original)
+        moved = run("config", "--vault", str(sibling), "--apply")
+        self.assertEqual(moved.returncode, 0, moved.stderr)
+        self.assertEqual(json.loads(moved.stdout)["vault_path"], str(sibling))
+        self.assertEqual(run("report", "daily").returncode, 0)
+
+    def test_vault_separation_uses_directory_identity(self):
+        containing = self.root / "Containing Folder"
+        plugin = containing / "executive-assistant"
+        shutil.copytree(LAUNCHER.parents[2], plugin)
+        launcher = plugin / LAUNCHER.relative_to(LAUNCHER.parents[2])
+        alias = self.root / "containing folder"
+
+        def setup(vault, profile):
+            return subprocess.run(
+                [str(launcher), "--profile", str(profile), "setup", "--vault", str(vault)],
+                capture_output=True, timeout=5,
+            )
+
+        if not alias.exists():
+            result = setup(alias, self.profile)
+            self.assertEqual(result.returncode, 0, result.stderr)
+            self.assertEqual(json.loads(result.stdout)["vault_path"], str(alias))
+            return
+
+        for name, path, diagnostic in (
+            ("ancestor", alias, b"Choose a notes folder separate from the Executive Assistant package."),
+            ("descendant", alias / plugin.name / "New Notes", b"Choose a vault folder outside the plugin package."),
+        ):
+            with self.subTest(path=path):
+                profile = self.root / f"{name}.json"
+                result = setup(path, profile)
+                self.assertEqual(result.returncode, 1, result.stderr)
+                self.assertIn(diagnostic, result.stderr)
+                self.assertFalse(profile.exists())
+
+    def test_unknown_home_in_profile_or_vault_has_a_path_error(self):
+        missing = "~ea-no-such-user-8731/Notes"
+        self.profile.parent.mkdir()
+        bad_profile = self.root / "bad-vault.json"
+        bad_profile.write_text(json.dumps({"vaultPath": missing}))
+        self.vault.mkdir()
+        self.profile.write_text(json.dumps({"vaultPath": str(self.vault)}))
+        for args in (
+            ("--profile", missing, "check"),
+            ("--profile", str(self.root / "new.json"), "setup", "--vault", missing),
+            ("--profile", str(self.profile), "config", "--vault", missing),
+            ("--profile", str(bad_profile), "check"),
+        ):
+            with self.subTest(args=args):
+                result = subprocess.run([str(LAUNCHER), *args], capture_output=True, timeout=3)
+                self.assertEqual(result.returncode, 1)
+                self.assertIn(b"Use an absolute local path or ~ for your home folder.", result.stderr)
+                self.assertNotIn(b"Traceback", result.stderr)
+
     def test_setup_preserves_existing_notes_and_config_requires_apply(self):
         self.vault.mkdir()
         note = self.vault / "Action-Items.md"
@@ -96,6 +203,24 @@ class VaultWorkflowTest(unittest.TestCase):
         self.assertEqual(self.profile.read_bytes(), original)
         self.command("config", "--vault", str(other), "--apply")
         self.assertEqual(json.loads(self.profile.read_bytes())["vaultPath"], str(other))
+
+    def test_starter_vault_reports_only_real_actions(self):
+        self.command("setup", "--vault", str(self.vault), "--copy-template")
+        args = ("report", "daily", "--date", "2026-11-14")
+        preview = self.command(*args).stdout.decode()
+        self.assertIn("0 vault attention signals surfaced.", preview)
+
+        actions = self.vault / "Action-Items.md"
+        with actions.open("a", encoding="utf-8") as note:
+            note.write("\n- [ ] Review the meeting agenda\n")
+        payload = json.loads(self.command(*args, "--write").stdout)
+        report = Path(payload["output_path"])
+        self.assertTrue(report.is_file())
+        content = report.read_text(encoding="utf-8")
+        self.assertIn("Review the meeting agenda", content)
+        link = re.search(r"\[Action-Items\]\(([^)]+)\)", content)
+        self.assertIsNotNone(link)
+        self.assertEqual((report.parent / unquote(link.group(1))).resolve(), actions)
 
     def test_reports_read_vault_notes_and_preserve_existing_report(self):
         self.command("setup", "--vault", str(self.vault))

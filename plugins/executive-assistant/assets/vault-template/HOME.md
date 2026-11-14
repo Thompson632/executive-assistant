@@ -4,6 +4,10 @@ Use this vault as the working notebook for meetings, actions, decisions, initiat
 
 ## Start Here
 
+Add a task to `Action-Items.md`, then ask Codex “Use
+`$executive-daily-brief` to preview today's brief.” Ask to save it when you're
+ready and open the result in `_briefings/`.
+
 - Review [[Action-Items]].
 - Open [[One-on-Ones]] for meeting notes and next-meeting prep.
 - Review the latest briefing under `_briefings/`.

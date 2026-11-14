@@ -11,20 +11,25 @@ elif [[ $# != 0 ]]; then
 fi
 bash "$ea_root/install/unix/check-prereqs.sh"
 
-if [[ -z $ea_codex ]]; then
-  ea_codex=codex
-  if ! "$ea_codex" plugin marketplace --help >/dev/null 2>&1 && [[ $(uname -s) == Darwin ]]; then
-    ea_bundled_codex=/Applications/ChatGPT.app/Contents/Resources/codex-cli/bin/codex
-    if "$ea_bundled_codex" plugin marketplace --help >/dev/null 2>&1; then
-      ea_codex=$ea_bundled_codex
-      printf '%s\n' 'Using the Codex CLI bundled with ChatGPT Desktop.'
-    fi
+supports_plugin_install() {
+  command -v "$1" >/dev/null &&
+    "$1" plugin marketplace --help >/dev/null 2>&1 &&
+    "$1" plugin add --help >/dev/null 2>&1
+}
+
+ea_candidate=${ea_codex:-codex}
+if ! supports_plugin_install "$ea_candidate"; then
+  ea_bundled_codex=/Applications/ChatGPT.app/Contents/Resources/codex-cli/bin/codex
+  if [[ -z $ea_codex && $(uname -s) == Darwin ]] && supports_plugin_install "$ea_bundled_codex"; then
+    ea_candidate=$ea_bundled_codex
+    printf '%s\n' 'Using the Codex CLI bundled with ChatGPT Desktop.'
+  elif ! command -v "$ea_candidate" >/dev/null; then
+    printf '%s\n' 'No Codex CLI found. Install Codex or pass --codex /absolute/path/to/codex.' >&2
+    exit 1
+  else
+    printf '%s\n' 'This Codex CLI cannot install plugins. Update Codex or pass --codex /absolute/path/to/codex.' >&2
+    exit 1
   fi
 fi
-
-if ! command -v "$ea_codex" >/dev/null; then
-  printf '%s\n' 'No Codex CLI found. Install Codex or pass --codex /absolute/path/to/codex.' >&2
-  exit 1
-fi
-"$ea_codex" plugin marketplace add "$ea_root"
-"$ea_codex" plugin add executive-assistant@personal
+"$ea_candidate" plugin marketplace add "$ea_root"
+"$ea_candidate" plugin add executive-assistant@personal

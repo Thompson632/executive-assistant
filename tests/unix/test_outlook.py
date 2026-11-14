@@ -1,4 +1,4 @@
-from datetime import date, datetime, timedelta
+from datetime import date, timedelta
 import json
 import os
 from pathlib import Path
@@ -6,7 +6,6 @@ import subprocess
 import sys
 import tempfile
 import unittest
-from unittest.mock import patch
 
 from test_vault_workflow import LAUNCHER
 
@@ -110,6 +109,31 @@ class LocalOutlookTest(unittest.TestCase):
         weekly = self.command("report", "weekly", "--date", str(self.day)).stdout
         self.assertIn("Starts at window end", weekly)
 
+    def test_configured_calendar_excludes_canceled_private_events(self):
+        self.configure(calendarFile=str(self.calendar))
+        start = outlook.midnight(self.day)
+        rows = []
+        for hour, title, fields in (
+            (9, "Canceled private title", {"private": True, "status": "Canceled"}),
+            (10, "Canceled public title", {"status": "CANCELLED"}),
+            (11, "Current private title", {"private": True}),
+        ):
+            rows.append({"title": title, "start": (start + timedelta(hours=hour)).isoformat(),
+                         "end": (start + timedelta(hours=hour + 1)).isoformat(), **fields})
+        self.calendar.write_text(json.dumps(rows))
+
+        date = str(self.day)
+        result = self.command("outlook", "calendar", "--date", date, "--days", "1")
+        kept = rows[-1]
+        self.assertEqual(json.loads(result.stdout)["records"], [
+            {"title": "Private event", "start": kept["start"], "end": kept["end"]},
+        ])
+        report = self.command("report", "daily", "--date", date).stdout
+        self.assertEqual(report.count("· Private event"), 1)
+        for row in rows:
+            self.assertNotIn(row["title"], result.stdout)
+            self.assertNotIn(row["title"], report)
+
     def test_missing_source_is_a_failure_not_an_empty_report(self):
         self.assertNotEqual(self.command("outlook", "mail", check=False).returncode, 0)
         self.configure(calendarFile=str(self.calendar))
@@ -123,30 +147,52 @@ class LocalOutlookTest(unittest.TestCase):
         self.assertEqual(json.loads(self.command("check").stdout)["outlook_sources"],
                          {"calendar": "local"})
 
+    def test_vault_management_survives_an_unsupported_provider(self):
+        self.configure(provider="unsupported")
+        diagnostic = "Set outlook.provider to local and configure outlook.maildir or outlook.calendarFile."
+        original = self.profile.read_bytes()
+        for command in ("check", "config"):
+            with self.subTest(command=command):
+                result = self.command(command, check=False)
+                self.assertEqual(result.returncode, 0, result.stderr)
+                status = json.loads(result.stdout)
+                self.assertEqual(status["profile_path"], str(self.profile))
+                self.assertEqual(status["vault_path"], str(self.vault))
+                self.assertTrue(status["ok"])
+                self.assertFalse(status["outlook_available"])
+                self.assertEqual(status["outlook_sources"], {})
+                self.assertEqual(status["outlook_error"], diagnostic)
 
-class AppleOutlookTest(unittest.TestCase):
+        moved = self.root / "Moved Vault"
+        moved.mkdir()
+        self.command("config", "--vault", str(moved))
+        self.assertEqual(self.profile.read_bytes(), original)
+        result = self.command("config", "--vault", str(moved), "--apply")
+        status = json.loads(result.stdout)
+        self.assertEqual(status["vault_path"], str(moved))
+        self.assertEqual(status["outlook_error"], diagnostic)
+        updated = json.loads(self.profile.read_bytes())
+        self.assertEqual(updated, {**json.loads(original), "vaultPath": str(moved)})
+        for args in (("outlook", "mail"), ("report", "daily", "--write")):
+            with self.subTest(args=args):
+                result = self.command(*args, check=False)
+                self.assertEqual(result.returncode, 1)
+                self.assertIn(diagnostic, result.stderr)
+        self.assertFalse((moved / "_briefings").exists())
+
     def test_old_profile_needs_an_explicit_local_source(self):
         self.assertEqual(outlook.sources({"outlook": {
             "enabled": True, "mailboxName": "old", "protocolName": "ea-outlook",
         }}), {})
 
-    def test_adapter_invokes_fixed_script_and_allows_only_metadata(self):
-        start = datetime.fromisoformat("2026-11-02T00:00:00-05:00")
-        end = start + timedelta(days=1)
-        record = {"title": "Calendar event", "start": start.isoformat(), "end": end.isoformat(),
-                  "all_day": True, "notes": "private", "uid": "opaque"}
-        reply = subprocess.CompletedProcess([], 0, stdout=json.dumps([record]).encode(), stderr=b"")
-        with patch.object(outlook.subprocess, "run", return_value=reply) as run:
-            rows = outlook.read_apple("calendar", {"calendarName": "Work"}, start, end, 5)
-        args = run.call_args.args[0]
-        self.assertEqual(args[:4], ["/usr/bin/osascript", "-l", "JavaScript", str(outlook.APPLE_SCRIPT)])
-        self.assertEqual(json.loads(args[-1])["calendarName"], "Work")
-        self.assertEqual(rows, [{key: record[key] for key in ("title", "start", "end", "all_day")}])
-        self.assertEqual(run.call_args.kwargs["timeout"], 30)
-
-    def test_adapter_reports_automation_denial_without_private_error_details(self):
-        start = datetime.fromisoformat("2026-11-02T00:00:00-05:00")
-        failure = subprocess.CalledProcessError(1, [], stderr=b"Hidden calendar name (-1743)")
-        with patch.object(outlook.subprocess, "run", side_effect=failure):
-            with self.assertRaisesRegex(ValueError, "^Allow your terminal or Codex"):
-                outlook.read_apple("calendar", {}, start, start + timedelta(days=1), 5)
+    def test_unknown_home_in_source_path_reports_the_setting(self):
+        self.configure(maildir="~ea-fixture-unknown-user-8731/Inbox")
+        diagnostic = "Set outlook.maildir to an absolute local path."
+        config = self.command("config", check=False)
+        self.assertEqual(config.returncode, 0, config.stderr)
+        self.assertEqual(json.loads(config.stdout)["outlook_error"], diagnostic)
+        for args in (("outlook", "mail"), ("report", "daily")):
+            with self.subTest(args=args):
+                result = self.command(*args, check=False)
+                self.assertEqual(result.returncode, 1)
+                self.assertEqual(result.stderr.strip(), f"Executive Assistant: {diagnostic}")

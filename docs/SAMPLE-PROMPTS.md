@@ -1,11 +1,14 @@
 # Executive Assistant Sample Prompts
 
-Copy a prompt into Codex Desktop. For vault workflows, open your Obsidian
-vault as a local Codex project. Replace bracketed examples with your own
+Copy a prompt into Codex Desktop. For vault workflows, open your
+notes folder as a local Codex project. Replace bracketed examples with your own
 names, dates, or paths. When a prompt refers to supplied notes or files,
 paste the notes or attach the files in the same chat.
 
 ## Start here
+
+For your first installation and report, follow
+[Get your first daily brief](GETTING-STARTED.md).
 
 | If you want to… | Go to |
 | --- | --- |
@@ -39,9 +42,9 @@ in the same chat with one of these replies:
 
 ### Executive First-Time Setup
 
-> Use $executive-assistant-setup to connect my Obsidian vault at [absolute vault path]. Use my existing notes and show me which folder the profile points to.
+> Use $executive-assistant-setup to connect my notes folder at [full folder path]. Use my existing notes and show me which folder is connected.
 
-> Use $executive-assistant-setup to create a vault at [absolute vault path] with the starter notes. Show me the folder to open in Obsidian.
+> Use $executive-assistant-setup to create a notes folder at [full folder path] with the starter notes. Show me the folder to open in Codex.
 
 ### Executive Change Settings
 
@@ -136,11 +139,12 @@ At the end of the workday, ask:
 
 ### Executive Compare Two Calendars
 
-Supply two calendar exports covering the same dates.
+Supply two [calendar metadata JSON files](../plugins/executive-assistant/references/local-inputs.md)
+covering the same dates.
 
-> Use $executive-calendar-sync to compare [first calendar export] with [second calendar export]. Show missing or changed events and flag ambiguous matches so I can review them.
+> Use $executive-calendar-sync to compare [first calendar JSON file] with [second calendar JSON file]. Show missing or changed events and flag ambiguous matches so I can review them.
 
-> Use $executive-calendar-sync to compare my original export with the revised export for [date range]. Show each moved meeting with its old and new time and give me a list of changes to review.
+> Use $executive-calendar-sync to compare my original snapshot with the revised snapshot for [date range]. Show each moved meeting with its old and new time and give me a list of changes to review.
 
 ## Work with meetings and email
 

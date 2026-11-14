@@ -2,6 +2,9 @@
 
 Reusable Codex Desktop package for an executive-assistant workflow built around a local working folder on macOS and Linux. Optional integrations can use separately configured MCP servers or CLI tools such as the Atlassian CLIs and GitLab's `glab`.
 
+- **Set up your assistant.** Follow [Get your first daily brief](docs/GETTING-STARTED.md).
+- **Work on the package.** Start with the [development guide](DEVELOPING.md) and [contribution guide](CONTRIBUTING.md).
+
 This repository is for the package and integration code only. It must not contain a user's vault, email content, Outlook link index, Jira tokens, Confluence tokens, or private operating notes.
 
 ## Current Shape
@@ -25,23 +28,9 @@ This repository is for the package and integration code only. It must not contai
 
 ## Quick Start
 
-Follow the [macOS setup guide](docs/INSTALL-MACOS.md) or [Linux setup guide](docs/INSTALL-LINUX.md)
-to install the plugin, connect a local Markdown folder, and generate a vault report.
-Obsidian can open the same folder if you use it.
-
-1. Open the repository in a terminal.
-2. Install from the repo-local marketplace. The installer checks Bash and Python. It uses the Codex CLI on your PATH or the copy bundled with ChatGPT Desktop on macOS.
-
-```sh
-bash install/unix/install-plugin.sh
-```
-
-3. In a fresh Codex chat, use `$executive-assistant-setup` to connect a local folder, or use `$executive-assistant-config` for an existing profile. Open the resulting vault folder as a local Codex project.
-4. Verify the configured vault:
-
-```sh
-./plugins/executive-assistant/scripts/unix/ea.sh check
-```
+The [getting-started guide](docs/GETTING-STARTED.md) walks through installation
+and a report in Codex or the terminal. For another workflow, pick a
+[sample prompt](docs/SAMPLE-PROMPTS.md).
 
 ## Local Configuration
 
@@ -66,9 +55,9 @@ Add `--apply` after reviewing the preview. The Codex equivalent is `$executive-a
 
 ## Local Outlook Mail and Calendar
 
-Opt in to use a synced Apple Mail account and Apple Calendar on macOS, or use
-synced Maildir and calendar metadata files on Linux or macOS. Mail triage,
-calendar review, and reports read the configured local sources at runtime.
+Opt in to use a synced Maildir folder or calendar metadata file on macOS or
+Linux. Mail triage, calendar review, and reports read the configured local
+sources at runtime.
 [Set up local Outlook access](plugins/executive-assistant/references/local-outlook.md).
 
 ## Calendar Management
@@ -113,3 +102,7 @@ For a coworker install, build a ZIP from the current Git commit and follow
 ```sh
 bash tools/package-unix.sh executive-assistant.zip
 ```
+
+## License
+
+[MIT License](LICENSE).

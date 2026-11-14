@@ -87,8 +87,16 @@ supplied metadata and notes.
 ```
 
 The generated job calls `report daily --write` or `report weekly --write`
-using the selected profile. Pick a stable installation path and verify one
-scheduled result and its log. The log lives beside the profile.
+using the selected profile. Pick a stable installation path and follow the
+optional local schedule steps in the platform guide from your checkout or ZIP
+to install and verify the job.
+
+The logs live beside the profile. On macOS, launchd sends results to
+`local.executive-assistant.daily.log` and errors to
+`local.executive-assistant.daily.error.log`. On Linux, cron sends both to
+`local.executive-assistant.daily.log`. Weekly jobs use `weekly` in place of
+`daily`. A successful run prints `output_path` and a status of `written`
+for a new report or `existing` when it reused a saved report.
 
 ## Codex Schedule Prompts
 
@@ -96,5 +104,7 @@ scheduled result and its log. The log lives beside the profile.
 ./scripts/unix/ea.sh schedule-prompts
 ```
 
-The command prints standalone prompts. Confirm schedules through Codex and
-verify the first run. See [local inputs](local-inputs.md) for metadata schemas.
+The command prints templates. Test the prompt in a fresh Codex chat, then
+create a standalone automation in the notes project and open the result of
+its first scheduled run. See [profile settings](profile-schema.md#key-sections)
+to choose which templates are shown.

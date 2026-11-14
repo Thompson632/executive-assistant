@@ -4,13 +4,15 @@ The [workflow guide](CODEX-WORKFLOWS.md) describes currently available
 features. The remaining work below covers live validation and possible
 extensions.
 
+The [initial usability plan](superpowers/plans/2026-11-14-repository-usability.md)
+introduced the first-run guide, recovery fixes, and ZIP smoke test. The
+[follow-up plan](superpowers/plans/2026-11-14-onboarding-release-hardening.md)
+covers clearer setup errors, notes folder validation, and release checks.
+
 ## Live validation
 
-- Confirm a fresh Codex Desktop chat can load the installed proof skill and write a daily report to a test vault.
-- Validate guided setup with a new user.
-- Verify a standalone Codex automation writes to its intended local vault and capture any setup friction.
-- Verify a scheduled run on each platform and test Apple Mail and Calendar with a synced test account.
-- Validate Work Intake against a live GitLab group and project with an authorized test request. Verify the Confluence preview against the intended page.
+Use the [release checklist](RELEASE-CHECKLIST.md) to record first-time Desktop
+setup, scheduler-fired results, and optional live integration checks.
 
 ## Next
 
