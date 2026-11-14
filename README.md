@@ -97,6 +97,7 @@ or remove vault tasks. Preview and confirm changes to vault notes. See the
 
 ## Documentation
 
+- [Sample prompts for every skill](docs/SAMPLE-PROMPTS.md) gives you requests to copy into Codex.
 - [Codex workflows](docs/CODEX-WORKFLOWS.md) lists the skills and their commands.
 - [Workflow diagrams](docs/WORKFLOW-DIAGRAMS.md) show how actions, quick notes, briefs, and schedules fit together.
 - [Architecture](docs/ARCHITECTURE.md) describes the runtime, integrations, and data boundaries.

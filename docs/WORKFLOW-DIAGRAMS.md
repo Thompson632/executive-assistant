@@ -3,7 +3,8 @@
 ## Find the right skill
 
 Start with what you want to do. In a Codex chat open to your Obsidian folder,
-type `$` to find a skill by name or paste a prompt from the full list below.
+type `$` to find a skill by name or copy a prompt from the
+[sample prompt guide](SAMPLE-PROMPTS.md).
 
 | What you want to do | Choose this skill |
 | --- | --- |
@@ -38,9 +39,12 @@ flowchart TD
     resume --> next["Read where you left off, the blocker, and one next step"]
 ```
 
-“Use `$executive-context-switch`. I’m pausing Friday’s agenda. Capture
-‘Confirm the room for Monday’s review’ as a separate Inbox action. First
-step is to check the calendar invite.”
+1. Copy a [quick note](SAMPLE-PROMPTS.md#executive-jot-down-a-note) or
+   [interruption prompt](SAMPLE-PROMPTS.md#executive-pause-or-resume-work).
+2. For an action, review the target checkbox and next step, then
+   [confirm the edit](SAMPLE-PROMPTS.md#start-here).
+3. When you return, use the [resume prompt](SAMPLE-PROMPTS.md#executive-pause-or-resume-work)
+   in the same vault project, even in a fresh chat.
 
 Keep one completion checkbox per action. Use project notes for the outcome
 and decisions, and add a task note when an action needs a checklist or
@@ -69,15 +73,13 @@ flowchart TD
     done --> history["Existing daily and weekly reports stay as saved"]
 ```
 
-For a single new action, ask:
-
-> Add “Send the revised agenda” to my tasks, due Tuesday. Link it to the
-> meeting note if you find it.
-
-For a batch, ask “Pull my actions from these meeting notes and preview
-adding them to my existing task list.” Codex can ask about missing dates
-in the same preview. A task can be saved without a date. To close it later, ask “Mark
-‘Send the revised agenda’ complete.”
+1. Use [Manage Tasks](SAMPLE-PROMPTS.md#executive-manage-tasks) for known
+   tasks, or [Meeting Debrief](SAMPLE-PROMPTS.md#executive-prepare-for-or-debrief-a-meeting)
+   to extract them from notes.
+2. Review titles, due dates, and source links together. Supply a missing
+   date or [approve saving the task undated](SAMPLE-PROMPTS.md#start-here).
+3. Later, use the [completion prompt](SAMPLE-PROMPTS.md#executive-manage-tasks)
+   and approve checking off the original task.
 
 A newly generated brief skips checked task lines. The shell report uses
 words such as “due” and “waiting” as cues, so it can still pick up those
@@ -112,28 +114,16 @@ flowchart TD
     find -->|No| usual["Use open actions and today's calendar"]
 ```
 
-**End of day prompt**
+1. Use the [end-of-day prompt](SAMPLE-PROMPTS.md#executive-prioritize-actions).
+   Review the date and order before saving the plan.
+2. Use the [morning work-plan prompt](SAMPLE-PROMPTS.md#executive-prepare-todays-brief)
+   to check which linked tasks are still open and choose where to start.
 
-> Use `$executive-action-triage` to review my open actions and the next
-> workday's calendar if available. Propose up to three open actions in
-> order, with links and one first step each. Show me the target date and
-> plan before saving it as `notes/Work Plans/YYYY-MM-DD.md`. Use my
-> intended next workday for the filename. Keep completion in the action list.
-
-**Morning prompt**
-
-> Use `$executive-daily-brief`. If today's dated note exists under
-> `notes/Work Plans/`, open with the linked actions that are still open.
-> Check today's calendar if available and flag changes that affect the plan.
-> If there is no plan for today, use current vault and calendar signals.
-> Save the brief in the configured vault.
-
-These prompts illustrate a workflow to try. The stock daily schedule
-prompt and the shell report have no dedicated work-plan section. To try the
-morning prompt on a schedule, use it as the instruction for a standalone
-Codex automation in the vault project. An end-of-day schedule could surface
-a proposed plan for review. Saving the final priorities stays part of the
-user's review.
+The morning work-plan prompt returns a brief in chat. To try it on a
+schedule, use it in a standalone Codex automation in the vault project and
+ask it to save the brief. The stock daily schedule and the shell report
+have no dedicated work-plan section. An end-of-day schedule can surface
+a proposed plan for your review.
 
 ## Set up and schedule
 
@@ -149,6 +139,10 @@ flowchart TD
     proof --> fallback["Local fallback · LaunchAgent or cron writes shell reports"]
 ```
 
+Start with [vault setup and check prompts](SAMPLE-PROMPTS.md#set-up-and-check-your-vault).
+Use the [schedule prompts](SAMPLE-PROMPTS.md#set-up-scheduled-briefs) to
+preview the destination and cadence, or to check an existing run.
+
 ## Review the day, week, and action list
 
 ```mermaid
@@ -161,6 +155,10 @@ flowchart TD
     todo --> actions["Obsidian · current action list"]
 ```
 
+Copy a [daily, weekly, or calendar review prompt](SAMPLE-PROMPTS.md#review-your-day-week-and-calendar).
+Use [Prioritize Actions](SAMPLE-PROMPTS.md#executive-prioritize-actions)
+for a focused review of the task list.
+
 ## Review calendar, mail, and meetings
 
 ```mermaid
@@ -172,8 +170,11 @@ flowchart TD
     manage --> notice["Meeting Notices · reviewed local invite or reply draft"]
     notice --> client["User sends from their chosen client"]
     inbox --> client
-    prep --> triage["Prioritize Actions · propose follow-ups"]
+    prep --> triage["Manage Tasks · preview adding agreed follow-ups"]
 ```
+
+Use the [meeting and mail prompts](SAMPLE-PROMPTS.md#work-with-meetings-and-email)
+for prep, debrief, local mail review, or a draft reply.
 
 ## Save a one-on-one and prepare for the next meeting
 
@@ -182,18 +183,15 @@ flowchart TD
     raw["After the 1:1 · paste raw notes with person and date"] --> note["Obsidian · dated meeting note in the person's folder"]
     note --> review["Review summary, decisions, and commitments"]
     review -->|When requested| actions["Preview adding agreed actions to the vault task list"]
+    actions -->|Confirm| saved["Obsidian · linked actions with stated due dates"]
     note --> prep["Before the next 1:1 · ask for a prep brief"]
-    actions --> prep
+    saved --> prep
     prep --> agenda["Recap, current commitments, and questions to discuss"]
 ```
 
-Ask “Use `$executive-one-on-one` to save these notes from my November 16,
-2026 1:1 with Alex,” then paste your notes. The meeting goes under
-`meetings/One-on-Ones/Alex/2026-11-16.md` in your local vault. The skill
-creates the folder when first needed, including in existing vaults.
-
-Before your next meeting, ask “Use `$executive-one-on-one` to prepare me for
-my next 1:1 with Alex. Show what’s still open and what we should discuss.”
+Use the [one-on-one prompt sequence](SAMPLE-PROMPTS.md#executive-one-on-one)
+to save the notes, confirm selected tasks, and prepare in a fresh chat.
+Meeting notes go under `meetings/One-on-Ones/Person Name/YYYY-MM-DD.md`.
 If you ask to save prep for a known date, it goes in a separate dated note.
 Private meeting and prep notes are excluded from routine shell briefs.
 
@@ -209,6 +207,9 @@ flowchart TD
     confluence --> approval
     sensitivity --> approval
 ```
+
+See the [project and shared-notes prompts](SAMPLE-PROMPTS.md#review-project-work-and-shared-notes)
+for Jira, GitLab, Confluence drafts, and sensitivity reviews.
 
 ## When to use each skill
 

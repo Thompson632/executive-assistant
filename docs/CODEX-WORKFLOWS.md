@@ -3,6 +3,9 @@
 Use the local Executive Assistant plugin on macOS or Linux. Open the vault
 as a local Codex project when a workflow needs its files.
 
+Use the [sample prompt guide](SAMPLE-PROMPTS.md) for requests you can paste
+into Codex.
+
 See the [workflow diagrams and schedule guide](WORKFLOW-DIAGRAMS.md) for
 how the skills fit together.
 
