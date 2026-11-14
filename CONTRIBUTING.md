@@ -14,8 +14,13 @@ inputs they can supply, and the expected output. See the
 1. Follow the [development guide](DEVELOPING.md) to set up the repo and
    validate your change.
 2. Keep the change focused. Update user-facing docs or examples when a
-   command, configuration field, or skill changes. Add or update tests where
-   they protect the behavior you changed.
+   command or configuration field changes. Start a new packaged skill with
+   the [skill template](docs/SKILL-TEMPLATE.md). For any packaged skill change,
+   update the [sample prompts](docs/SAMPLE-PROMPTS.md),
+   [Codex workflows](docs/CODEX-WORKFLOWS.md), and
+   [workflow diagrams](docs/WORKFLOW-DIAGRAMS.md) in the same pull request.
+   Follow the [skill documentation guide](.agents/skills/sync-skill-docs/SKILL.md).
+   Add or update tests where they protect the behavior you changed.
 3. Keep vault notes, email bodies, Outlook identifiers and link stores,
    private profiles, tokens, and credentials out of commits and fixtures.
    Keep calendar, mail, and task inputs local. Prepare drafts on request and

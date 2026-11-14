@@ -13,6 +13,7 @@ This repo packages the reusable Codex Desktop executive-assistant workflow. It i
 - Use deterministic shell entry points and skills for repeatable reasoning workflows.
 - Prefer MCP for durable live integrations once the script prototype is stable.
 - Keep this package generic; put customer or executive-specific notes in their vault, not here.
+- Whenever you add, update, rename, or remove a packaged skill, use [sync-skill-docs](.agents/skills/sync-skill-docs/SKILL.md) and update the sample prompts and both workflow guides in the same change.
 
 ## Implementation Boundaries
 
@@ -33,7 +34,7 @@ python3 "${CODEX_HOME:-$HOME/.codex}/skills/.system/plugin-creator/scripts/valid
 - Run skill validation after skill edits:
 
 ```bash
-for skill in plugins/executive-assistant/skills/*; do
+for skill in .agents/skills/* plugins/executive-assistant/skills/*; do
   python3 "${CODEX_HOME:-$HOME/.codex}/skills/.system/skill-creator/scripts/quick_validate.py" "$skill"
 done
 ```
