@@ -22,5 +22,19 @@ Prepare the upcoming week, carry forward unresolved important items, and identif
 
 ## Meeting Prep
 
-Review agenda, related notes, open actions, and likely decisions before the meeting. Debrief afterward into actions and decisions.
+Review the agenda, related notes, and open actions before the meeting.
+Afterward, ask Codex to extract your actions and preview adding them to
+[[Action-Items]]. Include due dates when known.
+
+## One-on-Ones
+
+Use `$executive-one-on-one` to summarize raw notes and save them by person
+and date. Before the next meeting, ask for open commitments and questions
+to raise. See [[One-on-Ones]] for prompts.
+
+## Complete an Action
+
+Check off the original task in [[Action-Items]] or ask Codex to preview
+the change. Saved daily and weekly reports show the state at the time
+they were generated. Follow their links for the current task status.
 

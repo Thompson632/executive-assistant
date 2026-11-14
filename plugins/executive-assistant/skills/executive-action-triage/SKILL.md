@@ -8,6 +8,8 @@ description: Review open actions or pull follow-ups from Obsidian notes. Use for
 Use this for “What should I work on next?” or “What am I waiting on?”
 For a specific checkbox change, use `$executive-todo-management`.
 For where you left off on one task, use `$executive-context-switch`.
+For current status, read the source checkbox even if a saved report still
+lists the item. Use recorded due dates when ranking tasks.
 
 On macOS and Linux, if the vault is outside the current project, use `./scripts/unix/ea.sh config`
 from the installed plugin root to resolve its folder. Use that folder for the note workflow.

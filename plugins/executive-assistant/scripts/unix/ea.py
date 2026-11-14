@@ -174,7 +174,10 @@ def note_signals(vault, path, modified):
                 continue
             if in_frontmatter:
                 key, _, value = stripped.partition(":")
-                if key == "type" and value.strip().strip("'\"") == "executive-assistant-draft":
+                if key == "type" and value.strip().strip("'\"") in {
+                    "executive-assistant-draft",
+                    "executive-assistant-one-on-one",
+                }:
                     return
                 in_frontmatter = stripped not in ("---", "...")
                 continue

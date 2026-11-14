@@ -27,6 +27,8 @@ unsaved and show the proposed text.
    Include a blocker or waiting condition and a source link when supplied and
    relevant. If the next step is a suggestion, label it as such. Preserve
    existing owners, due dates, status, and unrelated note content.
+   For a new action, capture the stated due date or offer the optional
+   due-date question from Manage Tasks in the same preview.
 3. Preview the exact note change and use the local edit workflow in
    [Manage Tasks](../executive-todo-management/SKILL.md).
    Read the target again before applying the reviewed edit. Verify the saved

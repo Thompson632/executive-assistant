@@ -47,6 +47,10 @@ for report paths and write behavior.
 Use calendar entries to plan focus time. For task changes, the skill previews
 the exact Markdown note and checkbox edit.
 
+To capture actions from a meeting, ask Executive Manage Tasks to add a known
+task, or ask Executive Prepare for or Debrief a Meeting to extract a batch
+from your notes. See the [task lifecycle diagram and vault file guide](WORKFLOW-DIAGRAMS.md#add-a-meeting-action-and-track-it-to-completion).
+
 ## Switching Context
 
 Use `$executive-context-switch` in your vault's Codex project.
@@ -78,6 +82,7 @@ installed plugin root. From a checkout, use the longer path shown above.
 | Calendar review and comparison | `$executive-calendar-management`, `$executive-calendar-sync` | `outlook calendar` for the configured feed, `review calendar --source PATH` for a snapshot, or add `--compare PATH` for a second snapshot |
 | Meeting or email draft | `$executive-meeting-notices`, `$executive-outlook-com` | `draft --subject TEXT --source PATH` |
 | Meeting preparation and debrief | `$executive-meeting-prep` | Reads relevant notes and supplied meeting material |
+| One-on-one notes and prep | `$executive-one-on-one` | Saves notes by person and date and prepares the next conversation from open commitments |
 | Switch context | `$executive-context-switch` | Saves a stopping point on an Obsidian action and reads it back when resuming |
 | Quick note | `$executive-quick-note` | Saves a short dated bullet to an Obsidian note |
 | Tasks | `$executive-todo-management`, `$executive-action-triage` | `review tasks --source PATH` for JSON, or review vault checkboxes directly |
@@ -99,6 +104,8 @@ or sync files. [Configure local Outlook access](../plugins/executive-assistant/r
 Project workflows use separately installed and authenticated CLIs.
 See the [Atlassian CLI guide](../integrations/atlassian-cli/README.md)
 and the [GitLab CLI guide](../plugins/executive-assistant/references/gitlab-cli.md).
+
+For a recurring 1:1, see the [one-on-one workflow](WORKFLOW-DIAGRAMS.md#save-a-one-on-one-and-prepare-for-the-next-meeting).
 
 ## Scheduled Tasks
 

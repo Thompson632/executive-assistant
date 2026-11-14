@@ -77,6 +77,9 @@ class VaultWorkflowTest(unittest.TestCase):
         self.assertEqual(note.read_text(encoding="utf-8"), "# Existing actions\n")
         self.assertTrue((self.vault / "HOME.md").is_file())
         self.assertTrue((self.vault / "tasks" / "00-Inbox").is_dir())
+        self.assertTrue((self.vault / "One-on-Ones.md").is_file())
+        self.assertTrue((self.vault / "meetings" / "One-on-Ones").is_dir())
+        self.assertTrue((self.vault / "templates" / "One-on-One.md").is_file())
         status = json.loads(self.command("config").stdout)
         self.assertEqual(status["vault_path"], str(self.vault))
         self.assertFalse(status["outlook_available"])
@@ -106,6 +109,11 @@ class VaultWorkflowTest(unittest.TestCase):
         (self.vault / ".obsidian").mkdir()
         (self.vault / ".obsidian" / "private.md").write_text("- [ ] Ignore settings\n")
         (self.vault / "External.md").symlink_to(self.profile)
+        (notes / "Private 1-1.md").write_text(
+            "---\ntype: executive-assistant-one-on-one\n---\n"
+            "- [ ] Private follow-up from the meeting\n",
+            encoding="utf-8",
+        )
 
         date = "2026-11-01"
         preview = self.command("report", "daily", "--date", date).stdout.decode()
@@ -117,6 +125,7 @@ class VaultWorkflowTest(unittest.TestCase):
         self.assertIn("Live mail is unavailable", preview)
         self.assertNotIn("Completed risk", preview)
         self.assertNotIn("Ignore", preview)
+        self.assertNotIn("Private follow-up", preview)
 
         result = json.loads(self.command("report", "daily", "--date", date, "--write").stdout)
         daily = Path(result["output_path"])

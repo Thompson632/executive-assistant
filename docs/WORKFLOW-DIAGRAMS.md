@@ -10,6 +10,7 @@ type `$` to find a skill by name or paste a prompt from the full list below.
 | “Jot down that the room layout worked well.” | **Executive Jot Down a Note** · saves a short entry in Obsidian |
 | “Save where I left off on the agenda” or “Pick up the agenda.” | **Executive Pause or Resume Work** · records or retrieves the next step on that action |
 | “Mark the room check complete.” | **Executive Manage Tasks** · previews the change to a specific checkbox |
+| “Add these follow-ups to my task list.” | **Executive Manage Tasks** · previews adding tasks to your existing list |
 | “What should I work on next?” | **Executive Prioritize Actions** · ranks open work and flags blockers |
 | “What needs my attention today?” | **Executive Prepare Today’s Brief** · brings actions, calendar, and available mail together |
 | “Where are the conflicts on my calendar?” | **Executive Review My Calendar** · finds overlaps and suggests focus time |
@@ -50,6 +51,49 @@ doesn't schedule a reminder. Schedule a Codex brief or follow-up review
 if you want it to surface the saved work. Open the scheduled result and
 verify its links on the first run. Delivery depends on the schedule and
 your notification settings.
+
+## Add a meeting action and track it to completion
+
+```mermaid
+flowchart TD
+    meeting["Meeting ends · one new action or a list of follow-ups"] --> capture{"Do you already know the action?"}
+    capture -->|Yes| tasks["Manage Tasks · add it to the existing list"]
+    capture -->|Review meeting notes first| debrief["Debrief a Meeting · extract decisions and actions"]
+    debrief --> tasks
+    tasks --> dates["Use the stated due date or ask once about missing dates"]
+    dates --> preview["Review one batch with dates and source links"]
+    preview -->|Confirm| source["Obsidian · open checkbox in the action list"]
+    source --> complete["Manage Tasks · preview checking off the original action"]
+    complete -->|Confirm| done["Obsidian · checked box with links and context"]
+    done --> future["Next newly generated brief reads the current task list"]
+    done --> history["Existing daily and weekly reports stay as saved"]
+```
+
+For a single new action, ask:
+
+> Add “Send the revised agenda” to my tasks, due Tuesday. Link it to the
+> meeting note if you find it.
+
+For a batch, ask “Pull my actions from these meeting notes and preview
+adding them to my existing task list.” Codex can ask about missing dates
+in the same preview. A task can be saved without a date. To close it later, ask “Mark
+‘Send the revised agenda’ complete.”
+
+A newly generated brief skips checked task lines. The shell report uses
+words such as “due” and “waiting” as cues, so it can still pick up those
+words elsewhere in the note. It does not calculate overdue status from
+dates. Ask Executive Prioritize Actions for a review against recorded dates.
+
+### Which files change
+
+| File in your vault | Use |
+| --- | --- |
+| `Action-Items.md` or your existing task list | Add actions, record due dates and next steps, and check off completed work here. |
+| Meeting notes under `meetings/` | Keep the agenda, decisions, and meeting context. Link to the note from the action when available. |
+| Project or task detail notes under `projects/` or `tasks/` | Keep supporting context, checklists, and files linked to the main action. Use your existing folders. |
+| `notes/Quick Notes.md` or your capture note | Jot down observations and ideas. |
+| `notes/Work Plans/YYYY-MM-DD.md` | Optional next-workday plan from the trial below. It links to the existing actions. |
+| Reports under `_briefings/` | Read the saved daily and weekly snapshots. To see current status, follow the source link. Ask explicitly to refresh a saved report. |
 
 ## Close the day and plan the next one
 
@@ -131,6 +175,28 @@ flowchart TD
     prep --> triage["Prioritize Actions · propose follow-ups"]
 ```
 
+## Save a one-on-one and prepare for the next meeting
+
+```mermaid
+flowchart TD
+    raw["After the 1:1 · paste raw notes with person and date"] --> note["Obsidian · dated meeting note in the person's folder"]
+    note --> review["Review summary, decisions, and commitments"]
+    review -->|When requested| actions["Preview adding agreed actions to the vault task list"]
+    note --> prep["Before the next 1:1 · ask for a prep brief"]
+    actions --> prep
+    prep --> agenda["Recap, current commitments, and questions to discuss"]
+```
+
+Ask “Use `$executive-one-on-one` to save these notes from my November 16,
+2026 1:1 with Alex,” then paste your notes. The meeting goes under
+`meetings/One-on-Ones/Alex/2026-11-16.md` in your local vault. The skill
+creates the folder when first needed, including in existing vaults.
+
+Before your next meeting, ask “Use `$executive-one-on-one` to prepare me for
+my next 1:1 with Alex. Show what’s still open and what we should discuss.”
+If you ask to save prep for a known date, it goes in a separate dated note.
+Private meeting and prep notes are excluded from routine shell briefs.
+
 ## Review project and shared material
 
 ```mermaid
@@ -160,6 +226,7 @@ flowchart TD
 | [Executive Review My Calendar](../plugins/executive-assistant/skills/executive-calendar-management/SKILL.md) · `$executive-calendar-management` | Find conflicts and suggest focus time. | On demand or as part of the brief |
 | [Executive Compare Two Calendars](../plugins/executive-assistant/skills/executive-calendar-sync/SKILL.md) · `$executive-calendar-sync` | Compare these two calendar snapshots. | On demand |
 | [Executive Prepare for or Debrief a Meeting](../plugins/executive-assistant/skills/executive-meeting-prep/SKILL.md) · `$executive-meeting-prep` | Prepare questions for this review, or debrief these notes. | On demand |
+| [Executive One-on-One](../plugins/executive-assistant/skills/executive-one-on-one/SKILL.md) · `$executive-one-on-one` | Save my 1:1 notes with Alex, then prepare me for our next meeting. | After and before each 1:1 |
 | [Executive Draft a Meeting Invite or Reply](../plugins/executive-assistant/skills/executive-meeting-notices/SKILL.md) · `$executive-meeting-notices` | Draft a response to this invitation. | On demand |
 | [Executive Review Mail or Draft a Reply](../plugins/executive-assistant/skills/executive-outlook-com/SKILL.md) · `$executive-outlook-com` | Triage my local Inbox metadata. | On demand or use the brief for a digest |
 | [Executive Review Jira Issues](../plugins/executive-assistant/skills/executive-jira-triage/SKILL.md) · `$executive-jira-triage` | Review active and stale issues in this project. | On demand |
