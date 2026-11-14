@@ -17,6 +17,8 @@ bash install/unix/check-prereqs.sh
 The [getting-started guide](GETTING-STARTED.md) walks through installation,
 connecting a notes folder, and saving a report. If the executable is outside
 PATH, pass `--codex /absolute/path/to/codex` to `install-plugin.sh`.
+If the installer says the CLI cannot install plugins, update Codex or
+pass the path to a compatible executable.
 
 To view the notes in Obsidian, select **Open folder as vault** and choose
 the notes folder reported by setup or `config`.

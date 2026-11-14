@@ -19,7 +19,9 @@ The [getting-started guide](GETTING-STARTED.md) walks through installation,
 connecting a notes folder, and saving a report. If the CLI on PATH is
 missing or cannot load the plugin command, the installer tries the copy
 bundled with ChatGPT Desktop in `/Applications`. For a different location,
-pass `--codex /absolute/path/to/codex` to `install-plugin.sh`.
+pass `--codex /absolute/path/to/codex` to `install-plugin.sh`. If an
+explicitly selected CLI cannot install plugins, update that CLI or supply
+the path to a compatible executable.
 
 To view the notes in Obsidian, select **Open folder as vault** and choose
 the notes folder reported by setup or `config`.
