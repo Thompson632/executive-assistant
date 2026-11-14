@@ -73,6 +73,44 @@ class VaultWorkflowTest(unittest.TestCase):
         self.assertEqual(self.profile.read_bytes(), before)
         self.assertEqual(list(self.vault.iterdir()), [])
 
+    def test_profile_fifo_returns_a_regular_file_error(self):
+        self.profile.parent.mkdir()
+        os.mkfifo(self.profile)
+        result = subprocess.run(
+            [str(LAUNCHER), "--profile", str(self.profile), "check"],
+            capture_output=True, timeout=3,
+        )
+        self.assertEqual(result.returncode, 1)
+        self.assertEqual(result.stdout, b"")
+        self.assertIn(b"Choose a regular JSON profile file", result.stderr)
+
+    def test_check_accepts_a_symlink_to_a_regular_profile(self):
+        self.vault.mkdir()
+        self.profile.parent.mkdir()
+        target = self.root / "target.json"
+        target.write_text(json.dumps({"vaultPath": str(self.vault)}), encoding="utf-8-sig")
+        self.profile.symlink_to(target)
+        self.assertEqual(json.loads(self.command("check").stdout)["vault_path"], str(self.vault))
+
+    def test_unknown_home_in_profile_or_vault_has_a_path_error(self):
+        missing = "~ea-no-such-user-8731/Notes"
+        self.profile.parent.mkdir()
+        bad_profile = self.root / "bad-vault.json"
+        bad_profile.write_text(json.dumps({"vaultPath": missing}))
+        self.vault.mkdir()
+        self.profile.write_text(json.dumps({"vaultPath": str(self.vault)}))
+        for args in (
+            ("--profile", missing, "check"),
+            ("--profile", str(self.root / "new.json"), "setup", "--vault", missing),
+            ("--profile", str(self.profile), "config", "--vault", missing),
+            ("--profile", str(bad_profile), "check"),
+        ):
+            with self.subTest(args=args):
+                result = subprocess.run([str(LAUNCHER), *args], capture_output=True, timeout=3)
+                self.assertEqual(result.returncode, 1)
+                self.assertIn(b"Use an absolute local path or ~ for your home folder.", result.stderr)
+                self.assertNotIn(b"Traceback", result.stderr)
+
     def test_setup_preserves_existing_notes_and_config_requires_apply(self):
         self.vault.mkdir()
         note = self.vault / "Action-Items.md"

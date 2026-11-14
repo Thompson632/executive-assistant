@@ -4,6 +4,8 @@ The local JSON profile uses an absolute `vaultPath`. The default is
 `${CODEX_HOME:-$HOME/.codex}/executive-assistant/profiles/default.json`.
 Obsidian can open the same folder. Local report dates and schedules use the host time zone.
 Pass `--profile PATH` before the subcommand to select a different file.
+Choose a regular UTF-8 JSON file. Use an absolute local path or start the
+path with `~/` for your home folder.
 
 ## Key Sections
 

@@ -26,6 +26,12 @@ class LocalWorkflowTest(unittest.TestCase):
         path.write_text(json.dumps(value), encoding="utf-8")
         return str(path)
 
+    def test_unknown_home_in_metadata_source_has_a_path_error(self):
+        result = self.command("review", "tasks", "--source", "~ea-no-such-user-8731/Notes", check=False)
+        self.assertEqual(result.returncode, 1)
+        self.assertIn(b"Use an absolute local path or ~ for your home folder.", result.stderr)
+        self.assertNotIn(b"Traceback", result.stderr)
+
     def test_mail_projects_metadata_and_pages_five(self):
         rows = [{"subject": str(index), "body": "private", "id": "secret",
                  "received": "2026-11-14T09:00:00-05:00", "folder": "Inbox"}

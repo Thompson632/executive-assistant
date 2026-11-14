@@ -24,10 +24,13 @@ OPERATIONS = ("draft", "attachment")
 STATUSES = ("written", "failed")
 
 
-def local_path(value):
+def local_path(value: str) -> Path:
     if re.match(r"^[A-Za-z][A-Za-z0-9+.-]*://", value):
         raise ValueError("Use a local filesystem path.")
-    return Path(value).expanduser()
+    try:
+        return Path(value).expanduser()
+    except RuntimeError:
+        raise ValueError("Use an absolute local path or ~ for your home folder.") from None
 
 
 @contextmanager

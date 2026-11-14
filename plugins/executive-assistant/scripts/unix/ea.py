@@ -46,23 +46,28 @@ class Signal(NamedTuple):
 
 def profile_path(override):
     if override:
-        return Path(override).expanduser().absolute()
-    codex_home = Path(os.environ.get("CODEX_HOME") or Path.home() / ".codex").expanduser()
+        return local_workflows.local_path(override).absolute()
+    codex_home = local_workflows.local_path(os.environ.get("CODEX_HOME") or "~/.codex")
     return (codex_home / "executive-assistant" / "profiles" / "default.json").absolute()
 
 
-def read_profile(path):
+def read_profile(path: Path) -> dict:
     try:
-        profile = json.loads(path.read_text(encoding="utf-8-sig"))
+        text = local_workflows.read_input(path)
     except FileNotFoundError:
         raise ValueError(f"Profile missing at {path}. Run setup --vault /path/to/vault.") from None
+    except UnicodeDecodeError:
+        raise ValueError(f"Save the JSON profile as UTF-8: {path}") from None
+    except ValueError:
+        raise ValueError(f"Choose a regular JSON profile file: {path}") from None
+    profile = json.loads(text)
     if not isinstance(profile, dict) or not isinstance(profile.get("vaultPath"), str):
         raise ValueError(f"Profile must contain a vaultPath string: {path}")
     return profile
 
 
 def get_vault(profile, create=False):
-    vault = Path(profile["vaultPath"]).expanduser()
+    vault = local_workflows.local_path(profile["vaultPath"])
     if not vault.is_absolute():
         raise ValueError(f"Set vaultPath to an absolute folder: {vault}")
     vault = vault.resolve()
@@ -99,7 +104,7 @@ def write_file(path, content, replace=False):
 def setup(args, path):
     if path.exists() or path.is_symlink():
         raise ValueError(f"Profile already exists at {path}. Use config to change the vault.")
-    vault = Path(args.vault).expanduser().resolve()
+    vault = local_workflows.local_path(args.vault).resolve()
     profile = {
         "schemaVersion": 2,
         "profileName": "default",
@@ -152,7 +157,7 @@ def configure(args, path, profile):
             raise ValueError("--apply requires --vault.")
         show_status(path, get_vault(profile), profile)
         return
-    vault = get_vault({"vaultPath": str(Path(args.vault).expanduser().resolve())})
+    vault = get_vault({"vaultPath": str(local_workflows.local_path(args.vault).resolve())})
     if args.apply:
         profile["vaultPath"] = str(vault)
         if isinstance(profile.get("obsidian"), dict) and "vaultPath" in profile["obsidian"]:
@@ -426,8 +431,8 @@ def main():
     local_workflows.register(commands)
     outlook.register(commands)
     args = parser.parse_args()
-    path = profile_path(args.profile)
     try:
+        path = profile_path(args.profile)
         if args.command == "review":
             print(json.dumps(local_workflows.review(args), ensure_ascii=False, indent=2))
             return 0

@@ -33,7 +33,7 @@ def sources(profile):
             raise ValueError(f"Set outlook.{key} to a nonempty string.")
         try:
             path = local_workflows.local_path(value)
-        except RuntimeError:
+        except ValueError:
             raise ValueError(f"Set outlook.{key} to an absolute local path.") from None
         if not path.is_absolute():
             raise ValueError(f"Set outlook.{key} to an absolute local path.")
