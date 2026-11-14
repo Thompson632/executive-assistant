@@ -137,7 +137,7 @@ def show_status(path, vault, profile):
         "vault_path": str(vault),
         "obsidian_settings_present": (vault / ".obsidian").is_dir(),
         "outlook_available": bool(sources),
-        "outlook_sources": {kind: provider for kind, (provider, _) in sources.items()},
+        "outlook_sources": dict.fromkeys(sources, outlook.FILE_PROVIDER),
     }, indent=2))
 
 

@@ -66,9 +66,9 @@ Add `--apply` after reviewing the preview. The Codex equivalent is `$executive-a
 
 ## Local Outlook Mail and Calendar
 
-Opt in to use a synced Apple Mail account and Apple Calendar on macOS, or use
-synced Maildir and calendar metadata files on Linux or macOS. Mail triage,
-calendar review, and reports read the configured local sources at runtime.
+Opt in to use a synced Maildir folder or calendar metadata file on macOS or
+Linux. Mail triage, calendar review, and reports read the configured local
+sources at runtime.
 [Set up local Outlook access](plugins/executive-assistant/references/local-outlook.md).
 
 ## Calendar Management

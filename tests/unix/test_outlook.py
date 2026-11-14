@@ -1,4 +1,4 @@
-from datetime import date, datetime, timedelta
+from datetime import date, timedelta
 import json
 import os
 from pathlib import Path
@@ -6,7 +6,6 @@ import subprocess
 import sys
 import tempfile
 import unittest
-from unittest.mock import patch
 
 from test_vault_workflow import LAUNCHER
 
@@ -123,30 +122,14 @@ class LocalOutlookTest(unittest.TestCase):
         self.assertEqual(json.loads(self.command("check").stdout)["outlook_sources"],
                          {"calendar": "local"})
 
+    def test_unsupported_provider_explains_how_to_configure_file_sources(self):
+        self.configure(provider="unsupported")
+        result = self.command("check", check=False)
+        self.assertEqual(result.returncode, 1)
+        self.assertIn("Set outlook.provider to local and configure outlook.maildir or outlook.calendarFile.",
+                      result.stderr)
 
-class AppleOutlookTest(unittest.TestCase):
     def test_old_profile_needs_an_explicit_local_source(self):
         self.assertEqual(outlook.sources({"outlook": {
             "enabled": True, "mailboxName": "old", "protocolName": "ea-outlook",
         }}), {})
-
-    def test_adapter_invokes_fixed_script_and_allows_only_metadata(self):
-        start = datetime.fromisoformat("2026-11-02T00:00:00-05:00")
-        end = start + timedelta(days=1)
-        record = {"title": "Calendar event", "start": start.isoformat(), "end": end.isoformat(),
-                  "all_day": True, "notes": "private", "uid": "opaque"}
-        reply = subprocess.CompletedProcess([], 0, stdout=json.dumps([record]).encode(), stderr=b"")
-        with patch.object(outlook.subprocess, "run", return_value=reply) as run:
-            rows = outlook.read_apple("calendar", {"calendarName": "Work"}, start, end, 5)
-        args = run.call_args.args[0]
-        self.assertEqual(args[:4], ["/usr/bin/osascript", "-l", "JavaScript", str(outlook.APPLE_SCRIPT)])
-        self.assertEqual(json.loads(args[-1])["calendarName"], "Work")
-        self.assertEqual(rows, [{key: record[key] for key in ("title", "start", "end", "all_day")}])
-        self.assertEqual(run.call_args.kwargs["timeout"], 30)
-
-    def test_adapter_reports_automation_denial_without_private_error_details(self):
-        start = datetime.fromisoformat("2026-11-02T00:00:00-05:00")
-        failure = subprocess.CalledProcessError(1, [], stderr=b"Hidden calendar name (-1743)")
-        with patch.object(outlook.subprocess, "run", side_effect=failure):
-            with self.assertRaisesRegex(ValueError, "^Allow your terminal or Codex"):
-                outlook.read_apple("calendar", {}, start, start + timedelta(days=1), 5)

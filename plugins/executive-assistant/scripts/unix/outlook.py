@@ -1,21 +1,17 @@
-"""Read Outlook metadata from locally synced clients and files."""
+"""Read Outlook metadata from local sync files."""
 
 from datetime import date, datetime, time, timedelta, timezone
 from email import policy
 from email.parser import BytesHeaderParser
 import heapq
-import json
 import os
-from pathlib import Path
 import stat
-import subprocess
-import sys
 
 import local_workflows
 
 
 KINDS = ("mail", "calendar")
-APPLE_SCRIPT = Path(__file__).with_name("outlook-apple.js")
+FILE_PROVIDER = "local"
 
 
 def sources(profile):
@@ -26,32 +22,19 @@ def sources(profile):
     if provider is None and ("protocolName" in settings or "mailboxName" in settings):
         # Profiles imported from the former Outlook runtime require a new source.
         return {}
+    if provider != FILE_PROVIDER:
+        raise ValueError("Set outlook.provider to local and configure outlook.maildir or outlook.calendarFile.")
     result = {}
-    if provider == "apple":
-        if sys.platform != "darwin":
-            raise ValueError("The apple Outlook provider requires macOS.")
-        names = (("mail", ("mailAccount", "mailFolder")), ("calendar", ("calendarName",)))
-    elif provider == "local":
-        names = (("mail", ("maildir",)), ("calendar", ("calendarFile",)))
-    else:
-        raise ValueError("Set outlook.provider to apple or local in the local profile.")
-    for kind, keys in names:
-        if not any(key in settings for key in keys):
+    for kind, key in (("mail", "maildir"), ("calendar", "calendarFile")):
+        if key not in settings:
             continue
-        values = {}
-        for key in keys:
-            value = settings.get(key)
-            if not isinstance(value, str) or not value.strip() or "\x00" in value:
-                raise ValueError(f"Set outlook.{key} to a nonempty string.")
-            if provider == "local" and not local_workflows.local_path(value).is_absolute():
-                raise ValueError(f"Set outlook.{key} to an absolute local path.")
-            values[key] = value
-        if provider == "apple" and kind == "calendar":
-            show_titles = settings.get("includeCalendarTitles", False)
-            if type(show_titles) is not bool:
-                raise ValueError("Set outlook.includeCalendarTitles to true or false.")
-            values["includeCalendarTitles"] = show_titles
-        result[kind] = (provider, values)
+        value = settings[key]
+        if not isinstance(value, str) or not value.strip() or "\x00" in value:
+            raise ValueError(f"Set outlook.{key} to a nonempty string.")
+        path = local_workflows.local_path(value)
+        if not path.is_absolute():
+            raise ValueError(f"Set outlook.{key} to an absolute local path.")
+        result[kind] = path
     if not result:
         raise ValueError("Configure at least one Outlook mail or calendar source.")
     return result
@@ -60,31 +43,6 @@ def sources(profile):
 def midnight(day):
     # Resolve each boundary in the host zone so windows spanning a clock change work.
     return datetime.combine(day, time.min).astimezone()
-
-
-def read_apple(kind, settings, start, end, limit):
-    args = {**settings, "start": start.isoformat(), "end": end.isoformat(), "limit": limit}
-    app = "Mail" if kind == "mail" else "Calendar"
-    try:
-        result = subprocess.run(
-            ["/usr/bin/osascript", "-l", "JavaScript", str(APPLE_SCRIPT), kind, json.dumps(args)],
-            capture_output=True, check=True, timeout=30,
-        )
-    except subprocess.TimeoutExpired:
-        raise ValueError(f"Apple {app} did not respond. Check that it is open and responsive.") from None
-    except subprocess.CalledProcessError as error:
-        # Only forward our fixed diagnostic strings. App error messages can contain account data.
-        stderr = error.stderr.decode(errors="replace")
-        if "EA_SELECTION" in stderr:
-            raise ValueError(f"Apple {app} needs one exact match for the configured source.") from None
-        if "EA_NOT_RUNNING" in stderr:
-            raise ValueError(f"Open Apple {app} before reading its local data.") from None
-        if "-1743" in stderr:
-            raise ValueError(
-                f"Allow your terminal or Codex to control Apple {app} in macOS Automation settings."
-            ) from None
-        raise ValueError(f"Apple {app} could not be read. Check its local source and Automation access.") from None
-    return local_workflows.validate_records(json.loads(result.stdout), kind)
 
 
 def maildir_headers(path):
@@ -137,17 +95,11 @@ def read_maildir(path, start, end, limit):
     return rows
 
 
-def read(kind, source, first_day, last_day, limit=5):
-    provider, settings = source
+def read(kind, path, first_day, last_day, limit=5):
     start, end = midnight(first_day), midnight(last_day)
-    if provider == "apple":
-        records = read_apple(kind, settings, start, end, limit)
-    elif kind == "mail":
-        return read_maildir(local_workflows.local_path(settings["maildir"]), start, end, limit)
-    else:
-        records = local_workflows.read_records(settings["calendarFile"], "calendar")
     if kind == "mail":
-        return records
+        return read_maildir(path, start, end, limit)
+    records = local_workflows.read_records(str(path), "calendar")
     return sorted(
         (row for row in records
          if local_workflows.timestamp(row["start"]) < end
@@ -181,5 +133,5 @@ def review(args, profile):
             start, end = focus, focus + timedelta(days=args.days)
     except OverflowError:
         raise ValueError("Choose a date range within the supported calendar.") from None
-    return {"kind": args.kind, "provider": source[0], "window_start": str(start),
+    return {"kind": args.kind, "provider": FILE_PROVIDER, "window_start": str(start),
             "window_end": str(end), "records": read(args.kind, source, start, end, args.limit or 5)}

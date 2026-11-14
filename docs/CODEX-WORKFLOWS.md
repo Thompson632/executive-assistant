@@ -106,8 +106,8 @@ my private snapshot at `/absolute/path/to/calendar.json`.” The launcher reads
 the supplied records and the skill interprets them. See the
 [local input formats](../plugins/executive-assistant/references/local-inputs.md).
 
-Reports read the vault and can include mail and calendar from local clients
-or sync files. [Configure local Outlook access](../plugins/executive-assistant/references/local-outlook.md).
+Reports read the vault and can include mail and calendar metadata from local
+sync files. [Configure local Outlook access](../plugins/executive-assistant/references/local-outlook.md).
 
 Project workflows use separately installed and authenticated CLIs.
 See the [Atlassian CLI guide](../integrations/atlassian-cli/README.md)

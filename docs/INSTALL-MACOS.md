@@ -2,7 +2,7 @@
 
 Codex and Obsidian share a folder of Markdown notes. The Mac workflow supports
 vault setup, daily and weekly briefs, action triage, and meeting prep from notes.
-Mail and calendar can also read from configured local clients. Drafts remain
+Mail and calendar can also read from configured local sync files. Drafts remain
 text for manual review.
 
 ## 1. Connect a vault
@@ -82,9 +82,10 @@ For updates or a moved checkout, follow the
 
 ## 4. Connect local Outlook mail and calendar (optional)
 
-Verify that your Outlook or Exchange account already syncs in Apple Mail or
-Calendar. Enable the Apple provider in the [local Outlook setup guide](../plugins/executive-assistant/references/local-outlook.md).
-Open the apps, then run the commands for the feeds you configured:
+If an existing client or sync job keeps your Outlook mailbox in Maildir, or
+produces a refreshed calendar metadata JSON file, enable the file-backed
+provider in the [local Outlook setup guide](../plugins/executive-assistant/references/local-outlook.md).
+Then run the commands for the feeds you configured:
 
 ```bash
 ./plugins/executive-assistant/scripts/unix/ea.sh outlook mail
@@ -92,9 +93,6 @@ Open the apps, then run the commands for the feeds you configured:
 ./plugins/executive-assistant/scripts/unix/ea.sh report daily
 ```
 
-If macOS prompts for Automation access, allow the terminal or Codex app you
-plan to use. Calendar event titles are hidden by default to protect private
-appointments. The report preview displays exactly what the runner would save.
 Use `report daily --write --replace` to refresh the test report from step 3.
 
 ## Optional local schedule
