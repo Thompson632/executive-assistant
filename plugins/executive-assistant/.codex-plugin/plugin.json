@@ -16,7 +16,7 @@
   "interface": {
     "displayName": "Executive Assistant",
     "shortDescription": "Run executive workflows from Codex Desktop.",
-    "longDescription": "Run vault-backed briefs, weekly reviews, meeting prep, and action triage on macOS and Linux. Review synced local Outlook mail and calendar, use supplied metadata, or prepare local draft text. Obsidian can open the same local working folder.",
+    "longDescription": "Capture quick notes in Obsidian or save a stopping point on an action to pick it back up in a fresh chat. Run vault-backed briefs, weekly reviews, meeting prep, and action triage on macOS and Linux. Review synced local Outlook mail and calendar, use supplied metadata, or prepare local draft text.",
     "developerName": "Executive Assistant Project",
     "category": "Productivity",
     "capabilities": [
@@ -27,7 +27,7 @@
     "defaultPrompt": [
       "Run guided Executive Assistant setup.",
       "Prepare today's executive brief.",
-      "Review and prioritize my open vault actions."
+      "Use $executive-context-switch to save where I left off."
     ]
   }
 }

@@ -1,11 +1,13 @@
 ---
 name: executive-action-triage
-description: Action extraction and prioritization workflow for an executive Obsidian vault. Use when the user asks to review open actions, clean task lists, extract follow-ups, find blocked work, prepare a next-action list, or promote commitments into Jira or notes.
+description: Review open actions or pull follow-ups from Obsidian notes. Use for what to do next, what is blocked, and what is waiting on someone.
 ---
 
-# Executive Action Triage
+# Executive Prioritize Actions
 
-Turn scattered notes into a clear, reviewed action model.
+Use this for “What should I work on next?” or “What am I waiting on?”
+For a specific checkbox change, use `$executive-todo-management`.
+For where you left off on one task, use `$executive-context-switch`.
 
 On macOS and Linux, if the vault is outside the current project, use `./scripts/unix/ea.sh config`
 from the installed plugin root to resolve its folder. Use that folder for the note workflow.
@@ -20,11 +22,6 @@ from the installed plugin root to resolve its folder. Use that folder for the no
 
 ## Output
 
-Return a prioritized action review with:
-
-- immediate actions
-- delegated or waiting items
-- blocked items
-- stale items to archive
-- suggested Jira candidates
+Lead with the actions to take next. Include waiting items, blockers,
+stale items, or Jira candidates when relevant. Link to the source notes.
 

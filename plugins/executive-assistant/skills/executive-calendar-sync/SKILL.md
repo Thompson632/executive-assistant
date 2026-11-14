@@ -1,11 +1,14 @@
 ---
 name: executive-calendar-sync
-description: Compare dedicated calendar snapshots and prepare a reviewed reconciliation plan.
+description: Compare two calendar exports covering the same dates. List missing or changed events and conflicts for the user to resolve.
 ---
 
-# Executive Calendar Sync
+# Executive Compare Two Calendars
 
-Use this skill for two explicitly supplied calendar snapshots. Compare them by title and time and produce a reviewed reconciliation plan.
+Use this skill when the user supplies two calendar exports. Compare events
+by title and time and show the differences. The user applies any changes
+in their calendar app. To find conflicts on one calendar, use
+`$executive-calendar-management`.
 
 ## First Use
 

@@ -1,9 +1,9 @@
 ---
 name: executive-assistant-config
-description: Inspect and safely update a local Executive Assistant profile for Codex Desktop. Use when the user says "Executive Assistant config," wants to view or open their profile JSON, change vault/project location, inspect saved preferences, or preview a vault path change.
+description: View or change an existing Executive Assistant setup. Use to check which Obsidian folder is connected or preview switching to another folder.
 ---
 
-# Executive Assistant Config
+# Executive Change Settings
 
 Use the local profile manager for normal profile changes. It preserves fields the user did not name and writes only after an explicit preview and confirmation.
 

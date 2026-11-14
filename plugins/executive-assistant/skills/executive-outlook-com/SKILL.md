@@ -1,9 +1,9 @@
 ---
 name: executive-outlook-com
-description: Review mail and calendar metadata from configured local Outlook sources or supplied files, review task files, prepare unsent draft text, and file explicitly supplied attachments.
+description: Review recent mail from a configured local Outlook source or a supplied file. Use to identify messages needing attention, draft email, or save a supplied attachment.
 ---
 
-# Executive Mail Review
+# Executive Review Mail or Draft a Reply
 
 Use [configured local sources](../../references/local-outlook.md) for current
 mail and calendar metadata or the [input format](../../references/local-inputs.md)

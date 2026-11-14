@@ -1,9 +1,9 @@
 ---
 name: executive-meeting-prep
-description: Meeting preparation and debrief workflow for executives. Use when the user asks to prepare for a meeting, summarize meeting context, build an agenda, identify decisions, extract follow-ups, or turn meeting notes into actions.
+description: Prepare for one meeting from its agenda and related notes, or pull decisions and follow-ups from notes after it ends.
 ---
 
-# Executive Meeting Prep
+# Executive Prepare for or Debrief a Meeting
 
 Support both pre-meeting preparation and post-meeting debrief.
 

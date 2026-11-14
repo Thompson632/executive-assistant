@@ -1,9 +1,9 @@
 ---
 name: executive-jira-triage
-description: Jira triage workflow for executive operating work. Use when the user asks to review Jira issues, clean stale tickets, identify active work, create reviewed work items, close outdated issues, or reconcile Jira with vault actions.
+description: Review active or stale Jira issues. Use to decide what needs attention or propose specific issue changes for approval.
 ---
 
-# Executive Jira Triage
+# Executive Review Jira Issues
 
 Use Jira for active work that needs ownership, status, and follow-through. Do not use it as the only durable note system.
 

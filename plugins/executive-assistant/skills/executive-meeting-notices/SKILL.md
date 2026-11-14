@@ -1,9 +1,9 @@
 ---
 name: executive-meeting-notices
-description: Review supplied meeting notices and create unsent invitation or response text with explicit confirmation. Use when the user asks to create a meeting invitation or notice, draft an agenda invite, accept/tentatively accept/decline a meeting, respond to a meeting request, or inspect recently received meeting notices.
+description: Review a supplied meeting notice or draft an invitation, acceptance, or decline for the user to send in their calendar app.
 ---
 
-# Executive Meeting Notices
+# Executive Draft a Meeting Invite or Reply
 
 Use supplied meeting metadata to review notices and draft invitation or response text. Keep sending in the user's chosen client.
 

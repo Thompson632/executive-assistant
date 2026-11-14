@@ -1,4 +1,4 @@
 interface:
-  display_name: "Executive To Do Management"
-  short_description: "Review task metadata or vault tasks"
-  default_prompt: "Use $executive-todo-management to review my local tasks."
+  display_name: "Executive Manage Tasks"
+  short_description: "Add, edit, or check off an Obsidian task"
+  default_prompt: "Use $executive-todo-management to preview marking “Confirm the room” complete."

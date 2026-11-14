@@ -1,9 +1,9 @@
 ---
 name: executive-calendar-management
-description: Scrub, prioritize, and strategically plan an executive calendar without changing it. Use when the user asks to review or clean up their calendar, identify conflicts or back-to-back meetings, protect focus time, plan a week around strategic priorities, decide what to keep/delegate/decline, or align work priorities with meetings.
+description: Review one calendar for conflicts, back-to-back meetings, and time for focused work. Suggest changes for the user to make.
 ---
 
-# Executive Calendar Management
+# Executive Review My Calendar
 
 Run a calendar review first. It uses configured local or supplied metadata and keeps the source calendar read-only.
 

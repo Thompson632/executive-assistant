@@ -3,6 +3,9 @@
 Use the local Executive Assistant plugin on macOS or Linux. Open the vault
 as a local Codex project when a workflow needs its files.
 
+See the [workflow diagrams and schedule guide](WORKFLOW-DIAGRAMS.md) for
+how the skills fit together.
+
 ## Runtime
 
 The plugin uses a Bash launcher and Python. Mail and calendar can read
@@ -44,6 +47,23 @@ for report paths and write behavior.
 Use calendar entries to plan focus time. For task changes, the skill previews
 the exact Markdown note and checkbox edit.
 
+## Switching Context
+
+Use `$executive-context-switch` in your vault's Codex project.
+
+- **Switch away.** “Save where I left off on the launch decision. I compared both options. Next I need to add the support estimate.” Review the proposed edit to the Obsidian action.
+- **Switch back.** “Pick up the launch decision.” Codex reads the action and returns its link, the current state, and the first next step. It includes a blocker if one is recorded.
+
+The handoff lives with the action, so it is available from a fresh chat.
+If the vault has no action list, the first saved action goes in
+`Action-Items.md` under **Inbox**.
+
+## Quick Notes
+
+Ask “Use `$executive-quick-note` to jot down that the room layout worked
+well.” By default, the skill adds a dated bullet to `notes/Quick Notes.md`.
+For a commitment you want to track, ask to capture it as an action.
+
 ## Which Commands the Skills Use
 
 Invoke the skill in a Codex session and give it the relevant vault, local file,
@@ -54,10 +74,12 @@ installed plugin root. From a checkout, use the longer path shown above.
 | --- | --- | --- |
 | Profile setup and verification | `$executive-assistant-setup`, `$executive-assistant-config`, `$executive-assistant-proof` | `setup`, `config`, `check` |
 | Vault report | `$executive-daily-brief`, `$executive-weekly-review` | `report daily`, `report weekly` |
-| Mail triage | `$executive-outlook-com` (Executive Mail Review) | `outlook mail` or `review mail --source PATH` |
+| Mail review and drafts | `$executive-outlook-com` | `outlook mail` or `review mail --source PATH` |
 | Calendar review and comparison | `$executive-calendar-management`, `$executive-calendar-sync` | `outlook calendar` for the configured feed, `review calendar --source PATH` for a snapshot, or add `--compare PATH` for a second snapshot |
 | Meeting or email draft | `$executive-meeting-notices`, `$executive-outlook-com` | `draft --subject TEXT --source PATH` |
 | Meeting preparation and debrief | `$executive-meeting-prep` | Reads relevant notes and supplied meeting material |
+| Switch context | `$executive-context-switch` | Saves a stopping point on an Obsidian action and reads it back when resuming |
+| Quick note | `$executive-quick-note` | Saves a short dated bullet to an Obsidian note |
 | Tasks | `$executive-todo-management`, `$executive-action-triage` | `review tasks --source PATH` for JSON, or review vault checkboxes directly |
 | Local attachment filing | `$executive-outlook-com` | `attachment --source PATH --destination PATH` |
 | Schedule setup | `$executive-scheduled-tasks` | `schedule`, `schedule-prompts` |

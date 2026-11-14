@@ -1,9 +1,9 @@
 ---
 name: executive-daily-brief
-description: Daily executive briefing workflow for Codex Desktop. Use when the user asks for a daily report, daily brief, morning reset, today plan, Outlook-plus-vault summary, or Obsidian briefing generated from calendar, important email metadata, and vault action signals.
+description: Prepare a plan for today from Obsidian actions and available mail and calendar details. Save a daily report when the user asks.
 ---
 
-# Executive Daily Brief
+# Executive Prepare Today’s Brief
 
 Generate a concise Markdown report for the user's current day. Treat configured local Outlook sources, supplied metadata, and the vault as read-only inputs.
 

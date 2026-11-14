@@ -1,16 +1,18 @@
 ---
 name: executive-todo-management
-description: Review and prioritize supplied task metadata or create, update, complete, and remove vault tasks using preview-first edits.
+description: Add, edit, check off, or remove a specific Obsidian task after reviewing the change. Also review and sort tasks from a supplied file.
 ---
 
-# Executive Todo Management
+# Executive Manage Tasks
 
-Review task metadata or maintain Markdown tasks in the configured vault. Use the existing preview and confirmation steps for proposed changes.
+Use this to update a specific task, such as “Mark the room check complete,”
+or to review a supplied task file. For a review of open vault priorities,
+use `$executive-action-triage`.
 
 ## Workflow
 
 1. List incomplete tasks first and organize them by urgency, importance, due date, and strategic value. Include completed work when asked.
-2. For a task edit, collect the exact title, due date, reminder, importance, and category changes.
+2. For a task edit, identify the exact task and the fields the user wants to change.
 3. Show the proposed create, update, completion, or removal as a vault note diff.
 4. Ask for explicit confirmation before applying the change.
 5. Use the existing vault note and checkbox as the specific target.

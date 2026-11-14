@@ -1,9 +1,9 @@
 ---
 name: executive-scheduled-tasks
-description: Scheduled workflow setup for the Executive Assistant plugin. Use when the user asks to create Codex Scheduled Tasks, schedule daily briefs, weekly reviews, follow-up monitors, action updates, recurring executive assistant workflows, or generate schedule-ready prompts for Codex Desktop.
+description: Set up recurring Codex workflows. Use to prepare and test a schedule for daily briefs, weekly reviews, or follow-ups in the Obsidian project.
 ---
 
-# Executive Scheduled Tasks
+# Executive Schedule Briefs and Follow-Ups
 
 Prepare scheduled workflows for Codex Desktop and recover deterministic local
 reports when the Codex scheduler/provider path is unavailable.

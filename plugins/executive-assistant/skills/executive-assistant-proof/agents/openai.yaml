@@ -1,4 +1,4 @@
 interface:
-  display_name: "Executive Assistant Proof"
-  short_description: "Verify the Desktop package is visible"
-  default_prompt: "Use $executive-assistant-proof to verify the Executive Assistant package."
+  display_name: "Executive Check Setup"
+  short_description: "Verify the plugin and Obsidian folder are ready"
+  default_prompt: "Use $executive-assistant-proof to check that the plugin can read my Obsidian vault."

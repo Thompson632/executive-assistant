@@ -1,9 +1,9 @@
 ---
 name: executive-gitlab-review
-description: Review open GitLab issues, merge requests, and recent pipeline status through the installed glab CLI. Use for GitLab project briefings, blockers, review queues, or delivery status.
+description: Review open issues, merge requests, and recent pipelines for a GitLab project. Use for blockers, reviews waiting, or build status. Requires a signed-in glab CLI.
 ---
 
-# Executive GitLab Review
+# Executive Review a GitLab Project
 
 Use the project named by the user or the unambiguous GitLab remote of the
 checkout they are reviewing. If the target is unclear, ask for the GitLab

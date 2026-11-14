@@ -1,4 +1,4 @@
 interface:
-  display_name: "Executive Weekly Review"
-  short_description: "Plan the upcoming executive week"
-  default_prompt: "Use $executive-weekly-review to prepare my weekly executive review."
+  display_name: "Executive Plan the Week"
+  short_description: "Review carryover and plan the week ahead"
+  default_prompt: "Use $executive-weekly-review to show what carries over and what needs attention this week."

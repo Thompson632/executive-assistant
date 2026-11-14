@@ -54,9 +54,10 @@ bash install/unix/check-prereqs.sh
 bash install/unix/install-plugin.sh
 ```
 
-If you use the CLI bundled with ChatGPT Desktop on macOS, pass
-`--codex /Applications/ChatGPT.app/Contents/Resources/codex-cli/bin/codex` to
-`install-plugin.sh`. Open the vault folder as a local Codex project and
+If the CLI on PATH is missing or cannot load the plugin command, the installer
+tries the CLI bundled with ChatGPT Desktop in `/Applications`. For a different
+location, pass `--codex /absolute/path/to/codex` to `install-plugin.sh`.
+Open the vault folder as a local Codex project and
 start a fresh chat with this prompt. Use a vault with a test checkbox or
 another actionable note to verify the report's source links.
 
