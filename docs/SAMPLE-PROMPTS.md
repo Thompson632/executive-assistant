@@ -208,8 +208,10 @@ After confirming the plan and holding the initial meeting, ask:
 > Use $executive-work-intake to resume the shorter-agenda rehearsal. I confirm the initial meeting was held. Add the exact status comment once to the local epic and refresh the local Scrum of Scrums preview.
 
 For live work, provide the GitLab group, issue project, and Confluence page.
-Review the proposed scope before approving any GitLab writes. The sequence
-below also works when you prefer to carry out the steps individually.
+Review the proposed scope before approving any GitLab writes. Work Intake
+ends with the Scrum of Scrums preview. The sequence below shows how to
+carry out the steps individually, including optional publication through
+Executive Draft a Confluence Update.
 
 1. **Capture the request in Obsidian.**
 

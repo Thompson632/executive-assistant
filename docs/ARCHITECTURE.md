@@ -21,6 +21,10 @@ Atlassian skills invoke separately installed and authenticated
 
 GitLab project review uses an existing authenticated `glab` installation. The
 skill scopes reads to the selected project and uses GitLab links for follow-up.
+The [Work Intake skill](WORKFLOW-DIAGRAMS.md#take-a-new-work-request-from-intake-to-scrum-of-scrums)
+coordinates approved GitLab epic, issue, and comment writes when live access
+is available. It stops at a Confluence preview. A local rehearsal uses
+Markdown notes in the selected vault for both services.
 
 Obsidian opens the vault as a local folder. The runtime reads and writes
 Markdown through the filesystem.

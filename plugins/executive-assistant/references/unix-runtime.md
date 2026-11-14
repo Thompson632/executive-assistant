@@ -42,8 +42,9 @@ local draft inside the vault. The user handles sending.
 ./scripts/unix/ea.sh review tasks --source "/path/to/tasks.json"
 ```
 
-Use vault checkboxes to maintain local tasks. Preview changes and confirm
-removal before editing a note.
+The shell command reads a supplied task file. Use
+[Executive Manage Tasks](../skills/executive-todo-management/SKILL.md) to
+preview and apply edits to vault checkboxes.
 
 ## Daily and Weekly Reports
 
@@ -58,7 +59,8 @@ The default focus date is today in the host time zone. Use
 `--date YYYY-MM-DD` for a different day or to select its Monday-to-Sunday week.
 The runner ranks open checkboxes and attention cues in Markdown notes and
 adds metadata from configured local Outlook sources. It skips generated
-briefings, setup notes, hidden paths, symbolic links, and saved drafts.
+briefings, setup notes, hidden paths, symbolic links, saved drafts, and
+notes marked `type: executive-assistant-one-on-one`.
 
 Previewing prints Markdown. With `--write`, the command returns JSON with the
 file path and whether it wrote a file or found an existing one. Add
