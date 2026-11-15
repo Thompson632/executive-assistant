@@ -4,6 +4,10 @@
 *.local.json
 *.secret.*
 
+# Local implementation plans and their companion specs
+/docs/superpowers/plans/
+/docs/superpowers/specs/
+
 # User data and generated reports
 vault/
 vaults/

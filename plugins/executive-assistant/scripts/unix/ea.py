@@ -32,7 +32,8 @@ CUES = (
 )
 CHECKBOX = re.compile(r"^\s*(?:[-+*]|\d+[.)])\s+\[(.)\]\s+")
 FENCE = re.compile(r"^\s*(`{3,}|~{3,})(.*)$")
-CAPTURE_DATE = re.compile(r"^#{1,6}\s+(\d{4}-\d{2}-\d{2})\s*$")
+ATX_HEADING = re.compile(r"^ {0,3}(#{1,6})(?:[ \t]+(.*)|$)")
+CAPTURE_DATE = re.compile(r"(\d{4}-\d{2}-\d{2})(?:[ \t]+#+)?")
 
 
 class Signal(NamedTuple):
@@ -51,11 +52,15 @@ def profile_path(override):
     return (codex_home / "executive-assistant" / "profiles" / "default.json").absolute()
 
 
+def missing_profile_error(path: Path) -> ValueError:
+    return ValueError(f"Profile missing at {path}. Run setup --vault /path/to/vault.")
+
+
 def read_profile(path: Path) -> dict:
     try:
         text = local_workflows.read_input(path)
     except FileNotFoundError:
-        raise ValueError(f"Profile missing at {path}. Run setup --vault /path/to/vault.") from None
+        raise missing_profile_error(path) from None
     except UnicodeDecodeError:
         raise ValueError(f"Save the JSON profile as UTF-8: {path}") from None
     except ValueError:
@@ -160,7 +165,7 @@ def show_status(path: Path, vault: Path, profile: dict) -> None:
     print(json.dumps(status, indent=2))
 
 
-def configure(args, path, profile):
+def configure(args, path, profile, *, write_path: Path):
     if not args.vault:
         if args.apply:
             raise ValueError("--apply requires --vault.")
@@ -171,14 +176,17 @@ def configure(args, path, profile):
         profile["vaultPath"] = str(vault)
         if isinstance(profile.get("obsidian"), dict) and "vaultPath" in profile["obsidian"]:
             profile["obsidian"]["vaultPath"] = str(vault)
-        write_file(path, (json.dumps(profile, indent=2) + "\n").encode("utf-8"), replace=True)
+        write_file(write_path, (json.dumps(profile, indent=2) + "\n").encode("utf-8"), replace=True)
         show_status(path, vault, profile)
     else:
-        print(json.dumps({
+        preview = {
             "profile_path": str(path),
             "current_vault_path": profile["vaultPath"],
             "proposed_vault_path": str(vault),
-        }, indent=2))
+        }
+        if write_path != path:
+            preview["profile_write_path"] = str(write_path)
+        print(json.dumps(preview, indent=2))
 
 
 def note_signals(vault, path, modified, capture_days, brain_dumps):
@@ -188,6 +196,7 @@ def note_signals(vault, path, modified, capture_days, brain_dumps):
     capture_day = datetime.fromtimestamp(modified).date().isoformat() if capture_note else ""
     if quick_notes:
         capture_day = ""
+    capture_level = 0
     captured_excerpt = False
     fence = None
     in_frontmatter = False
@@ -218,9 +227,14 @@ def note_signals(vault, path, modified, capture_days, brain_dumps):
             if checkbox and checkbox[1] != " ":
                 continue
             if quick_notes and stripped.startswith("#"):
-                heading = CAPTURE_DATE.fullmatch(stripped)
+                heading = ATX_HEADING.fullmatch(line.rstrip())
                 if heading:
-                    capture_day = heading[1]
+                    level = len(heading[1])
+                    dated = CAPTURE_DATE.fullmatch(heading[2] or "")
+                    if dated:
+                        capture_day, capture_level = dated[1], level
+                    elif level <= capture_level:
+                        capture_day, capture_level = "", 0
             if not stripped or stripped.startswith("#"):
                 continue
             excerpt = " ".join(stripped.split())[:220]
@@ -400,8 +414,8 @@ def apply_local_file(args, path, vault):
         else:
             if args.confirm_save != "SAVE ATTACHMENTS":
                 raise ValueError('Apply requires --confirm-save "SAVE ATTACHMENTS".')
-            destination = local_workflows.destination_path(vault, args.destination)
-            local_workflows.write_attachment(local_workflows.local_path(args.source), destination)
+            source, destination = local_workflows.attachment_paths(vault, args.source, args.destination)
+            local_workflows.write_attachment(source, destination)
     except (OSError, ValueError):
         try:
             local_workflows.append_audit(path, operation, "failed")
@@ -457,6 +471,17 @@ def main():
         if args.command == "setup":
             setup(args, path)
             return 0
+        if args.command == "config":
+            write_path = path
+            if args.vault and path.is_symlink():
+                try:
+                    write_path = path.resolve(strict=True)
+                except FileNotFoundError:
+                    raise missing_profile_error(path) from None
+                except RuntimeError:
+                    raise ValueError(f"Cannot resolve the linked profile at {path}.") from None
+            configure(args, path, read_profile(write_path), write_path=write_path)
+            return 0
         profile = read_profile(path)
         if args.command == "outlook":
             print(json.dumps(outlook.review(args, profile), ensure_ascii=False, indent=2))
@@ -467,18 +492,12 @@ def main():
                 next(entries, None)
             show_status(path, vault, profile)
             return 0
-        if args.command == "config":
-            configure(args, path, profile)
-            return 0
         if args.command == "audit":
             print(json.dumps(local_workflows.read_audit(path)))
             return 0
         vault = get_vault(profile)
         if args.command == "attachment" and not args.apply:
-            source = local_workflows.local_path(args.source)
-            if not source.is_file():
-                raise ValueError("Choose an existing local attachment file.")
-            destination = local_workflows.destination_path(vault, args.destination)
+            source, destination = local_workflows.attachment_paths(vault, args.source, args.destination)
             print(json.dumps({"status": "preview", "source": str(source), "destination": str(destination)}))
         elif args.command in local_workflows.OPERATIONS:
             apply_local_file(args, path, vault)

@@ -32,6 +32,8 @@ Look for `Added plugin` and `Installed plugin root` in the output. Open
 Codex in a fresh chat after installing. If the skill does not appear, see
 [Troubleshooting](#troubleshooting).
 
+Already connected a notes folder? Go to [Use an existing setup](#use-an-existing-setup).
+
 ## 3. Connect your notes folder and save a brief
 
 1. Create an empty folder named **Executive Assistant Vault** or choose an
@@ -62,6 +64,20 @@ Open the file under `_briefings/YYYY-MM/Week of YYYY-MM-DD/`. The
 `YYYY-MM-DD Daily Report.md` filename uses today's date. Under **Needs
 Attention Today**, follow the **Action-Items** link back to your task.
 If you used another note, look for its title instead.
+
+## Use an existing setup
+
+After an update, open your usual notes folder in a fresh Codex chat. Ask
+`$executive-assistant-proof` to confirm which folder the profile points to.
+If it is the right folder, continue with the brief. To switch folders,
+create the destination first and ask `$executive-assistant-config` to
+preview the change. Review the two paths before applying it. This changes
+the connection, so move or copy any notes you want in the new folder separately.
+
+For a separate test setup, use a different notes folder and a different
+profile. Pass the same `--profile PATH` before each launcher subcommand, or
+specify the profile path in the Desktop prompts. See the
+[disposable walkthrough](../DEVELOPING.md#try-a-workflow-with-temporary-data).
 
 ## Terminal alternative
 

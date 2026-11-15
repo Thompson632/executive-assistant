@@ -107,7 +107,9 @@ Preview a supplied file and its destination before saving:
 ```
 
 After reviewing the preview, add `--apply --confirm-save "SAVE ATTACHMENTS"`
-to copy the attachment. For a draft, put the body and any intended recipient
+to copy the attachment. If preview reports that the destination exists,
+choose a new filename. If it reports that a parent needs to be a folder,
+choose a folder for the file. For a draft, put the body and any intended recipient
 or meeting details in the source file. Add `--output PATH --apply` to save the
 reviewed text. For both operations, use a new absolute destination inside the
 vault without symlinks or parent traversal.

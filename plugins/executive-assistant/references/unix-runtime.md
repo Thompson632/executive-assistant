@@ -74,7 +74,10 @@ different month. Daily filenames use the focus date and end in
 The shell report includes Snapshot, Calendar, Important Unread Emails, Needs
 Attention, Waiting On, and Risks To Watch. Daily reports also include Brain
 Dumps for the focus date and the day before. The runner includes dated
-entries from `notes/Quick Notes.md` and one excerpt per other Markdown note
+entries under today's and yesterday's date headings in `notes/Quick Notes.md`.
+An undated heading at the same or a higher level ends the dated section.
+Deeper headings keep their text in that section. The report also includes
+one excerpt per other Markdown note
 under `notes/` based on its last-modified date. Entries link back to their
 source notes. The Codex skills can synthesize additional sections from
 supplied metadata and notes.

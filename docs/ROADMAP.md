@@ -4,11 +4,6 @@ The [workflow guide](CODEX-WORKFLOWS.md) describes currently available
 features. The remaining work below covers live validation and possible
 extensions.
 
-The [initial usability plan](superpowers/plans/2026-11-14-repository-usability.md)
-introduced the first-run guide, recovery fixes, and ZIP smoke test. The
-[follow-up plan](superpowers/plans/2026-11-14-onboarding-release-hardening.md)
-covers clearer setup errors, notes folder validation, and release checks.
-
 ## Live validation
 
 Use the [release checklist](RELEASE-CHECKLIST.md) to record first-time Desktop

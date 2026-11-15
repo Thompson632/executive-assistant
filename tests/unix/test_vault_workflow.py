@@ -92,6 +92,38 @@ class VaultWorkflowTest(unittest.TestCase):
         self.profile.symlink_to(target)
         self.assertEqual(json.loads(self.command("check").stdout)["vault_path"], str(self.vault))
 
+    def test_config_apply_preserves_linked_profile(self):
+        self.vault.mkdir()
+        self.profile.parent.mkdir()
+        target = self.root / "target profile.json"
+        target.write_text(
+            json.dumps({"vaultPath": str(self.vault), "customValue": "keep-me"}),
+            encoding="utf-8-sig",
+        )
+        self.profile.symlink_to(target)
+        new_vault = self.root / "New Vault"
+        new_vault.mkdir()
+        original = target.read_bytes()
+        args = ("config", "--vault", str(new_vault))
+
+        preview = json.loads(self.command(*args).stdout)
+        self.assertEqual(preview["profile_path"], str(self.profile))
+        self.assertEqual(preview["profile_write_path"], str(target))
+        self.assertEqual(target.read_bytes(), original)
+
+        applied = json.loads(self.command(*args, "--apply").stdout)
+        self.assertEqual(applied["profile_path"], str(self.profile))
+        self.assertTrue(self.profile.is_symlink())
+        self.assertEqual(json.loads(target.read_text()), {
+            "vaultPath": str(new_vault), "customValue": "keep-me",
+        })
+        self.assertEqual(json.loads(self.command("check").stdout)["vault_path"], str(new_vault))
+        direct = subprocess.run(
+            [sys.executable, str(SCRIPT), "--profile", str(target), "check"],
+            capture_output=True, check=True,
+        )
+        self.assertEqual(json.loads(direct.stdout)["vault_path"], str(new_vault))
+
     def test_vault_cannot_contain_the_executing_package(self):
         containing = self.root / "Containing Folder"
         plugin = containing / "executive-assistant"
@@ -270,6 +302,30 @@ class VaultWorkflowTest(unittest.TestCase):
         weekly = Path(result["output_path"])
         self.assertEqual(weekly.name, "2026-10-26 Weekly Report.md")
         self.assertNotIn("Keep this existing report", weekly.read_text())
+
+    def test_quick_notes_stop_at_an_undated_sibling_heading(self):
+        self.command("setup", "--vault", str(self.vault))
+        notes = self.vault / "notes"
+        notes.mkdir()
+        (notes / "Quick Notes.md").write_text(
+            "# Quick Notes\n"
+            "## 2026-11-14\n- Captured today\n"
+            "### Context\n- Nested dated context\n"
+            "\n    ## Example heading in code\n\n"
+            "- Captured after the example\n"
+            "  ## Reference Material\n- Undated reference text\n"
+            "## 2026-11-13\n- Captured yesterday\n"
+            "# Appendix\n- Undated appendix text\n",
+            encoding="utf-8",
+        )
+        report = self.command("report", "daily", "--date", "2026-11-14").stdout.decode()
+        captures = report.split("## Brain Dumps", 1)[1]
+        self.assertIn("Captured today", captures)
+        self.assertIn("Nested dated context", captures)
+        self.assertIn("Captured after the example", captures)
+        self.assertIn("Captured yesterday", captures)
+        self.assertNotIn("Undated reference text", captures)
+        self.assertNotIn("Undated appendix text", captures)
 
     def test_daily_brief_includes_recent_brain_dumps_with_source_links(self):
         self.command("setup", "--vault", str(self.vault))

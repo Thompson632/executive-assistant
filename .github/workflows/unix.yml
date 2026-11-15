@@ -57,29 +57,60 @@ jobs:
           git show HEAD:LICENSE | cmp - "$package/LICENSE"
           test -f "$package/docs/GETTING-STARTED.md"
           test -f "$package/plugins/executive-assistant/.codex-plugin/plugin.json"
-          launcher="$package/plugins/executive-assistant/scripts/unix/ea.sh"
-          for shell in bash zsh; do
-            vault="$smoke_dir/$shell vault"
-            result="$smoke_dir/$shell report.json"
-            "$shell" -e -c '
-              launcher=$1
-              profile=$2
-              vault=$3
-              "$launcher" --profile "$profile" setup --vault "$vault" --copy-template >/dev/null
-              "$launcher" --profile "$profile" check >/dev/null
-              printf "\n%s\n" "- [ ] Review the meeting agenda" >> "$vault/Action-Items.md"
-              "$launcher" --profile "$profile" report daily --date 2026-11-14 --write
-            ' "$shell" "$launcher" "$smoke_dir/$shell profile.json" "$vault" > "$result"
-            python3 - "$vault" "$result" <<'PY'
+          test ! -e "$package/docs/superpowers/plans"
+          test ! -e "$package/docs/superpowers/specs"
+          python3 - "$package" "$smoke_dir" <<'PY'
           import json
+          import os
           from pathlib import Path
+          import re
+          import subprocess
           import sys
+          from urllib.parse import unquote
 
-          vault, result = map(Path, sys.argv[1:])
-          payload = json.loads(result.read_text())
-          report = Path(payload["output_path"])
-          assert payload["status"] == "written", payload
-          assert report.resolve().is_relative_to(vault.resolve()), report
-          assert "Review the meeting agenda" in report.read_text(encoding="utf-8"), report
+          package, smoke_dir = map(Path, sys.argv[1:])
+          launcher = package / "plugins/executive-assistant/scripts/unix/ea.sh"
+
+          for shell in ("bash", "zsh"):
+              vault = smoke_dir / f"{shell} vault"
+              codex_home = smoke_dir / f"{shell} settings"
+              env = {**os.environ, "CODEX_HOME": str(codex_home)}
+
+              def run(*args):
+                  return subprocess.check_output(
+                      [shell, "-c", 'exec "$@"', shell, str(launcher), *args],
+                      env=env, cwd=package, encoding="utf-8", timeout=30,
+                  )
+
+              run("setup", "--vault", str(vault), "--copy-template")
+              status = json.loads(run("check"))
+              profile = codex_home / "executive-assistant/profiles/default.json"
+              assert status["ok"] and profile.is_file(), status
+              assert Path(status["profile_path"]).resolve() == profile.resolve(), status
+              assert Path(status["vault_path"]).resolve() == vault.resolve(), status
+
+              source = vault / "Action-Items.md"
+              with source.open("a", encoding="utf-8") as note:
+                  note.write("\n- [ ] Review the meeting agenda\n")
+              args = ("report", "daily", "--date", "2026-11-14")
+              assert "Review the meeting agenda" in run(*args), shell
+              assert not (vault / "_briefings").exists(), shell
+
+              payload = json.loads(run(*args, "--write"))
+              report = Path(payload["output_path"])
+              assert payload["status"] == "written", payload
+              assert report.resolve().is_relative_to(vault.resolve()), report
+              contents = report.read_text(encoding="utf-8")
+              assert "Review the meeting agenda" in contents, report
+              link = re.search(r"\[Action-Items\]\(([^)]+)\)", contents)
+              assert link, report
+              assert (report.parent / unquote(link[1])).resolve() == source.resolve(), report
+
+              edited = report.read_bytes() + b"\nManual edit to saved brief\n"
+              report.write_bytes(edited)
+              rerun = json.loads(run(*args, "--write"))
+              assert rerun["status"] == "existing", rerun
+              assert Path(rerun["output_path"]) == report, rerun
+              assert report.read_bytes() == edited, report
+              print(f"{shell}: default profile, preview, report link, and preserving rerun verified.")
           PY
-          done

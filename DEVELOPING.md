@@ -25,6 +25,13 @@ configuring Outlook, Jira, Confluence, or GitLab.
 
 See the [architecture guide](docs/ARCHITECTURE.md) for integration boundaries.
 
+## Local implementation plans
+
+Save working plans in `docs/superpowers/plans/` and companion specs in
+`docs/superpowers/specs/`. Create the folders when you first need them. Git
+ignores both folders, and release ZIPs exclude them. Keep any lasting
+workflow guidance in the shared docs so it is available in a fresh checkout.
+
 ## Try a workflow with temporary data
 
 From Bash or Zsh, create a separate profile and vault to exercise the
@@ -39,15 +46,18 @@ ea_dev_dir=$(mktemp -d)
 ```
 
 To test installation with a separate Codex configuration, create a directory
-for it and run the marketplace installer. Then start a fresh chat in the
-environment where the plugin is installed to verify skill discovery.
+for it and run the marketplace installer. Use the same `CODEX_HOME` when
+listing the installed plugin from the CLI.
 
 ```sh
 mkdir "$ea_dev_dir/codex"
 CODEX_HOME="$ea_dev_dir/codex" bash install/unix/install-plugin.sh
+CODEX_HOME="$ea_dev_dir/codex" codex plugin list
 ```
 
-If needed, pass `--codex /absolute/path/to/codex` to select the CLI.
+If needed, pass `--codex /absolute/path/to/codex` to select the CLI and use
+that executable for the list command. Verify skill discovery separately
+with a fresh Desktop chat opened to the test notes folder.
 See the [distribution guide](docs/DISTRIBUTION.md) for installation updates
 and building a ZIP from a commit.
 
@@ -56,7 +66,8 @@ and building a ZIP from a commit.
 - Run the unit tests and check changed shell scripts with `bash -n`. Validate
   on macOS and Linux with Bash and Zsh where available. The
   [CI workflow](.github/workflows/unix.yml) runs the test suite and checks the
-  distribution ZIP on both platforms.
+  distribution ZIP on both platforms. Each shell uses separate temporary
+  settings and the default profile to preview, save, and rerun a daily brief.
 - Follow [the repo validation instructions](AGENTS.md#validation) for plugin
   and skill checks. Install [development dependencies](requirements-dev.txt)
   in a virtual environment if the skill validator needs PyYAML. If the

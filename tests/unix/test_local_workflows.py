@@ -105,6 +105,40 @@ class LocalWorkflowTest(unittest.TestCase):
         self.command(*args, "--destination", str(copied), "--confirm-save", "SAVE ATTACHMENTS")
         self.assertEqual(copied.read_bytes(), b"source")
 
+    def test_attachment_preview_rejects_occupied_destinations(self):
+        self.command("setup", "--vault", str(self.vault))
+        source = self.root / "source.txt"
+        source.write_bytes(b"new attachment")
+        occupied = self.vault / "Existing.txt"
+        occupied.write_bytes(b"keep this file")
+        args = ("attachment", "--source", str(source), "--destination")
+        apply = ("--apply", "--confirm-save", "SAVE ATTACHMENTS")
+
+        for destination, diagnostic in (
+            (occupied, b"Attachment destination already exists. Choose a new file."),
+            (occupied / "child.txt", b"Attachment destination needs a folder as its parent."),
+        ):
+            with self.subTest(destination=destination):
+                result = self.command(*args, str(destination), check=False)
+                self.assertEqual(result.returncode, 1, result.stderr)
+                self.assertIn(diagnostic, result.stderr)
+        self.assertEqual(occupied.read_bytes(), b"keep this file")
+        self.assertFalse((self.profile.parent / "local-audit.jsonl").exists())
+
+        destination = self.vault / "New Folder" / "Saved.txt"
+        preview = json.loads(self.command(*args, str(destination)).stdout)
+        self.assertEqual(preview["status"], "preview")
+        self.assertFalse(destination.parent.exists())
+        self.command(*args, str(destination), *apply)
+        self.assertEqual(destination.read_bytes(), source.read_bytes())
+
+        conflict = self.vault / "Conflict.txt"
+        self.command(*args, str(conflict))
+        conflict.write_bytes(b"written after preview")
+        result = self.command(*args, str(conflict), *apply, check=False)
+        self.assertEqual(result.returncode, 1)
+        self.assertEqual(conflict.read_bytes(), b"written after preview")
+
     def test_local_commands_reject_named_pipes(self):
         self.command("setup", "--vault", str(self.vault))
         source = self.root / "input.fifo"

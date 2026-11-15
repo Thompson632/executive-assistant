@@ -136,6 +136,21 @@ def destination_path(vault, value):
     return path
 
 
+def attachment_paths(vault: Path, source_value: str, destination_value: str) -> tuple[Path, Path]:
+    source = local_path(source_value)
+    if not source.is_file():
+        raise ValueError("Choose an existing regular file for the attachment.")
+    destination = destination_path(vault, destination_value)
+    for parent in destination.parents:
+        if parent == vault:
+            break
+        if parent.exists() and not parent.is_dir():
+            raise ValueError("Attachment destination needs a folder as its parent.")
+    if destination.exists():
+        raise ValueError("Attachment destination already exists. Choose a new file.")
+    return source, destination
+
+
 def write_attachment(source, destination):
     destination.parent.mkdir(parents=True, exist_ok=True)
     with NamedTemporaryFile(dir=destination.parent, prefix=".ea-", delete=False) as tmp:
